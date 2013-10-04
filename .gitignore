@@ -2,8 +2,6 @@
 /lib
 /classes
 /checkouts
-pom.xml.asc
-pom.xml
 *.jar
 *.class
 .lein-deps-sum
