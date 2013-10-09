@@ -393,11 +393,12 @@
      :exprs       exprs
      :children    [:exprs]}))
 
-(defn analyze-fn-method [[params & body :as form] {:keys [locals] :as env}]
+(defn analyze-fn-method [[params & body :as form] {:keys [locals local] :as env}]
   {:pre [(every? symbol? params)
          (not-any? namespace params)]}
   (let [variadic? (boolean (some '#{&} params))
         params-names (vec (remove '#{&} params))
+        env (dissoc env :local)
         arity (count params-names)
         params-expr (mapv (fn [name id]
                             {:env       env
@@ -422,14 +423,17 @@
         (when (not= 2 (count x))
           (throw (ex-info (str "unexpected parameter: " (first (drop 2 x)))
                           {:params params})))))
-    {:op          :fn-method
-     :form        form
-     :env         env
-     :variadic?   variadic?
-     :params      params-expr
-     :fixed-arity fixed-arity
-     :body        body
-     :children    [:params :body]}))
+    (merge
+     {:op          :fn-method
+      :form        form
+      :env         env
+      :variadic?   variadic?
+      :params      params-expr
+      :fixed-arity fixed-arity
+      :body        body
+      :children    `[:params :body]}
+     (when local
+       {:local (dissoc local :env)}))))
 
 (defmethod parse 'fn*
   [[op & args :as form] {:keys [name] :as env}]
@@ -442,10 +446,9 @@
                    :form  name
                    :local :fn
                    :name  name}
-        e (if n (assoc-in env [:locals name] name-expr) env)
+        e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
         e (assoc (dissoc e :in-try)
-            :once (-> op meta :once boolean)
-            :local (dissoc name-expr :env))
+            :once (-> op meta :once boolean))
         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
         menv (if (> (count meths) 1) (ctx env :expr) e)
         methods-exprs (mapv #(analyze-fn-method % menv) meths)
