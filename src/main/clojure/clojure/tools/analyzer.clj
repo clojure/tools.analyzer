@@ -445,7 +445,7 @@
         e (if n (assoc-in env [:locals name] name-expr) env)
         e (assoc (dissoc e :in-try)
             :once (-> op meta :once boolean)
-            :local name-expr)
+            :local (dissoc name-expr :env))
         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
         menv (if (> (count meths) 1) (ctx env :expr) e)
         methods-exprs (mapv #(analyze-fn-method % menv) meths)
