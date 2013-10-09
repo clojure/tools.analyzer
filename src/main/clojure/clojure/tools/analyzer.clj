@@ -225,6 +225,7 @@
      :expr     const
      :form     form
      :env      env
+     :literal? true
      :children [:expr]}))
 
 (defmethod parse 'set!
