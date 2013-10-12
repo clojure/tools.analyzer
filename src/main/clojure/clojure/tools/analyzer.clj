@@ -55,7 +55,7 @@
 
 
 (defn wrapping-meta [{:keys [form env] :as expr}]
-  (let [meta (dissoc (meta form) :line :column :file)
+  (let [meta (meta form)
         quoted? (:quoted? env)
         quoted-meta (if quoted? (list 'quote meta) meta)]
     (if (and (seq meta)
