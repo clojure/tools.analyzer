@@ -52,31 +52,32 @@
 (declare ^:dynamic macroexpand-1 ;[form env]
          ^:dynamic create-var)   ;[sym env]
 
-
-
 (defn wrapping-meta [{:keys [form env] :as expr}]
-  (let [meta (meta form)
-        quoted? (:quoted? env)
-        quoted-meta (if quoted? (list 'quote meta) meta)]
-    (if (and (seq meta)
-             (obj? form))
+  (let [meta (meta form)]
+    (if (and (obj? form)
+             (seq meta))
       {:op       :with-meta
        :env      env
        :form     form
-       :meta     (analyze quoted-meta (ctx env :expr))
+       :meta     (analyze meta (ctx env :expr))
        :expr     (assoc-in expr [:env :context] :expr)
        :children [:meta :expr]}
      expr)))
 
 (defmethod -analyze :const
   [_ form env & [type]]
-  (let [type (or type (classify form))]
-   (wrapping-meta
-    {:op       :const
-     :env      env
-     :type     type
-     :literal? true
-     :form     form})))
+  (let [type (or type (classify form))
+        m (meta form)]
+    (merge
+     {:op       :const
+      :env      env
+      :type     type
+      :literal? true
+      :form     form}
+     (when (seq m)
+       (let [quoted? (:quoted? env)
+             quoted-meta (if quoted? (list 'quote m) m)]
+         {:meta (analyze quoted-meta (ctx env :expr))})))))
 
 (defmethod -analyze :vector
   [_ form env]
