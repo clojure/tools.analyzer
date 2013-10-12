@@ -7,16 +7,22 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.constant-lifter
+  (:refer-clojure :exclude [val])
   (:require [clojure.tools.analyzer :refer [-analyze]]
             [clojure.tools.analyzer.utils :refer [constant?]]))
 
 (defmulti constant-lift :op)
 
+(defn val [{:keys [op form expr]}]
+  (if (= :quote op)
+    (:form expr)
+    form))
+
 (defmethod constant-lift :vector
   [{:keys [items form env] :as ast}]
   (if (and (every? :literal? items)
            (not (meta form)))
-    (-analyze :const (mapv :form items) env :vector)
+    (-analyze :const (mapv val items) env :vector)
     ast))
 
 (defmethod constant-lift :map
@@ -24,15 +30,15 @@
   (if (and (every? :literal? keys)
            (every? :literal? vals)
            (not (meta form)))
-    (-analyze :const (zipmap (map :form keys)
-                             (map :form vals)) env :map)
+    (-analyze :const (zipmap (map val keys)
+                             (map val vals)) env :map)
     ast))
 
 (defmethod constant-lift :set
   [{:keys [items form env] :as ast}]
   (if (and (every? :literal? items)
            (not (meta form)))
-    (-analyze :const (set (mapv :form items)) env :set)
+    (-analyze :const (set (mapv val items)) env :set)
     ast))
 
 (defmethod constant-lift :var
