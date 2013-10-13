@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    <title>nil - Analyzer for Clojure code 0.0.1 API documentation</title>
+    <title>clojure.tools.analyzer - Analyzer for Clojure code 0.0.1 API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -52,27 +52,123 @@ namespace.
     <a href="#" style="margin-top: 3px;"></a>
     
   </div><div style="margin-left: 1em;" class="toc-section">
-    <a href="#" style="margin-top: 3px;"></a>
-    
+    <a href="#var-section" style="margin-top: 3px;">Vars and Functions</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer/analyze">analyze</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer/analyze-block">analyze-block</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer/analyze-in-env">analyze-in-env</a>
+      
+    </div>
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#clojure.tools.analyzer.utils" style="margin-top: 3px;">clojure.tools.analyzer.utils</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.utils/classify">classify</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.utils/ctx">ctx</a>
+      
+    </div>
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id=""></span>
+                <div id="content-tag"><h1 id="overview">API for <span id="clojure.tools.analyzer">clojure.tools.analyzer</span>
   - <span id="header-project">Analyzer for Clojure code</span> <span id="header-version">0.0.1</span><span id="header-status-block"> (<span id="header-status">in development</span>)</span>
   </h1>
 
-<br />Full namespace name: <span id="long-name"></span>
+<br />Full namespace name: <span id="long-name">clojure.tools.analyzer</span>
 <p></p>
 <h2>Overview</h2>
-
-<pre id="namespace-docstr"></pre>
+<div id="home-page">Project home page is <a href="http://github.com/clojure/tools.analyzer/">http://github.com/clojure/tools.analyzer/</a></div>
+<pre id="namespace-docstr">Utilities for host-agnostic analysis of clojure forms</pre>
 
 
 <br />
 
 
 
+<div id="var-section">
+  <p></p>
+  <h2>Public Variables and Functions</h2>
+  <div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer/analyze">analyze</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (analyze form {:keys [context], :as env})
+</pre>
+    <pre id="var-docstr">Given an environment, a map containing
+  -  :locals (mapping of names to lexical bindings),
+  -  :context (one of :statement, :expr or :return
+and form, returns an expression object (a map containing at least :form, :op and :env keys).
+  -  :namespaces
+  -  :ns</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/1384302fbca0ba129f326df9be7bba086f7bec29/src/main/clojure/clojure/tools/analyzer.clj#L17" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer/analyze-block">analyze-block</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (analyze-block exprs env)
+</pre>
+    <pre id="var-docstr">returns {:statements .. :ret ..}</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/1384302fbca0ba129f326df9be7bba086f7bec29/src/main/clojure/clojure/tools/analyzer.clj#L174" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer/analyze-in-env">analyze-in-env</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (analyze-in-env env)
+</pre>
+    <pre id="var-docstr">Given an env returns a function that when called with an argument
+analyzes that argument in the specified env</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/1384302fbca0ba129f326df9be7bba086f7bec29/src/main/clojure/clojure/tools/analyzer.clj#L45" id="var-source">Source</a>
+  </div>
+</div>
+<br />
+<h2 id="clojure.tools.analyzer.utils">clojure.tools.analyzer.utils</h2>
+<pre id="namespace-docstr"></pre>
 
+
+<br />
+
+
+<div id="var-section">
+  <p></p>
+  <h2>Public Variables and Functions</h2>
+  <div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.utils/classify">classify</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (classify form)
+</pre>
+    <pre id="var-docstr">Returns a keyword describing the form type</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/f150829598db3f8bdee78fede823a117be246fdf/src/main/clojure/clojure/tools/analyzer/utils.clj#L35" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.utils/ctx">ctx</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (ctx env ctx)
+</pre>
+    <pre id="var-docstr">Returns a copy of the passe environment with :context set to ctx</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/f150829598db3f8bdee78fede823a117be246fdf/src/main/clojure/clojure/tools/analyzer/utils.clj#L17" id="var-source">Source</a>
+  </div>
+</div>
 
 
 </div>
