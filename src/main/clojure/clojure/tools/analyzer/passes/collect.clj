@@ -61,7 +61,7 @@
                                         [(const-val k) (const-val v)])) keys vals))]
     (if (seq map)
       (let [id (-register-constant map tag :map)]
-        (assoc ast :id id))
+        (assoc ast :id id :const map))
       ast)))
 
 (defmethod -collect-constants :set
@@ -69,7 +69,7 @@
   (let [set (into #{} (mapv const-val (filter :literal? items)))]
     (if (seq set)
       (let [id (-register-constant set tag :set)]
-        (assoc ast :id id))
+        (assoc ast :id id :const set))
       ast)))
 
 (defn -collect-callsites
