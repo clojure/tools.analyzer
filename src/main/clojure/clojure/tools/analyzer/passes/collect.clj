@@ -7,7 +7,7 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.collect
-  (:require [clojure.tools.analyzer.utils :refer [protocol-node? update!]]
+  (:require [clojure.tools.analyzer.utils :refer [protocol-node? update! const-val]]
             [clojure.tools.analyzer.passes :refer [postwalk]]))
 
 (def ^:private ^:dynamic *collects*
@@ -27,15 +27,48 @@
                   :type type})
         id)))
 
-(defn -collect-constants
-  [{:keys [op var form tag type] :as ast}]
-  (if (and (= op :const)
-           (not= type :nil)
+(defmulti -collect-constants :op)
+(defmethod -collect-constants :default [ast] ast)
+
+(defmethod -collect-constants :const
+  [{:keys [form tag type] :as ast}]
+  (if (and (not= type :nil)
            (not= type :boolean))
     (let [id (-register-constant form tag type)]
       (assoc ast :id id))
-    (if (#{:def :var :the-var} op)
-      (let [id (-register-constant var clojure.lang.Var :var)]
+    ast))
+
+(defmethod -collect-constants :var
+  [{:keys [var] :as ast}]
+  (let [id (-register-constant var clojure.lang.Var :var)]
+    (assoc ast :id id)))
+
+(defmethod -collect-constants :the-var
+  [{:keys [var] :as ast}]
+  (let [id (-register-constant var clojure.lang.Var :var)]
+    (assoc ast :id id)))
+
+(defmethod -collect-constants :def
+  [{:keys [var] :as ast}]
+  (let [id (-register-constant var clojure.lang.Var :var)]
+    (assoc ast :id id)))
+
+(defmethod -collect-constants :map
+  [{:keys [keys vals tag] :as ast}]
+  (let [map (apply hash-map (mapcat (fn [k v]
+                                      (when (and (:literal? k)
+                                                 (:literal? v))
+                                        [(const-val k) (const-val v)])) keys vals))]
+    (if (seq map)
+      (let [id (-register-constant map tag :map)]
+        (assoc ast :id id))
+      ast)))
+
+(defmethod -collect-constants :set
+  [{:keys [items tag] :as ast}]
+  (let [set (into #{} (mapv const-val (filter :literal? items)))]
+    (if (seq set)
+      (let [id (-register-constant set tag :set)]
         (assoc ast :id id))
       ast)))
 
