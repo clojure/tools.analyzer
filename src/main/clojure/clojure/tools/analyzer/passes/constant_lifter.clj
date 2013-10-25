@@ -30,15 +30,17 @@
   (if (and (every? :literal? keys)
            (every? :literal? vals)
            (not (meta form)))
-    (-analyze :const (zipmap (map val keys)
-                             (map val vals)) env :map)
+    (-analyze :const (into (empty form)
+                           (zipmap (map const-val keys)
+                                   (map const-val vals))) env :map)
     ast))
 
 (defmethod constant-lift :set
   [{:keys [items form env] :as ast}]
   (if (and (every? :literal? items)
            (not (meta form)))
-    (-analyze :const (set (mapv val items)) env :set)
+    (-analyze :const (into (empty form)
+                           (set (mapv const-val items))) env :set)
     ast))
 
 (defmethod constant-lift :var
