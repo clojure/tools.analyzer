@@ -114,3 +114,8 @@
      {:line line})
    (when-let [column (get-col x env)]
      {:column column})))
+
+(defn const-val [{:keys [op form expr]}]
+  (if (= :quote op)
+    (:form expr)
+    form))

@@ -7,16 +7,10 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.constant-lifter
-  (:refer-clojure :exclude [val])
   (:require [clojure.tools.analyzer :refer [-analyze]]
-            [clojure.tools.analyzer.utils :refer [constant?]]))
+            [clojure.tools.analyzer.utils :refer [constant? const-val]]))
 
 (defmulti constant-lift :op)
-
-(defn val [{:keys [op form expr]}]
-  (if (= :quote op)
-    (:form expr)
-    form))
 
 (defmethod constant-lift :vector
   [{:keys [items form env] :as ast}]
