@@ -8,7 +8,7 @@
 
 (ns clojure.tools.analyzer.passes.constant-lifter
   (:require [clojure.tools.analyzer :refer [-analyze]]
-            [clojure.tools.analyzer.utils :refer [constant? const-val]]))
+            [clojure.tools.analyzer.utils :refer [constant? const-val classify]]))
 
 (defmulti constant-lift :op)
 
@@ -40,7 +40,8 @@
 (defmethod constant-lift :var
   [{:keys [var env] :as ast}]
   (if (constant? var)
-    (-analyze :const @var env :var)
+    (let [val @var]
+     (-analyze :const val env (classify val)))
     ast))
 
 (defmethod constant-lift :default [ast] ast)
