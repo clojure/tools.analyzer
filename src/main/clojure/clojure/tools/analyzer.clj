@@ -122,10 +122,12 @@
 
 (defn macroexpand
   [form env]
-  (let [ex (macroexpand-1 form env)]
+  (loop [ex (macroexpand-1 form env)]
     (if (identical? ex form)
       form
-      (recur (with-meta ex (meta form)) env))))
+      (recur (if (obj? ex)
+               (with-meta ex (meta form))
+               ex)))))
 
 (defmethod -analyze :symbol
   [_ sym env]
