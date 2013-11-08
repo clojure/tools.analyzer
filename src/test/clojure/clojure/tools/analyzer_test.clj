@@ -100,12 +100,12 @@
 
   (let [mh-ast (ast foo/bar)]
     (is (= :maybe-host-form (:op mh-ast)))
-    (is (= 'foo (:maybe-class mh-ast)))
-    (is (= 'bar (:maybe-field mh-ast))))
+    (is (= 'foo (:class mh-ast)))
+    (is (= 'bar (:field mh-ast))))
 
   (let [mc-ast (ast bar)]
     (is (= :maybe-class (:op mc-ast)))
-    (is (= 'bar (:maybe-class mc-ast))))
+    (is (= 'bar (:class mc-ast))))
 
   (let [l-ast (ast (let [a 1] a))]
     (is (= :local (-> l-ast :body :ret :op)))
@@ -121,7 +121,7 @@
     (is (= [1 2 3] (->> if-ast ((juxt :test :then :else)) (mapv :form)))))
 
   (let [new-ast (ast (foo. 1 2))]
-    (is (= 'foo (:maybe-class new-ast)))
+    (is (= 'foo (:class new-ast)))
     (is (= [1 2] (->> new-ast :args (mapv :form)))))
 
   (let [q-ast (:expr (ast '^{a b} [c d]))]
@@ -138,7 +138,7 @@
   (let [t-ast (ast (try 0 (catch E1 e e) (catch E2 e 2) (finally 3)))]
     (is (= 0 (-> t-ast :body :ret :form)))
     (is (= 2 (-> t-ast :catches second :body :ret :form)))
-    (is (= 'E1 (-> t-ast :catches first :maybe-class)))
+    (is (= 'E1 (-> t-ast :catches first :class)))
     (is (= 'e (-> t-ast :catches first :local :name)))
     (is (= 3 (-> t-ast :finally :ret :form))))
 

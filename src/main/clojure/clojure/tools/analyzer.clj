@@ -146,13 +146,13 @@
                  (if-let [maybe-class (namespace sym)] ;; e.g. js/foo.bar or Long/MAX_VALUE
                    (let [maybe-class (symbol maybe-class)]
                      (if-not (find-ns maybe-class)
-                       {:op          :maybe-host-form
-                        :maybe-class maybe-class
-                        :maybe-field (symbol (name sym))}
+                       {:op    :maybe-host-form
+                        :class maybe-class
+                        :field (symbol (name sym))}
                        (throw (ex-info (str "could not resolve var: " sym)
                                        {:var sym}))))
-                   {:op          :maybe-class ;; e.g. java.lang.Integer or Long
-                    :maybe-class sym})))
+                   {:op    :maybe-class ;; e.g. java.lang.Integer or Long
+                    :class sym})))
              {:env  env
               :form sym})
       (analyze (if (obj? mform)
@@ -214,7 +214,7 @@
     {:op          :new
      :env         env
      :form        form
-     :maybe-class class
+     :class       class
      :args        args
      :children    [:args]}))
 
@@ -278,7 +278,7 @@
                  :local :catch
                  :tag   etype}]
       {:op          :catch
-       :maybe-class etype
+       :class       etype
        :local       local
        :env         env
        :form        form
