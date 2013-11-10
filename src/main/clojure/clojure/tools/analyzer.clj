@@ -12,7 +12,7 @@
   (:require [clojure.tools.analyzer.utils :refer :all]))
 
 (defmulti -analyze (fn [op form env & _] op))
-(defmulti parse (fn [[op & form] & rest] op))
+(defmulti ^:dynamic parse (fn [[op & form] & rest] op))
 
 (defn analyze
   "Given an environment, a map containing
