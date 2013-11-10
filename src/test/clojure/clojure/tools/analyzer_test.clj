@@ -51,9 +51,10 @@
 
 (defmacro ast [form]
   `(binding [ana/macroexpand-1 macroexpand-1
-             ana/create-var ~(fn [sym env]
-                               (doto (intern (:ns env) sym)
-                                 (reset-meta! (meta sym))))]
+             ana/create-var    ~(fn [sym env]
+                                  (doto (intern (:ns env) sym)
+                                    (reset-meta! (meta sym))))
+             ana/parse         ana/-parse]
      (ana/analyze '~form e)))
 
 (defmacro mexpand [form]
