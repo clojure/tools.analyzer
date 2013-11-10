@@ -12,7 +12,7 @@
   (:require [clojure.tools.analyzer.utils :refer :all]))
 
 (defmulti -analyze (fn [op form env & _] op))
-(defmulti ^:dynamic parse (fn [[op & form] & rest] op))
+(defmulti -parse (fn [[op & rest] env] op))
 
 (defn analyze
   "Given an environment, a map containing
@@ -50,7 +50,8 @@
 
 ;; platoform specific hooks
 (declare ^:dynamic macroexpand-1 ;[form env]
-         ^:dynamic create-var)   ;[sym env]
+         ^:dynamic create-var    ;[sym env]
+         ^:dynamic parse)        ;[[op & args] env]
 
 (defn wrapping-meta [{:keys [form env] :as expr}]
   (let [meta (meta form)]
@@ -184,14 +185,14 @@
      :ret        ret
      :children   [:statements :ret]}))
 
-(defmethod parse 'do
+(defmethod -parse 'do
   [[_ & exprs :as form] env]
   (into {:op   :do
          :env  env
          :form form}
         (analyze-block exprs env)))
 
-(defmethod parse 'if
+(defmethod -parse 'if
   [[_ test then else :as form] env]
   {:pre [(or (= 3 (count form))
              (= 4 (count form)))]}
@@ -206,7 +207,7 @@
      :else else-expr
      :children `[:test :then :else]}))
 
-(defmethod parse 'new
+(defmethod -parse 'new
   [[_ class & args :as form] env]
   {:pre [(>= (count form) 2)]}
   (let [args-env (ctx env :expr)
@@ -218,7 +219,7 @@
      :args        args
      :children    [:args]}))
 
-(defmethod parse 'quote
+(defmethod -parse 'quote
   [[_ expr :as form] env]
   (let [const (-analyze :const expr (assoc env :quoted? true))]
     {:op       :quote
@@ -228,7 +229,7 @@
      :literal? true
      :children [:expr]}))
 
-(defmethod parse 'set!
+(defmethod -parse 'set!
   [[_ target val :as form] env]
   {:pre [(= (count form) 3)]}
   (let [target (analyze target (ctx env :expr))
@@ -240,7 +241,7 @@
      :val      val
      :children [:target :val]}))
 
-(defmethod parse 'try
+(defmethod -parse 'try
   [[_ & body :as form] {:keys [context] :as env}]
   (let [catch? (every-pred seq? #(= (first %) 'catch))
         finally? (every-pred seq? #(= (first %) 'finally))
@@ -267,7 +268,7 @@
                {:finally fblock})
              {:children `[:body :catches ~@(when fblock [:finally])]}))))
 
-(defmethod parse 'catch
+(defmethod -parse 'catch
   [[_ etype ename & body :as form] env]
   (if (and (symbol? ename)
            (not (namespace ename)))
@@ -286,7 +287,7 @@
        :children    [:local :body]})
     (throw (ex-info (str "invalid binding form: " ename) {:sym ename}))))
 
-(defmethod parse 'throw
+(defmethod -parse 'throw
   [[_ throw :as form] env]
   {:op        :throw
    :env       env
@@ -294,7 +295,7 @@
    :exception (analyze throw (ctx env :expr))
    :children  [:exception]})
 
-(defmethod parse 'letfn*
+(defmethod -parse 'letfn*
   [[_ bindings & body :as form] {:keys [context] :as env}]
   {:pre [(vector? bindings)
          (even? (count bindings))]}
@@ -365,21 +366,21 @@
            :bindings binds
            :children [:bindings :body]})))))
 
-(defmethod parse 'let*
+(defmethod -parse 'let*
   [form env]
   (into {:op   :let
          :form form
          :env  env}
         (analyze-let form env)))
 
-(defmethod parse 'loop*
+(defmethod -parse 'loop*
   [form env]
   (into {:op   :loop
          :form form
          :env  env}
         (analyze-let form (dissoc env :in-try))))
 
-(defmethod parse 'recur
+(defmethod -parse 'recur
   [[_ & exprs :as form] {:keys [context loop-locals in-try]
                          :as env}]
   {:pre [(= :return context)
@@ -436,7 +437,7 @@
      (when local
        {:local (dissoc local :env)}))))
 
-(defmethod parse 'fn*
+(defmethod -parse 'fn*
   [[op & args :as form] {:keys [name] :as env}]
   (let [[n meths] (if (symbol? (first args))
                        [(first args) (next args)]
@@ -480,7 +481,7 @@
              {:local name-expr})
            {:children `[~@(when n [:local]) :methods]})))
 
-(defmethod parse 'def
+(defmethod -parse 'def
   [[_ sym & expr :as form] {:keys [ns namespaces] :as env}]
   {:pre [(symbol? sym)
          (or (not (namespace sym))
@@ -525,7 +526,7 @@
            (when-not (empty? children)
              {:children children}))))
 
-(defmethod parse '.
+(defmethod -parse '.
   [[_ target & [m-or-f & args] :as form] env]
   {:pre [(>= (count form) 3)]}
   (let [[m-or-f field?] (if (and (symbol? m-or-f)
@@ -558,7 +559,7 @@
            expr)))
 
 ;; invoke
-(defmethod parse :default
+(defmethod -parse :default
   [[f & args :as form] env]
   (if-not f
     (-analyze :const form env)
