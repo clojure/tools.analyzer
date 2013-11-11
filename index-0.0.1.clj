@@ -1,6 +1,6 @@
 {:namespaces
  ({:source-url
-   "https://github.com/clojure/tools.analyzer/blob/3b77c40b2ead1ba7ca027f027351098071651481/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/blob/751b3cf609a82ba2c9714c3a2f8db671fb3c890c/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer-api.html",
    :name "clojure.tools.analyzer",
@@ -16,9 +16,9 @@
    :name "analyze",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/3b77c40b2ead1ba7ca027f027351098071651481/src/main/clojure/clojure/tools/analyzer.clj#L17",
+   "https://github.com/clojure/tools.analyzer/blob/751b3cf609a82ba2c9714c3a2f8db671fb3c890c/src/main/clojure/clojure/tools/analyzer.clj#L17",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/3b77c40b2ead1ba7ca027f027351098071651481/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/751b3cf609a82ba2c9714c3a2f8db671fb3c890c/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/analyze",
    :doc
@@ -30,9 +30,9 @@
    :name "analyze-block",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/3b77c40b2ead1ba7ca027f027351098071651481/src/main/clojure/clojure/tools/analyzer.clj#L177",
+   "https://github.com/clojure/tools.analyzer/blob/751b3cf609a82ba2c9714c3a2f8db671fb3c890c/src/main/clojure/clojure/tools/analyzer.clj#L177",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/3b77c40b2ead1ba7ca027f027351098071651481/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/751b3cf609a82ba2c9714c3a2f8db671fb3c890c/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/analyze-block",
    :doc "returns {:statements .. :ret ..}",
@@ -43,9 +43,9 @@
    :name "analyze-in-env",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/3b77c40b2ead1ba7ca027f027351098071651481/src/main/clojure/clojure/tools/analyzer.clj#L45",
+   "https://github.com/clojure/tools.analyzer/blob/751b3cf609a82ba2c9714c3a2f8db671fb3c890c/src/main/clojure/clojure/tools/analyzer.clj#L45",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/3b77c40b2ead1ba7ca027f027351098071651481/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/751b3cf609a82ba2c9714c3a2f8db671fb3c890c/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/analyze-in-env",
    :doc
