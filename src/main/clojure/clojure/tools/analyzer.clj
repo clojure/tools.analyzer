@@ -513,7 +513,7 @@
                    ~@(when (:init args) [:init])]
         var (create-var sym env)]
 
-    (swap! namespaces assoc ns :mappings sym var)
+    (swap! namespaces assoc-in [ns :mappings sym] var)
 
     (merge {:op   :def
             :env  env
