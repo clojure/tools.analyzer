@@ -16,7 +16,7 @@
   [{:keys [items form env] :as ast}]
   (if (and (every? :literal? items)
            (not (meta form)))
-    (-analyze :const (mapv val items) env :vector)
+    (-analyze :const (mapv const-val items) env :vector)
     ast))
 
 (defmethod constant-lift :map
