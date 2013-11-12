@@ -1,4 +1,4 @@
-(ns clojure.tools.analyzer-test
+(ns clojure.tools.analyzer.core-test
   (:refer-clojure :exclude [macroexpand-1])
   (:require [clojure.tools.analyzer :as ana]
             [clojure.test :refer [deftest is]]
