@@ -47,8 +47,8 @@
   (if hygienic? name form))
 
 (defmethod -emit-form :var
-  [{:keys [name form]} hygienic?]
-  (if hygienic? name form))
+  [{:keys [form]} hygienic?]
+  form)
 
 (defn emit-bindings [bindings hygienic?]
   (mapcat (fn [{:keys [name form init]}]
