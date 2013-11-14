@@ -112,7 +112,7 @@
 
 (defmethod -emit-form :new
   [{:keys [class args]} hygienic?]
-  `(new ~(-emit-form class hygienic?) ~@(mapv #(-emit-form % hygienic?) args)))
+  `(new ~class ~@(mapv #(-emit-form % hygienic?) args)))
 
 (defmethod -emit-form :set!
   [{:keys [target val]} hygienic?]
