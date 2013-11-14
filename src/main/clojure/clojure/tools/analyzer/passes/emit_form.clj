@@ -31,7 +31,7 @@
 
 (defmethod -emit-form :host-field
   [{:keys [target field]} hygienic?]
-  (list (symbol (str ".-") (name field))
+  (list (symbol (str ".-" (name field)))
         (-emit-form target hygienic?)))
 
 (defmethod -emit-form :host-interop
