@@ -90,3 +90,11 @@
   (is (= '(a b) (emit-form (ast (a b)))))
   (is (= '(try (throw 1) (catch e t b) (finally 2))
          (emit-form (ast (try (throw 1) (catch e t b) (finally 2)))))))
+
+(deftest emit-hygienic-form-test
+  (is (= '(let* [a__#0 1 a__#1 a__#0] a__#1)
+         (emit-hygienic-form (uniquify-locals (ast (let [a 1 a a] a))))))
+  (is (= '(let* [x__#0 1] (fn* ([x__#1] x__#1)))
+         (emit-hygienic-form (uniquify-locals (ast (let [x 1] (fn [x] x)))))))
+  (is (= '(fn* x__#0 ([x__#1] x__#1))
+         (emit-hygienic-form (uniquify-locals (ast (fn x [x] x)))))))
