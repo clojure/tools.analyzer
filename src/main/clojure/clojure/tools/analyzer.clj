@@ -508,7 +508,7 @@
         meta-expr (when meta (analyze meta
                                       (ctx env :expr)))
         args (when-let [[_ init] (find args :init)]
-               {:init (analyze init (ctx env :expr))})
+               (merge args {:init (analyze init (ctx env :expr))}))
         children `[~@(when meta [:meta])
                    ~@(when (:init args) [:init])]
         var (create-var sym env)]
