@@ -107,7 +107,8 @@
   [{:keys [test then else]} hygienic?]
   `(if ~(-emit-form test hygienic?)
      ~(-emit-form then hygienic?)
-     ~@(when else [(-emit-form else hygienic?)])))
+     ~@(when-not (nil? (:form else))
+         [(-emit-form else hygienic?)])))
 
 (defmethod -emit-form :new
   [{:keys [class args]} hygienic?]
