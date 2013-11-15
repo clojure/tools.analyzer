@@ -10,5 +10,6 @@
   (:require [clojure.tools.analyzer.utils :refer [-source-info]]))
 
 (defn source-info
+  "Adds (when possible) :line, :column and :file info to the AST :env"
   [{:keys [form env] :as ast}]
   (update-in ast [:env] merge (-source-info form env)))

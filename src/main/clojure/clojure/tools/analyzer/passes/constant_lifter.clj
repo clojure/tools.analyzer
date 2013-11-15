@@ -10,7 +10,11 @@
   (:require [clojure.tools.analyzer :refer [-analyze]]
             [clojure.tools.analyzer.utils :refer [constant? const-val classify]]))
 
-(defmulti constant-lift :op)
+(defmulti constant-lift
+  "If op is :vector/:set/:map, and every item of the collection is a literal
+   and the collection ha no metadata or if op is :var and the var has :const
+   metadata, transform the node to an equivalent :const node."
+  :op)
 
 (defmethod constant-lift :vector
   [{:keys [items form env] :as ast}]
@@ -37,6 +41,7 @@
                            (set (mapv const-val items))) env :set)
     ast))
 
+;; this is actually jvm specific, should we move it?
 (defmethod constant-lift :var
   [{:keys [var env] :as ast}]
   (if (constant? var)

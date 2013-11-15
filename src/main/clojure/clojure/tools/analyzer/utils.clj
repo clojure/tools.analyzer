@@ -11,11 +11,13 @@
                          IReference Var)
            java.util.regex.Pattern))
 
-(defmacro update! [target f & args]
+(defmacro update!
+  "Shortrand for (set! x (f x a0 .. an))"
+  [target f & args]
   (list 'set! target (list* f target args)))
 
 (defn ctx
-  "Returns a copy of the passe environment with :context set to ctx"
+  "Returns a copy of the passed environment with :context set to ctx"
   [env ctx]
   (assoc env :context ctx))
 

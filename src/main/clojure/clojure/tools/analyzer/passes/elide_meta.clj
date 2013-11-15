@@ -8,7 +8,9 @@
 
 (ns clojure.tools.analyzer.passes.elide-meta)
 
-(def elides (set (:elide-meta *compiler-options*)))
+(def ^:dynamic elides
+  "Set of map keys to elide from metadata."
+  (set (:elide-meta *compiler-options*)))
 
 (defn dissoc-meta [{:keys [op form keys vals env] :as meta}]
   (let [form (apply dissoc form elides)]
@@ -47,7 +49,10 @@
 
 (defmethod -elide-meta :default [ast] ast)
 
-(defn elide-meta [ast]
+(defn elide-meta
+  "If elides is not empty and the AST node contains metadata,
+   dissoc all the keys in elides from the metadata."
+  [ast]
   (if (seq elides)
     (-elide-meta ast)
     ast))

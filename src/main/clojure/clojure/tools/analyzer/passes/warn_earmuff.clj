@@ -10,6 +10,8 @@
   (:require [clojure.tools.analyzer.utils :refer [dynamic?]]))
 
 (defn warn-earmuff
+  "Prints a warning to *err* if the AST node is a :def node and the
+   var name contains earmuffs but the var is not marked dynamic"
   [{:keys [op name var] :as ast}]
   (let [name (str name)]
     (when (and (= :def op)

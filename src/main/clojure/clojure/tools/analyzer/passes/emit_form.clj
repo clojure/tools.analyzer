@@ -11,9 +11,11 @@
 (defmulti -emit-form (fn [{:keys [op]} _] op))
 
 (defn emit-form [ast]
+  "Return the form represented by the given AST"
   (-emit-form ast false))
 
 (defn emit-hygienic-form [ast]
+  "Return an hygienic form represented by the given AST"
   (-emit-form ast true))
 
 (defmethod -emit-form :maybe-class

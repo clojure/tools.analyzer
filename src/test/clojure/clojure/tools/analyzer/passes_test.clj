@@ -43,9 +43,9 @@
   (is (= 1 (-> {:form ^{:column 1} [1]} source-info :env :column))))
 
 (def ^:const pi 3.14)
+(swap! (:namespaces e) assoc-in ['user :mappings 'pi] #'pi)
 
 (deftest constant-lift-test
-  (swap! (:namespaces e) assoc-in ['user :mappings 'pi] #'pi)
   (is (= :const (-> (ast {:a {:b :c}}) (postwalk constant-lift) :op)))
   (is (not= :const (-> (ast {:a {:b #()}}) (postwalk constant-lift) :op)))
   (is (= :const (-> (ast [:foo 1 "bar" #{#"baz" {23 user/pi}}])

@@ -10,9 +10,9 @@
   (:require [clojure.tools.analyzer.passes :refer [prewalk]]
             [clojure.tools.analyzer.utils :refer [update!]]))
 
-(def ^:dynamic *bindings* {})
+(def ^:dynamic ^:private *bindings* {})
 
-(defmulti -add-binding-atom :op)
+(defmulti ^:private -add-binding-atom :op)
 
 (defmethod -add-binding-atom :default [ast] ast)
 
@@ -27,6 +27,10 @@
   (assoc ast :atom (*bindings* name)))
 
 (defn add-binding-atom
+  "Walks the AST and adds an atom-backed-map to every local binding,
+   the same atom will be shared between all occurences of that local.
+
+   The atom is put in the :atom field of the node."
   [ast]
   (binding [*bindings* *bindings*]
     (prewalk ast -add-binding-atom)))
