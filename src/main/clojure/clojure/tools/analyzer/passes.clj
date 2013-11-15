@@ -6,16 +6,23 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.passes)
+(ns clojure.tools.analyzer.passes
+  "Utilities for passes handling and for AST walking/updating")
 
-(defn cycling [& fns]
+(defn cycling
+  "Combine the given passes in a single pass that will be repeatedly
+   applied to the AST until applying it another time will have no effect"
+  [& fns]
   (fn [ast]
     (let [new-ast (reduce #(%2 %) ast fns)]
       (if (= new-ast ast)
         ast
         (recur new-ast)))))
 
-(defn children [{:keys [children] :as ast}]
+(defn children
+  "Return a vector of the children expression of the AST node, if it has any.
+   The returned vector is not flattened."
+  [{:keys [children] :as ast}]
   (when children
     (mapv ast children)))
 
@@ -31,6 +38,9 @@
        ast)))
 
 (defn walk
+  "Walk the ast applying pre when entering the nodes, and post when exiting.
+   If reversed? is not-nil, pre and post will be applied starting from the last
+   children of the AST node to the first one."
   ([ast pre post]
      (walk ast pre post false))
   ([ast pre post reversed?]
@@ -40,10 +50,13 @@
            ast (update-children ast w fix)]
        (post ast))))
 
-(defn prewalk [ast f]
+(defn prewalk
+  "Shortrand for (walk ast f identity)"
+  [ast f]
   (walk ast f identity))
 
 (defn postwalk
+  "Shortrand for (walk ast identity f reversed?)"
   ([ast f]
      (walk ast identity f false))
   ([ast f reversed?]
