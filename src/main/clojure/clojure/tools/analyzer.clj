@@ -7,23 +7,43 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer
-  "Utilities for host-agnostic analysis of clojure forms"
+  "Analyzer for clojure code, host agnostic.
+
+   Entry point:
+   * analyze
+
+   Platform implementers must provide dynamic bindings for:
+   * macroexpand-1
+   * create-var
+   * parse
+
+   See clojure.tools.analyzer.core-test for an example on how to setup the analyzer."
   (:refer-clojure :exclude [macroexpand-1 macroexpand])
   (:require [clojure.tools.analyzer.utils :refer :all]))
 
 (defmulti -analyze (fn [op form env & _] op))
-(defmulti -parse (fn [[op & rest] env] op))
+(defmulti -parse
+  "Takes a form and an env map and dispatches on the head of the form, a special
+   form."
+  (fn [[op & rest] env] op))
 
 (defn analyze
-  "Given an environment, a map containing
-   -  :locals (mapping of names to lexical bindings),
-   -  :context (one of :statement, :expr or :return
- and form, returns an expression object (a map containing at least :form, :op and :env keys).
-   -  :namespaces
-   -  :ns"
+  "Given a form to analyze and an environment, a map containing:
+   * :locals     a map from binding symbol to AST of the binding value
+   * :context    a keyword describing the form's context, one of:
+    ** :return     the form is in return position
+    ** :statement  the return value of the form is not needed
+    ** :expr       everything else
+   * :ns         a symbol representing the current namespace of the form to be
+                 analyzed, must be present in the :namespaces map
+   * :namespaces an atom containing a map from namespace symbol to namespace map,
+                 the namespace map contains the following keys:
+    ** :mappings   a map of mappings of the namespace, symbol to var
+    ** :aliases    a map of the aliases of the namespace, symbol to symbol
+    ** :ns         a symbol representing the namespace"
   [form {:keys [context] :as env}]
   (let [form (if (seq? form)
-               (or (seq form) ())      ; we need to force evaluation in order to analyze
+               (or (seq form) ()) ;; force evaluation for analysis
                form)]
     (cond
 
@@ -39,19 +59,36 @@
 
      :else            (-analyze :const  form env))))
 
-(defn empty-env []
-  {:context :expr :locals {} :ns 'user :namespaces (atom {})})
+(defn empty-env
+  "Returns an empty env"
+  []
+  {:context    :expr
+   :locals     {}
+   :ns         'user
+   :namespaces (atom
+                {'user {:mappings {}
+                        :aliases  {}
+                        :ns       'user}})})
 
 (defn analyze-in-env
-  "Given an env returns a function that when called with an argument
-   analyzes that argument in the specified env"
+  "Takes an env map and returns a function that analyzes a form in that env"
   [env]
   (fn [form] (analyze form env)))
 
-;; platoform specific hooks
-(declare ^:dynamic macroexpand-1 ;[form env]
-         ^:dynamic create-var    ;[sym env]
-         ^:dynamic parse)        ;[[op & args] env]
+(def ^{:dynamic  true
+       :arglists '([form env])
+       :doc      "If form represents a macro form, returns its expansion,
+                  else returns form."}
+  macroexpand-1)
+
+(def ^{:dynamic  true
+       :arglists '([sym env])
+       :doc      "Creates a var for sym and returns it"}
+  create-var)
+
+(def ^{:dynamic  true
+       :arglists '([[op & args] env])
+       :doc      "Multimethod that dispatches on op, should default to -parse"})
 
 (defn wrapping-meta [{:keys [form env] :as expr}]
   (let [meta (meta form)]
@@ -175,7 +212,6 @@
                  env)))))
 
 (defn analyze-block
-  "returns {:statements .. :ret ..}"
   [exprs env]
   (let [statements-env (ctx env :statement)
         statements (mapv (analyze-in-env statements-env)
@@ -573,5 +609,5 @@
               :fn   fn-expr
               :args args-expr}
              (when m
-               {:meta m}) ;; this means it's not going to be evaluated
+               {:meta m}) ;; this implies it's not going to be evaluated
        {:children [:args :fn]}))))

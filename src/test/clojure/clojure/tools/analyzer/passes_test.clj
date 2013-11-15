@@ -58,7 +58,6 @@
     (is (= 'y__#1 (-> the-ast :body :ret :methods first :params first :name)))
     (is (apply not= (->> the-ast :bindings (mapv :name))))))
 
-
 (deftest emit-form-test
   (is (= 1 (emit-form (ast 1))))
   (is (= "a" (emit-form (ast "a"))))
