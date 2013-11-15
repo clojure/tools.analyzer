@@ -88,7 +88,8 @@
 
 (def ^{:dynamic  true
        :arglists '([[op & args] env])
-       :doc      "Multimethod that dispatches on op, should default to -parse"})
+       :doc      "Multimethod that dispatches on op, should default to -parse"}
+  parse)
 
 (defn wrapping-meta [{:keys [form env] :as expr}]
   (let [meta (meta form)]
