@@ -82,9 +82,11 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="C"><span id="section-head">C</span></h2>
   <pre>
-<span id="section-content"> <a href="index.html#clojure.tools.analyzer.utils/classify">classify</a><span id="line-content">                     function      clojure.tools.analyzer.utils Returns a keyword describing the form ty...
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes/children">children</a><span id="line-content">                     function      clojure.tools.analyzer.passes Return a vector of the children express...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.utils/classify">classify</a><span id="line-content">                     function      clojure.tools.analyzer.utils Returns a keyword describing the form ty...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer/create-var">create-var</a><span id="line-content">                   dynamic function clojure.tools.analyzer Creates a var for sym and returns it.
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.utils/ctx">ctx</a><span id="line-content">                          function      clojure.tools.analyzer.utils Returns a copy of the passe environment ...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes/cycling">cycling</a><span id="line-content">                      function      clojure.tools.analyzer.passes Combine the given passes in a single pa...
 </span></span>
   </pre>
 </div><div id="index-body">
@@ -154,6 +156,8 @@ Shortcuts:<br />
   <pre>
 <span id="section-content"> <a href="index.html#clojure.tools.analyzer/-parse">-parse</a><span id="line-content">                       multimethod   clojure.tools.analyzer Takes a form and an env map and dispatches on ...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer/parse">parse</a><span id="line-content">                        dynamic function clojure.tools.analyzer Multimethod that dispatches on op, should defa...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes/postwalk">postwalk</a><span id="line-content">                     function      clojure.tools.analyzer.passes Shortrand for (walk ast identity f reve...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes/prewalk">prewalk</a><span id="line-content">                      function      clojure.tools.analyzer.passes Shortrand for (walk ast f identity).
 </span></span>
   </pre>
 </div><div id="index-body">
@@ -189,7 +193,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="W"><span id="section-head">W</span></h2>
   <pre>
-
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes/walk">walk</a><span id="line-content">                         function      clojure.tools.analyzer.passes Walk the ast applying pre when entering...
+</span></span>
   </pre>
 </div><div id="index-body">
   <h2 id="X"><span id="section-head">X</span></h2>
