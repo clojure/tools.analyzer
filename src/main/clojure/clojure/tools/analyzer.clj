@@ -40,7 +40,17 @@
                  the namespace map contains the following keys:
     ** :mappings   a map of mappings of the namespace, symbol to var
     ** :aliases    a map of the aliases of the namespace, symbol to symbol
-    ** :ns         a symbol representing the namespace"
+    ** :ns         a symbol representing the namespace
+   returns an AST for that form.
+
+   The AST is a map that is *guaranteed* to have the following keys:
+   * :op   a keyword describing the AST node
+   * :form the form represented by the AST node
+   * :env  the environment map of the AST node
+
+   Additionaly if the AST node contains sub-nodes, it is guaranteed to have:
+   * :children a vector of the keys of the AST node mapping to the sub-nodes"
+
   [form {:keys [context] :as env}]
   (let [form (if (seq? form)
                (or (seq form) ()) ;; force evaluation for analysis
