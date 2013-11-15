@@ -70,7 +70,8 @@ Shortcuts:<br />
 <div id="index-body">
   <h2 id="A"><span id="section-head">A</span></h2>
   <pre>
-<span id="section-content"> <a href="index.html#clojure.tools.analyzer/analyze">analyze</a><span id="line-content">                      function      clojure.tools.analyzer Given a form to analyze and an environment, a ...
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.add-binding-atom/add-binding-atom">add-binding-atom</a><span id="line-content">             function      clojure.tools.analyzer.passes.add-binding-atom Walks the AST and adds...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer/analyze">analyze</a><span id="line-content">                      function      clojure.tools.analyzer Given a form to analyze and an environment, a ...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer/analyze-in-env">analyze-in-env</a><span id="line-content">               function      clojure.tools.analyzer Takes an env map and returns a function that a...
 </span></span>
   </pre>
@@ -84,8 +85,9 @@ Shortcuts:<br />
   <pre>
 <span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes/children">children</a><span id="line-content">                     function      clojure.tools.analyzer.passes Return a vector of the children express...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.utils/classify">classify</a><span id="line-content">                     function      clojure.tools.analyzer.utils Returns a keyword describing the form ty...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.constant-lifter/constant-lift">constant-lift</a><span id="line-content">                multimethod   clojure.tools.analyzer.passes.constant-lifter If op is :vector/:set/:...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer/create-var">create-var</a><span id="line-content">                   dynamic function clojure.tools.analyzer Creates a var for sym and returns it.
-</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.utils/ctx">ctx</a><span id="line-content">                          function      clojure.tools.analyzer.utils Returns a copy of the passe environment ...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.utils/ctx">ctx</a><span id="line-content">                          function      clojure.tools.analyzer.utils Returns a copy of the passed environment...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes/cycling">cycling</a><span id="line-content">                      function      clojure.tools.analyzer.passes Combine the given passes in a single pa...
 </span></span>
   </pre>
@@ -97,7 +99,9 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="E"><span id="section-head">E</span></h2>
   <pre>
-<span id="section-content"> <a href="index.html#clojure.tools.analyzer/empty-env">empty-env</a><span id="line-content">                    function      clojure.tools.analyzer Returns an empty env.
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.elide-meta/elide-meta">elide-meta</a><span id="line-content">                   function      clojure.tools.analyzer.passes.elide-meta If elides is not empty and t...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.elide-meta/elides">elides</a><span id="line-content">                       dynamic var   clojure.tools.analyzer.passes.elide-meta Set of map keys to elide fro...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer/empty-env">empty-env</a><span id="line-content">                    function      clojure.tools.analyzer Returns an empty env.
 </span></span>
   </pre>
 </div><div id="index-body">
@@ -173,7 +177,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="S"><span id="section-head">S</span></h2>
   <pre>
-
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.source-info/source-info">source-info</a><span id="line-content">                  function      clojure.tools.analyzer.passes.source-info Adds (when possible) :line,...
+</span></span>
   </pre>
 </div><div id="index-body">
   <h2 id="T"><span id="section-head">T</span></h2>
@@ -183,7 +188,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="U"><span id="section-head">U</span></h2>
   <pre>
-
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.utils/update!">update!</a><span id="line-content">                      macro         clojure.tools.analyzer.utils Shortrand for (set! x (f x a0 .. an)).
+</span></span>
   </pre>
 </div><div id="index-body">
   <h2 id="V"><span id="section-head">V</span></h2>
@@ -194,6 +200,7 @@ Shortcuts:<br />
   <h2 id="W"><span id="section-head">W</span></h2>
   <pre>
 <span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes/walk">walk</a><span id="line-content">                         function      clojure.tools.analyzer.passes Walk the ast applying pre when entering...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.warn-earmuff/warn-earmuff">warn-earmuff</a><span id="line-content">                 function      clojure.tools.analyzer.passes.warn-earmuff Prints a warning to *err* ...
 </span></span>
   </pre>
 </div><div id="index-body">

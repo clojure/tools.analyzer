@@ -13,7 +13,37 @@
    :name "clojure.tools.analyzer.passes",
    :doc "Utilities for passes handling and for AST walking/updating"}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/382bd7a3f82fa796b23ef83e5ee1ac1442787ea2/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.add-binding-atom-api.html",
+   :name "clojure.tools.analyzer.passes.add-binding-atom",
+   :doc nil}
+  {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.constant-lifter-api.html",
+   :name "clojure.tools.analyzer.passes.constant-lifter",
+   :doc nil}
+  {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.elide-meta-api.html",
+   :name "clojure.tools.analyzer.passes.elide-meta",
+   :doc nil}
+  {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.source-info-api.html",
+   :name "clojure.tools.analyzer.passes.source-info",
+   :doc nil}
+  {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.warn-earmuff-api.html",
+   :name "clojure.tools.analyzer.passes.warn-earmuff",
+   :doc nil}
+  {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.utils-api.html",
    :name "clojure.tools.analyzer.utils",
@@ -184,30 +214,131 @@
    :var-type "function",
    :line 40,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
+  {:arglists ([ast]),
+   :name "add-binding-atom",
+   :namespace "clojure.tools.analyzer.passes.add-binding-atom",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L29",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.add-binding-atom/add-binding-atom",
+   :doc
+   "Walks the AST and adds an atom-backed-map to every local binding,\nthe same atom will be shared between all occurences of that local.\n\nThe atom is put in the :atom field of the node.",
+   :var-type "function",
+   :line 29,
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj"}
+  {:file
+   "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L13",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.constant-lifter/constant-lift",
+   :namespace "clojure.tools.analyzer.passes.constant-lifter",
+   :line 13,
+   :var-type "multimethod",
+   :doc
+   "If op is :vector/:set/:map, and every item of the collection is a literal\nand the collection ha no metadata or if op is :var and the var has :const\nmetadata, transform the node to an equivalent :const node.",
+   :name "constant-lift"}
+  {:arglists ([ast]),
+   :name "elide-meta",
+   :namespace "clojure.tools.analyzer.passes.elide-meta",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L52",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.elide-meta/elide-meta",
+   :doc
+   "If elides is not empty and the AST node contains metadata,\ndissoc all the keys in elides from the metadata.",
+   :var-type "function",
+   :line 52,
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj"}
+  {:name "elides",
+   :namespace "clojure.tools.analyzer.passes.elide-meta",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L11",
+   :dynamic true,
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.elide-meta/elides",
+   :doc "Set of map keys to elide from metadata.",
+   :var-type "var",
+   :line 11,
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj"}
+  {:arglists ([{:keys [form env], :as ast}]),
+   :name "source-info",
+   :namespace "clojure.tools.analyzer.passes.source-info",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj#L12",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.source-info/source-info",
+   :doc
+   "Adds (when possible) :line, :column and :file info to the AST :env",
+   :var-type "function",
+   :line 12,
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/source_info.clj"}
+  {:arglists ([{:keys [op name var], :as ast}]),
+   :name "warn-earmuff",
+   :namespace "clojure.tools.analyzer.passes.warn-earmuff",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj#L12",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.warn-earmuff/warn-earmuff",
+   :doc
+   "Prints a warning to *err* if the AST node is a :def node and the\nvar name contains earmuffs but the var is not marked dynamic",
+   :var-type "function",
+   :line 12,
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj"}
   {:arglists ([form]),
    :name "classify",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/382bd7a3f82fa796b23ef83e5ee1ac1442787ea2/src/main/clojure/clojure/tools/analyzer/utils.clj#L35",
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/utils.clj#L37",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/382bd7a3f82fa796b23ef83e5ee1ac1442787ea2/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/classify",
    :doc "Returns a keyword describing the form type",
    :var-type "function",
-   :line 35,
+   :line 37,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([env ctx]),
    :name "ctx",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/382bd7a3f82fa796b23ef83e5ee1ac1442787ea2/src/main/clojure/clojure/tools/analyzer/utils.clj#L17",
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/utils.clj#L19",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/382bd7a3f82fa796b23ef83e5ee1ac1442787ea2/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/ctx",
    :doc
-   "Returns a copy of the passe environment with :context set to ctx",
+   "Returns a copy of the passed environment with :context set to ctx",
    :var-type "function",
-   :line 17,
+   :line 19,
+   :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
+  {:arglists ([target f & args]),
+   :name "update!",
+   :namespace "clojure.tools.analyzer.utils",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/utils.clj#L14",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/update!",
+   :doc "Shortrand for (set! x (f x a0 .. an))",
+   :var-type "macro",
+   :line 14,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"})}
