@@ -19,6 +19,12 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/9b39e76f9ee7984d807df4b01df4623723741dea/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-api.html",
+   :name "clojure.tools.analyzer.passes.collect",
+   :doc nil}
+  {:source-url
    "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.constant-lifter-api.html",
@@ -35,6 +41,12 @@
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.source-info-api.html",
    :name "clojure.tools.analyzer.passes.source-info",
+   :doc nil}
+  {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/9b39e76f9ee7984d807df4b01df4623723741dea/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.uniquify-api.html",
+   :name "clojure.tools.analyzer.passes.uniquify",
    :doc nil}
   {:source-url
    "https://github.com/clojure/tools.analyzer/blob/77cefe9bac9aa4f92986b59704bcfbb7c07c7100/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
@@ -229,6 +241,20 @@
    :line 29,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj"}
+  {:arglists ([& what]),
+   :name "collect",
+   :namespace "clojure.tools.analyzer.passes.collect",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/9b39e76f9ee7984d807df4b01df4623723741dea/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L93",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/9b39e76f9ee7984d807df4b01df4623723741dea/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect",
+   :doc
+   "Takes a variable number of keywords, and returns a pass that\nif the AST node is one of :fn :deftype or :reify, collects the\nin the AST what specified.\n\nValid keywords describing what to collect are:\n* :constants     constant expressions\n* :closed-overs  closed over local bindings\n* :callsites     keyword and protocol callsites",
+   :var-type "function",
+   :line 93,
+   :file "src/main/clojure/clojure/tools/analyzer/passes/collect.clj"}
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :raw-source-url
@@ -287,6 +313,20 @@
    :line 12,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/source_info.clj"}
+  {:arglists ([ast]),
+   :name "uniquify-locals",
+   :namespace "clojure.tools.analyzer.passes.uniquify",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/9b39e76f9ee7984d807df4b01df4623723741dea/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L108",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/9b39e76f9ee7984d807df4b01df4623723741dea/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.uniquify/uniquify-locals",
+   :doc
+   "Walks the AST performing alpha-conversion on local\nbindings' :name field",
+   :var-type "function",
+   :line 108,
+   :file "src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj"}
   {:arglists ([{:keys [op name var], :as ast}]),
    :name "warn-earmuff",
    :namespace "clojure.tools.analyzer.passes.warn-earmuff",
