@@ -105,7 +105,10 @@
 (defn uniquify-locals* [ast]
   (walk ast -uniquify-locals -uniquify-cleanup))
 
-(defn uniquify-locals [ast]
+(defn uniquify-locals
+  "Walks the AST performing alpha-conversion on local
+   bindings' :name field"
+  [ast]
   (binding [*locals*       *locals*
             *locals-frame* *locals-frame*
             *locals-init*  *locals-init*]

@@ -90,7 +90,16 @@
     :callsites    -collect-callsites
     nil))
 
-(defn collect [& what]
+(defn collect
+  "Takes a variable number of keywords, and returns a pass that
+   if the AST node is one of :fn :deftype or :reify, collects the
+   in the AST what specified.
+
+   Valid keywords describing what to collect are:
+   * :constants     constant expressions
+   * :closed-overs  closed over local bindings
+   * :callsites     keyword and protocol callsites"
+  [& what]
   (fn [{:keys [op env] :as ast}]
     (if (#{:fn :deftype :reify} op)
       (binding [*collects* *collects*]
