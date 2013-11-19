@@ -19,17 +19,26 @@
         ast
         (recur new-ast)))))
 
-(defn children
+(defn children*
   "Return a vector of the children expression of the AST node, if it has any.
-   The returned vector is not flattened."
+   The returned vector returns the childrens in the order as they appear in the
+   :children field of the AST, and may be either a node or a vector of nodes."
   [{:keys [children] :as ast}]
   (when children
     (mapv ast children)))
 
+(defn children
+  "Return a vector of the children expression of the AST node, if it has any.
+   The children expressions are kept in order and flattened so that the returning
+   vector contains only nodes and not vectors of nodes."
+  [ast]
+  (vec (mapcat (fn [c] (if (vector? c) c [c]))
+               (children* ast))))
+
 (defn update-children
   ([ast f] (update-children ast f identity))
   ([ast f fix]
-     (if-let [c (children ast)]
+     (if-let [c (children* ast)]
        (reduce (fn [ast [k v]]
                  (assoc ast k (if (vector? v)
                                 (fix (mapv f (fix v)))
