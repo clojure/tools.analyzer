@@ -7,7 +7,7 @@
    :doc
    "Analyzer for clojure code, host agnostic.\n\nEntry point:\n* analyze\n\nPlatform implementers must provide dynamic bindings for:\n* macroexpand-1\n* create-var\n* parse\n\nSee clojure.tools.analyzer.core-test for an example on how to setup the analyzer."}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes-api.html",
    :name "clojure.tools.analyzer.passes",
@@ -158,17 +158,31 @@
    :var-type "function",
    :line 99,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
-  {:arglists ([{:keys [children], :as ast}]),
+  {:arglists ([ast]),
    :name "children",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj#L22",
+   "https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L30",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/children",
    :doc
-   "Return a vector of the children expression of the AST node, if it has any.\nThe returned vector is not flattened.",
+   "Return a vector of the children expression of the AST node, if it has any.\nThe children expressions are kept in order and flattened so that the returning\nvector contains only nodes and not vectors of nodes.",
+   :var-type "function",
+   :line 30,
+   :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
+  {:arglists ([{:keys [children], :as ast}]),
+   :name "children*",
+   :namespace "clojure.tools.analyzer.passes",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L22",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/children*",
+   :doc
+   "Return a vector of the children expression of the AST node, if it has any.\nThe returned vector returns the childrens in the order as they appear in the\n:children field of the AST, and may be either a node or a vector of nodes.",
    :var-type "function",
    :line 22,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
@@ -176,9 +190,9 @@
    :name "cycling",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj#L12",
+   "https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L12",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/cycling",
    :doc
@@ -190,41 +204,41 @@
    :name "postwalk",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj#L58",
+   "https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L67",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/postwalk",
    :doc "Shortrand for (walk ast identity f reversed?)",
    :var-type "function",
-   :line 58,
+   :line 67,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([ast f]),
    :name "prewalk",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj#L53",
+   "https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L62",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/prewalk",
    :doc "Shortrand for (walk ast f identity)",
    :var-type "function",
-   :line 53,
+   :line 62,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([ast pre post] [ast pre post reversed?]),
    :name "walk",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj#L40",
+   "https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L49",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/walk",
    :doc
    "Walk the ast applying pre when entering the nodes, and post when exiting.\nIf reversed? is not-nil, pre and post will be applied starting from the last\nchildren of the AST node to the first one.",
    :var-type "function",
-   :line 40,
+   :line 49,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([ast]),
    :name "add-binding-atom",
