@@ -554,13 +554,12 @@
 
         meta-expr (when meta (analyze meta
                                       (ctx env :expr)))
+        var (create-var sym env)
+        _ (swap! namespaces assoc-in [ns :mappings sym] var)
         args (when-let [[_ init] (find args :init)]
                (merge args {:init (analyze init (ctx env :expr))}))
         children `[~@(when meta [:meta])
-                   ~@(when (:init args) [:init])]
-        var (create-var sym env)]
-
-    (swap! namespaces assoc-in [ns :mappings sym] var)
+                   ~@(when (:init args) [:init])]]
 
     (merge {:op   :def
             :env  env
