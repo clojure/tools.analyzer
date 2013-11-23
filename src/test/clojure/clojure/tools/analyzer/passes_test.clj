@@ -8,6 +8,7 @@
             [clojure.tools.analyzer.passes.source-info :refer [source-info]]
             [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]
             [clojure.tools.analyzer.passes.constant-lifter :refer [constant-lift]]
+            [clojure.tools.analyzer.passes.collect :refer [collect]]
             [clojure.tools.analyzer.passes.emit-form :refer [emit-form emit-hygienic-form]]))
 
 (deftest passes-utils-test
@@ -98,3 +99,14 @@
          (emit-hygienic-form (uniquify-locals (ast (let [x 1] (fn [x] x)))))))
   (is (= '(fn* x__#0 ([x__#1] x__#1))
          (emit-hygienic-form (uniquify-locals (ast (fn x [x] x)))))))
+
+(deftest collect-test
+  (let [c-test (-> (ast (let [a 1 b 2] (fn [x] (fn [] [+ (:foo {}) x a]))))
+                 (postwalk constant-lift)
+                 (prewalk (collect :constants
+                                   :closed-overs))
+                 :body :ret)]
+    (is (= '#{a} (-> c-test :closed-overs keys set)))
+    (is (set/subset? #{[:foo nil nil] [#'+ (meta #'+) clojure.lang.Var] [{} nil nil]}
+                     (-> c-test :constants keys set))) ;; it registers metadata too (line+col info)
+    (is (= '#{a x} (-> c-test :methods first :body :ret :closed-overs keys set)))))
