@@ -165,11 +165,14 @@
       :children [:items]})))
 
 (def specials
+  "Set of special forms common to every clojure variant"
   '#{do if new quote set! try
      catch throw finally & def .
      let* letfn* loop* recur fn*})
 
 (defn macroexpand
+  "Repeatedly calls macroexpand-1 on form until it no longer
+   represents a macro form, then returns it."
   [form env]
   (loop [ex (macroexpand-1 form env)]
     (if (identical? ex form)
