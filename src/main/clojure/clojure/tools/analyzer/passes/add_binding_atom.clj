@@ -24,7 +24,8 @@
 
 (defmethod -add-binding-atom :local
   [{:keys [name] :as ast}]
-  (assoc ast :atom (*bindings* name)))
+  (assoc ast :atom (or (*bindings* name)
+                       (atom {}))))
 
 (defn add-binding-atom
   "Walks the AST and adds an atom-backed-map to every local binding,
