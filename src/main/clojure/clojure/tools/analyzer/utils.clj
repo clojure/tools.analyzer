@@ -72,7 +72,7 @@
 (defn resolve-ns [ns-sym {:keys [ns namespaces]}]
   (when ns-sym
     (or (:ns (@namespaces ns-sym))
-        (get (:aliases ns) ns-sym))))
+        (get-in @namespaces [ns :aliases ns-sym]))))
 
 (defn maybe-var [sym {:keys [ns namespaces] :as env}]
   (when (symbol? sym)
