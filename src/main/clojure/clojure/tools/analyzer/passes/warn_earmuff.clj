@@ -15,6 +15,7 @@
   [{:keys [op name var] :as ast}]
   (let [name (str name)]
     (when (and (= :def op)
+               (> (count name) 2)  ;; Allow * and ** as non-dynamic names
                (.startsWith name "*")
                (.endsWith name "*")
                (not (dynamic? var)))
