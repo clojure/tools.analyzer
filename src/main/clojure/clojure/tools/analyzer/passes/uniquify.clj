@@ -12,7 +12,6 @@
 
 (def ^:dynamic *locals* {})
 (def ^:dynamic *locals-frame* {})
-(def ^:dynamic *locals-init* {})
 
 (defmulti -uniquify-locals :op)
 
@@ -41,10 +40,7 @@
   [{:keys [name local init] :as ast}]
   (if (not= :field local)
     (let [name (normalize name)]
-      (merge ast
-             {:name name}
-             (when-let [init (*locals-init* name)]
-               {:init init})))
+      (assoc ast :name name))
     ast))
 
 (defn uniquify-binding
@@ -54,7 +50,6 @@
                  :dont-cleanup? true))]
     (uniquify name)
     (let [name (normalize name)]
-      (update! *locals-init* assoc name init)
       (assoc b
         :name name
         :init init))))
@@ -110,6 +105,5 @@
    bindings' :name field"
   [ast]
   (binding [*locals*       *locals*
-            *locals-frame* *locals-frame*
-            *locals-init*  *locals-init*]
+            *locals-frame* *locals-frame*]
     (uniquify-locals* ast)))
