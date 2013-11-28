@@ -536,7 +536,7 @@
   [[_ sym & expr :as form] {:keys [ns namespaces] :as env}]
   {:pre [(symbol? sym)
          (or (not (namespace sym))
-             (= *ns* (the-ns (namespace sym))))]}
+             (= *ns* (the-ns (symbol (namespace sym)))))]}
   (let [pfn (fn
               ([])
               ([init]
@@ -552,6 +552,9 @@
         meta (merge (meta sym)
                     (-source-info form env)
                     (when doc {:doc doc}))
+
+        sym (symbol (name sym))
+
         sym (if arglists
               (vary-meta sym assoc :arglists arglists)
               sym)
