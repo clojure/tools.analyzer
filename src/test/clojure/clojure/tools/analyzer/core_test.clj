@@ -159,7 +159,7 @@
 
   (let [d-ast (ast (def ^{c d} a 1))]
     (is (= 'a (-> d-ast :name)))
-    (is (= '{c d} (-> d-ast :var meta)))
+    (is (= '{c d} (-> d-ast :var meta (dissoc :line :column :file))))
     (is (= (ns-resolve 'user 'a)
            (-> d-ast :env :namespaces deref (get 'user) :mappings (get 'a)))))
 
