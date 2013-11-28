@@ -126,7 +126,8 @@
      (when (seq m)
        (let [quoted? (:quoted? env)
              quoted-meta (if quoted? (list 'quote m) m)]
-         {:meta (analyze quoted-meta (ctx env :expr))})))))
+         {:meta     (analyze quoted-meta (ctx env :expr))
+          :children [:meta]})))))
 
 (defmethod -analyze :vector
   [_ form env]
