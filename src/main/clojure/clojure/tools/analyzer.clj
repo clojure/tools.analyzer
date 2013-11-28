@@ -545,7 +545,7 @@
                  {:pre [(string? doc)]}
                  {:init init :doc doc}))
         args (apply pfn expr)
-        env (assoc env :name sym)
+
         doc (or (:doc args) (-> sym meta :doc))
         arglists (when-let [arglists (:arglists (meta sym))]
                    (second arglists)) ;; drop quote
@@ -553,7 +553,9 @@
                     (-source-info form env)
                     (when doc {:doc doc}))
 
-        sym (symbol (name sym))
+        sym (with-meta (symbol (name sym))
+              meta)
+        env (assoc env :name sym)
 
         sym (if arglists
               (vary-meta sym assoc :arglists arglists)
