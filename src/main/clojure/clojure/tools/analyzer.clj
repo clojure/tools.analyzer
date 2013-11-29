@@ -175,12 +175,12 @@
   "Repeatedly calls macroexpand-1 on form until it no longer
    represents a macro form, then returns it."
   [form env]
-  (loop [ex (macroexpand-1 form env)]
-    (if (identical? ex form)
-      form
-      (recur (if (obj? ex)
-               (with-meta ex (meta form))
-               ex)))))
+  (loop [mform (macroexpand-1 form env)]
+    (if (identical? mform form)
+      mform
+      (recur (if (obj? mform)
+               (with-meta mform (meta form))
+               mform)))))
 
 (defmethod -analyze :symbol
   [_ sym env]
@@ -203,14 +203,14 @@
                         :class maybe-class
                         :field (symbol (name sym))}
                        (throw (ex-info (str "could not resolve var: " sym)
-                                       {:var sym}))))
+                                       {:var mform}))))
                    {:op    :maybe-class ;; e.g. java.lang.Integer or Long
-                    :class sym})))
+                    :class mform})))
              {:env  env
-              :form sym})
+              :form mform})
       (analyze (if (obj? mform)
-                   (with-meta mform (meta sym))
-                   mform)
+                 (with-meta mform (meta sym))
+                 mform)
                env))))
 
 (defmethod -analyze :seq
@@ -220,7 +220,7 @@
       (ex-info "Can't call nil" {:form form}))
     (let [mform (macroexpand-1 form env)]
       (if (identical? form mform)
-        (parse form env) ;; invoke == :default
+        (parse mform env) ;; invoke == :default
         (analyze (if (obj? mform)
                    (with-meta mform (meta form))
                    mform)
