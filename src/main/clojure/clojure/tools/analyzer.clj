@@ -176,7 +176,7 @@
    represents a macro form, then returns it."
   [form env]
   (loop [mform (macroexpand-1 form env)]
-    (if (identical? mform form)
+    (if (= mform form)
       mform
       (recur (if (obj? mform)
                (with-meta mform (meta form))
@@ -219,7 +219,7 @@
     (if (nil? op)
       (ex-info "Can't call nil" {:form form}))
     (let [mform (macroexpand-1 form env)]
-      (if (identical? form mform)
+      (if (= form mform)
         (parse mform env) ;; invoke == :default
         (analyze (if (obj? mform)
                    (with-meta mform (meta form))
