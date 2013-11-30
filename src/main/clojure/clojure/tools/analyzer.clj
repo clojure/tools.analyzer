@@ -500,10 +500,9 @@
                    :local :fn
                    :name  name}
         e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
-        e (assoc (dissoc e :in-try)
-            :once (-> op meta :once boolean))
+        menv (assoc (dissoc e :in-try)
+               :once (-> op meta :once boolean))
         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
-        menv (if (> (count meths) 1) (ctx env :expr) e)
         methods-exprs (mapv #(analyze-fn-method % menv) meths)
         variadic (seq (filter :variadic? methods-exprs))
         variadic? (boolean variadic)
