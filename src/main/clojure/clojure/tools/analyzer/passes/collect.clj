@@ -18,7 +18,7 @@
 
 (defn -register-constant
   [form tag type]
-  (or (:id ((:constants *collects*) form))
+  (or (:id ((:constants *collects*) [form (meta form) tag]))
       (let [id (count (:constants *collects*))]
         (update! *collects* assoc-in [:constants [form (meta form) tag]]
                  {:id   id
