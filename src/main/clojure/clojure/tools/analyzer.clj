@@ -411,7 +411,7 @@
               body (parse (cons 'do body)
                           (if loop?
                             (assoc body-env
-                              :loop-locals (count binds))
+                              :loop-locals (mapv :form binds))
                             body-env))]
           {:body     body
            :bindings binds
@@ -437,7 +437,7 @@
   {:pre [(= :return context)
          loop-locals
          (not in-try)
-         (= (count exprs) loop-locals)]}
+         (= (count exprs) (count loop-locals))]}
   (let [exprs (mapv (analyze-in-env (ctx env :expr))
                     exprs)]
     {:op          :recur
@@ -469,7 +469,7 @@
         body-env (into (update-in env [:locals]
                                   merge (zipmap params-names params-expr))
                        {:context     :return
-                        :loop-locals arity})
+                        :loop-locals (mapv :form params-expr)})
         body (parse (cons 'do body) body-env)]
     (when variadic?
       (let [x (drop-while #(not= % '&) params)]
