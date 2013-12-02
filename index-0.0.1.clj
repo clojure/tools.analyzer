@@ -43,6 +43,12 @@
    :name "clojure.tools.analyzer.passes.source-info",
    :doc nil}
   {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/ef206d2a0355f3cd78c754f306e47cfa04372976/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.uniquify-api.html",
+   :name "clojure.tools.analyzer.passes.uniquify",
+   :doc nil}
+  {:source-url
    "https://github.com/clojure/tools.analyzer/blob/2cfa02ed7fe23f36c373c9ff0fa5eb8d77b48038/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.warn-earmuff-api.html",
@@ -347,6 +353,20 @@
    :line 12,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/source_info.clj"}
+  {:arglists ([ast]),
+   :name "uniquify-locals",
+   :namespace "clojure.tools.analyzer.passes.uniquify",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/ef206d2a0355f3cd78c754f306e47cfa04372976/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L80",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/ef206d2a0355f3cd78c754f306e47cfa04372976/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.uniquify/uniquify-locals",
+   :doc
+   "Walks the AST performing alpha-conversion on local\nbindings' :name field",
+   :var-type "function",
+   :line 80,
+   :file "src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj"}
   {:arglists ([{:keys [op name var], :as ast}]),
    :name "warn-earmuff",
    :namespace "clojure.tools.analyzer.passes.warn-earmuff",
