@@ -36,6 +36,10 @@
                (children* ast))))
 
 (defn update-children
+  "Applies `f` to the nodes in the AST nodes children.
+   Optionally applies `fix` to the children before applying `f` to the
+   children nodes and then applies `fix` to the update children.
+   An example of a useful `fix` function is `rseq`."
   ([ast f] (update-children ast f identity))
   ([ast f fix]
      (if-let [c (children* ast)]
