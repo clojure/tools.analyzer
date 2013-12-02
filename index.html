@@ -99,6 +99,9 @@ namespace.
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/prewalk">prewalk</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/update-children">update-children</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/walk">walk</a>
       
     </div>
@@ -336,7 +339,7 @@ The children expressions are kept in order and flattened so that the returning
 vector contains only nodes and not vectors of nodes.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L30" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/71f0a4b0e7b8debaba4af598f837299fa2c10976/src/main/clojure/clojure/tools/analyzer/passes.clj#L30" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -349,7 +352,7 @@ The returned vector returns the childrens in the order as they appear in the
 :children field of the AST, and may be either a node or a vector of nodes.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L22" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/71f0a4b0e7b8debaba4af598f837299fa2c10976/src/main/clojure/clojure/tools/analyzer/passes.clj#L22" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -361,7 +364,7 @@ The returned vector returns the childrens in the order as they appear in the
 applied to the AST until applying it another time will have no effect</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L12" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/71f0a4b0e7b8debaba4af598f837299fa2c10976/src/main/clojure/clojure/tools/analyzer/passes.clj#L12" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -373,7 +376,7 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Shortrand for (walk ast identity f reversed?)</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L67" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/71f0a4b0e7b8debaba4af598f837299fa2c10976/src/main/clojure/clojure/tools/analyzer/passes.clj#L71" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -384,7 +387,22 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Shortrand for (walk ast f identity)</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L62" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/71f0a4b0e7b8debaba4af598f837299fa2c10976/src/main/clojure/clojure/tools/analyzer/passes.clj#L66" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.passes/update-children">update-children</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (update-children ast f)
+       (update-children ast f fix)
+</pre>
+    <pre id="var-docstr">Applies `f` to the nodes in the AST nodes children.
+Optionally applies `fix` to the children before applying `f` to the
+children nodes and then applies `fix` to the update children.
+An example of a useful `fix` function is `rseq`.</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/71f0a4b0e7b8debaba4af598f837299fa2c10976/src/main/clojure/clojure/tools/analyzer/passes.clj#L38" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -398,7 +416,7 @@ If reversed? is not-nil, pre and post will be applied starting from the last
 children of the AST node to the first one.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/1ca506126fed4066354ab7626c8a2087c73830e9/src/main/clojure/clojure/tools/analyzer/passes.clj#L49" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/71f0a4b0e7b8debaba4af598f837299fa2c10976/src/main/clojure/clojure/tools/analyzer/passes.clj#L53" id="var-source">Source</a>
   </div>
 </div>
 <br />
