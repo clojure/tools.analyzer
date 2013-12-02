@@ -18,14 +18,9 @@
     (symbol (str name "__#" idx))
     name))
 
-(defn denormalize [name]
-  (let [[_ s] (re-find #"(.+?)__#\d+" (str name))]
-    (and s (symbol s))))
-
 (defn uniquify [name]
-  (when (not (*locals-counter* (denormalize name)))
-    (update! *locals-counter* update-in [name] (fnil inc -1))
-    (update! *locals-frame* assoc-in [name] (*locals-counter* name))))
+  (update! *locals-counter* update-in [name] (fnil inc -1))
+  (update! *locals-frame* assoc-in [name] (*locals-counter* name)))
 
 (defmulti -uniquify-locals :op)
 
