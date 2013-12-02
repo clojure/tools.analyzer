@@ -110,3 +110,12 @@
     (is (set/subset? #{[:foo nil nil] [#'+ (meta #'+) clojure.lang.Var] [{} nil nil]}
                      (-> c-test :constants keys set))) ;; it registers metadata too (line+col info)
     (is (= '#{a x} (-> c-test :methods first :body :ret :closed-overs keys set)))))
+
+(deftest deeply-nested-uniquify
+  (is (= '(fn* ([x__#0 y__#0 z__#0]
+                  (let* [foo__#0 (fn* ([y__#1 z__#1] [y__#1 z__#1]))]
+                        (foo__#0 x__#0 y__#0))))
+         (emit-hygienic-form (uniquify-locals (ast (fn [x y z]
+                                                     (let [foo (fn [y z]
+                                                                 [y z])]
+                                                       (foo x y)))))))))
