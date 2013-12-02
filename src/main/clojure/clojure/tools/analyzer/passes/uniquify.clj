@@ -8,7 +8,7 @@
 
 (ns clojure.tools.analyzer.passes.uniquify
   (:require [clojure.tools.analyzer.utils :refer [update!]]
-            [clojure.tools.analyzer.passes :refer [update-children]]))
+            [clojure.tools.analyzer.passes :refer [update-children children]]))
 
 (def ^:dynamic *locals-counter* {})
 (def ^:dynamic *locals-frame* {})
@@ -32,7 +32,7 @@
   (binding [*locals-frame* *locals-frame*]
     (when name
       (uniquify name))
-    (update-children ast -uniquify-locals)))
+    (uniquify-locals* ast)))
 
 (defmethod -uniquify-locals :local
   [{:keys [name local init] :as ast}]
@@ -45,7 +45,6 @@
   [{:keys [init name] :as b}]
   (let [i (binding [*locals-frame* *locals-frame*]
             (-uniquify-locals init))]
-
     (uniquify name)
     (let [name (normalize name)]
       (assoc b
@@ -69,7 +68,9 @@
 
 (defmethod -uniquify-locals :default
   [ast]
-  (binding [*locals-frame* *locals-frame*]
+  (if (some (comp #{:binding} :op) (children ast))
+    (binding [*locals-frame* *locals-frame*]
+      (uniquify-locals* ast))
     (uniquify-locals* ast)))
 
 (defn uniquify-locals
