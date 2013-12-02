@@ -77,6 +77,9 @@
   (binding [*locals-frame* *locals-frame*]
     (uniquify-locals* ast)))
 
-(defn uniquify-locals [ast]
+(defn uniquify-locals
+  "Walks the AST performing alpha-conversion on local
+   bindings' :name field"
+  [ast]
   (binding [*locals-counter* *locals-counter*]
     (-uniquify-locals ast)))
