@@ -600,13 +600,13 @@
               field?
               {:op       :host-field
                :target   target-expr
-               :field    m-or-f
+               :field    (symbol (name m-or-f))
                :children [:target]}
 
               :else
               {:op       :host-interop ;; either field access or single method call
                :target   target-expr
-               :m-or-f   m-or-f
+               :m-or-f   (symbol (name m-or-f))
                :children [:target]})]
     (merge {:form form
             :env  env}
