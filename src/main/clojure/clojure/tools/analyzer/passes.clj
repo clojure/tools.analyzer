@@ -57,11 +57,9 @@
   ([ast pre post]
      (walk ast pre post false))
   ([ast pre post reversed?]
-     (let [ast (pre ast)
-           fix (if reversed? (comp vec rseq) identity)
-           w #(walk % pre post reversed?)
-           ast (update-children ast w fix)]
-       (post ast))))
+     (let [fix (if reversed? (comp vec rseq) identity)
+           walk #(walk % pre post reversed?)]
+       (post (update-children (pre ast) walk fix)))))
 
 (defn prewalk
   "Shortrand for (walk ast f identity)"

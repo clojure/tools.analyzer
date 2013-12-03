@@ -126,9 +126,9 @@
     (is (= [1 2] (->> new-ast :args (mapv :form)))))
 
   (let [q-ast (:expr (ast '^{a b} [c d]))]
-    (is (= :const (-> q-ast :meta :expr :op)))
+    (is (= :const (-> q-ast :meta :op)))
     (is (= :const (-> q-ast :op)))
-    (is (= '{a b} (-> q-ast :meta :expr :form)))
+    (is (= '{a b} (-> q-ast :meta :form)))
     (is (= '[c d] (-> q-ast :form))))
 
   (let [s-ast (ast (set! *warn-on-reflection* true))]
