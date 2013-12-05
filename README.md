@@ -4,8 +4,8 @@ An analyzer for Clojure code, written in Clojure and producing AST in EDN
 
 ## SPONSORSHIP
 
-# Cognitect (http://cognitect.com/) is sponsoring tools.analyzer development (https://groups.google.com/d/msg/clojure/iaP16MHpX0E/EMtnGmOz-rgJ)
-# Ambrose BS (https://twitter.com/ambrosebs) has sponsored tools.analyzer development in his typed clojure campaign (http://www.indiegogo.com/projects/typed-clojure).
+* Cognitect (http://cognitect.com/) is sponsoring tools.analyzer development (https://groups.google.com/d/msg/clojure/iaP16MHpX0E/EMtnGmOz-rgJ)
+* Ambrose BS (https://twitter.com/ambrosebs) has sponsored tools.analyzer development in his typed clojure campaign (http://www.indiegogo.com/projects/typed-clojure).
 
 ## Releases and Dependency Information
 
