@@ -24,6 +24,7 @@
                                                   :meta (meta form)
                                                   :tag  tag}]
                  {:id   id
+                  :tag  tag
                   :val  form
                   :type type})
         id)))
