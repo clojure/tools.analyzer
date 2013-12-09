@@ -36,6 +36,11 @@
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.elide-meta-api.html",
    :name "clojure.tools.analyzer.passes.elide-meta",
    :doc nil}
+  {:source-url nil,
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.jvm.trim-do-api.html",
+   :name "clojure.tools.analyzer.passes.jvm.trim-do",
+   :doc nil}
   {:source-url
    "https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj",
    :wiki-url
@@ -352,6 +357,20 @@
    :line 11,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj"}
+  {:arglists ([{:keys [op ret statements], :as ast}]),
+   :name "trim-do",
+   :namespace "clojure.tools.analyzer.passes.jvm.trim-do",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/5d283b5dd9f4f1fca8a13ab5e534d56e60b63b81/src/main/clojure/clojure/tools/analyzer/passes/trim_do.clj#L11",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/5d283b5dd9f4f1fca8a13ab5e534d56e60b63b81/src/main/clojure/clojure/tools/analyzer/passes/trim_do.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.jvm.trim-do/trim-do",
+   :doc
+   "Replaces :do nodes with no :statements with their :ret expression",
+   :var-type "function",
+   :line 11,
+   :file "src/main/clojure/clojure/tools/analyzer/passes/trim_do.clj"}
   {:arglists ([{:keys [form env], :as ast}]),
    :name "source-info",
    :namespace "clojure.tools.analyzer.passes.source-info",
