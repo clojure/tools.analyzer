@@ -184,12 +184,11 @@
   [_ sym env]
   (let [mform (macroexpand-1 sym env)]
     (if (= mform sym)
-      (merge (if-let [{:keys [init mutable] :as local-binding} (-> env :locals sym)]
-               (merge local-binding
+      (merge (if-let [{:keys [mutable children] :as local-binding} (-> env :locals sym)]
+               (merge (dissoc local-binding :init)
                       {:op          :local
-                       :assignable? (boolean mutable)}
-                      (when init
-                        {:children [:init]}))
+                       :assignable? (boolean mutable)
+                       :children    (vec (remove #{:init} children))})
                (if-let [var (resolve-var sym env)]
                  {:op          :var
                   :assignable? (dynamic? var)
@@ -361,15 +360,15 @@
                                   :env   env
                                   :name  name
                                   :form  name
-                                  :local :letfn
-                                  :children [:init]}))
+                                  :local :letfn}))
                         {} fns)
           e (update-in env [:locals] merge binds)
-
           binds (reduce-kv (fn [binds name bind]
                              (assoc binds name
-                                    (assoc bind :init
-                                           (analyze (bindings name) (ctx e :expr)))))
+                                    (merge bind
+                                           {:init     (analyze (bindings name)
+                                                               (ctx e :expr))
+                                            :children [:init]})))
                            {} binds)
           e (update-in env [:locals] merge binds)
           body (parse (cons 'do body) e)]
