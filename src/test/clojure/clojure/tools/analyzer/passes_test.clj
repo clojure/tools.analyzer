@@ -103,11 +103,20 @@
 (deftest collect-test
   (let [c-test (-> (ast (let [a 1 b 2] (fn [x] (fn [] [+ (:foo {}) x a]))))
                  (postwalk constant-lift)
-                 (prewalk (collect :constants
-                                   :closed-overs))
+                 ((collect {:what  #{:constants
+                                     :closed-overs}
+                            :where #{:fn}}))
                  :body :ret)]
     (is (= '#{a} (-> c-test :closed-overs keys set)))
-    (is (set/subset? #{[:foo nil nil] [#'+ (meta #'+) clojure.lang.Var] [{} nil nil]}
+    (is (set/subset? #{{:form :foo
+                        :tag  nil
+                        :meta nil}
+                       {:form #'+
+                        :meta (meta #'+)
+                        :tag  clojure.lang.Var}
+                       {:form {}
+                        :tag  nil
+                        :meta nil}}
                      (-> c-test :constants keys set))) ;; it registers metadata too (line+col info)
     (is (= '#{a x} (-> c-test :methods first :body :ret :closed-overs keys set)))))
 

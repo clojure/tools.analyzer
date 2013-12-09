@@ -110,8 +110,7 @@
 
   (let [l-ast (ast (let [a 1] a))]
     (is (= :local (-> l-ast :body :ret :op)))
-    (is (= :let (-> l-ast :body :ret :local)))
-    (is (= 1 (-> l-ast :body :ret :init :form))))
+    (is (= :let (-> l-ast :body :ret :local))))
 
   (let [do-ast (ast (do 1 2 3))]
     (is (= 3 (-> do-ast :ret :form)))
