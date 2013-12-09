@@ -20,9 +20,10 @@
   [form tag type]
   (or (:id ((:constants *collects*) [form (meta form) tag]))
       (let [id (count (:constants *collects*))]
-        (update! *collects* assoc-in [:constants [form (meta form) tag]]
+        (update! *collects* assoc-in [:constants {:form form
+                                                  :meta (meta form)
+                                                  :tag  tag}]
                  {:id   id
-                  :tag  tag
                   :val  form
                   :type type})
         id)))
