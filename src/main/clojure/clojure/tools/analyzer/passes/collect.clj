@@ -42,16 +42,12 @@
       ast)))
 
 (defn -collect-callsites
-  [{:keys [op] :as ast}]
-  (when (#{:keyword-invoke :invoke} op)
-    (let [f (:fn ast)]
-      (cond
-       (and (= :var (:op f))
-            (protocol-node? (:var f)))
-       (update! *collects* update-in [:protocol-callsites] conj (:var f))
+  [{:keys [op fn] :as ast}]
+  (when (= :keyword-invoke op)
+    (update! *collects* update-in [:keyword-callsites] conj (:form fn)))
 
-       (= :keyword-invoke op)
-       (update! *collects* update-in [:keyword-callsites] conj (:form f)))))
+  (when (= :protocol-invoke op)
+    (update! *collects* update-in [:protocol-callsites] conj (:var fn)))
   ast)
 
 (defmulti -collect-closed-overs :op)
