@@ -8,17 +8,11 @@
 
 (ns clojure.tools.analyzer.passes.cleanup)
 
-(defn cleanup1 [ast]
-  (let [ast (update-in ast [:env] dissoc :locals)]
-    (if (= :local (:op ast))
-      (dissoc (assoc ast :children (vec (remove #{:init} (:children ast)))) :init)
-      ast)))
-
-
-(defn cleanup2 [ast]
-  (let [ast (-> ast
-              (update-in [:env] dissoc :loop-locals)
-              (update-in [:env] dissoc :loop-locals-casts)
-              (update-in [:env] dissoc :namespaces)
-              (dissoc :atom))]
-    ast))
+(defn cleanup [ast]
+  (-> ast
+    (update-in [:env] dissoc
+               :loop-local
+               :loop-locals-casts
+               :namespaces
+               :locals)
+    (dissoc :atom)))
