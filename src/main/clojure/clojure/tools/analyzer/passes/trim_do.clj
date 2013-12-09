@@ -6,7 +6,7 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.passes.jvm.trim-do)
+(ns clojure.tools.analyzer.passes.trim-do)
 
 (defn trim-do
   "Replaces :do nodes with no :statements with their :ret expression"
