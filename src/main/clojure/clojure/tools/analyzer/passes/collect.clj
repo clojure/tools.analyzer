@@ -92,24 +92,29 @@
     nil))
 
 (defn collect
-  "Takes a variable number of keywords, and returns a pass that
-   if the AST node is one of :fn :deftype or :reify, collects the
-   in the AST what specified.
-
-   Valid keywords describing what to collect are:
-   * :constants     constant expressions
-   * :closed-overs  closed over local bindings
-   * :callsites     keyword and protocol callsites"
-  [& what]
-  (fn [{:keys [op env] :as ast}]
-    (if (#{:fn :deftype :reify} op)
-      (binding [*collects* *collects*]
-        (let [f (apply comp (filter identity (mapv collect-fns what)))]
-          (let [ast (postwalk ast f :reversed)
-                *collects* (merge *collects*
-                                  (when (and (= :deftype op)
-                                             (:closed-overs (set what)))
-                                    {:closed-overs
-                                     (zipmap (mapv :name (:fields ast)) (:fields ast))}))]
-            (into ast *collects*))))
-      ast)))
+  "Takes a map with:
+   * :what        set of keywords describing what to collect, some of:
+     ** :constants     constant expressions
+     ** :closed-overs  closed over local bindings
+     ** :callsites     keyword and protocol callsites
+   * :where       set of :op nodes where to attach collected info
+   * :top-level?  if true attach collected info to the top-level node"
+  [{:keys [what where top-level?]}]
+  (fn [ast]
+    (binding [*collects* *collects*]
+      (let [f              (apply comp (keep collect-fns what))
+            merge-collects (fn [{:keys [op] :as ast}]
+                             (into ast (merge *collects*
+                                              (when (and (= :deftype op)
+                                                         (:closed-overs what))
+                                                {:closed-overs
+                                                 (zipmap (mapv :name (:fields ast)) (:fields ast))}))))
+            collect*       (fn [{:keys [op] :as ast}]
+                             (let [ast (f ast)]
+                               (if (where op)
+                                 (merge-collects ast)
+                                 ast)))
+            ast            (postwalk ast collect* :reversed)]
+        (if top-level?
+          (merge-collects ast)
+          ast)))))
