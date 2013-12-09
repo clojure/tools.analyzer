@@ -133,15 +133,15 @@ namespace.
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
-    <a href="#clojure.tools.analyzer.passes.jvm.trim-do" style="margin-top: 3px;">clojure.tools.analyzer.passes.jvm.trim-do</a>
-    <div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.jvm.trim-do/trim-do">trim-do</a>
-      
-    </div>
-  </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#clojure.tools.analyzer.passes.source-info" style="margin-top: 3px;">clojure.tools.analyzer.passes.source-info</a>
     <div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.source-info/source-info">source-info</a>
+      
+    </div>
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#clojure.tools.analyzer.passes.trim-do" style="margin-top: 3px;">clojure.tools.analyzer.passes.trim-do</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.trim-do/trim-do">trim-do</a>
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
@@ -543,30 +543,6 @@ dissoc all the keys in elides from the metadata.</pre>
   </div>
 </div>
 <br />
-<h2 id="clojure.tools.analyzer.passes.jvm.trim-do">clojure.tools.analyzer.passes.jvm.trim-do</h2>
-<pre id="namespace-docstr"></pre>
-
-
-<br />
-
-
-<div id="var-section">
-  <p></p>
-  <h2>Public Variables and Functions</h2>
-  <div id="var-entry">
-    <br />
-    <hr />
-    <h2 id="clojure.tools.analyzer.passes.jvm.trim-do/trim-do">trim-do</h2>
-    <span id="var-type">function</span><br />
-    <pre id="var-usage">Usage: (trim-do {:keys [op ret statements], :as ast})
-</pre>
-    <pre id="var-docstr">Replaces :do nodes with no :statements with their :ret expression</pre>
-    
-    
-    <a href="https://github.com/clojure/tools.analyzer/blob/5d283b5dd9f4f1fca8a13ab5e534d56e60b63b81/src/main/clojure/clojure/tools/analyzer/passes/trim_do.clj#L11" id="var-source">Source</a>
-  </div>
-</div>
-<br />
 <h2 id="clojure.tools.analyzer.passes.source-info">clojure.tools.analyzer.passes.source-info</h2>
 <pre id="namespace-docstr"></pre>
 
@@ -588,6 +564,30 @@ dissoc all the keys in elides from the metadata.</pre>
     
     
     <a href="https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj#L12" id="var-source">Source</a>
+  </div>
+</div>
+<br />
+<h2 id="clojure.tools.analyzer.passes.trim-do">clojure.tools.analyzer.passes.trim-do</h2>
+<pre id="namespace-docstr"></pre>
+
+
+<br />
+
+
+<div id="var-section">
+  <p></p>
+  <h2>Public Variables and Functions</h2>
+  <div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.passes.trim-do/trim-do">trim-do</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (trim-do {:keys [op ret statements], :as ast})
+</pre>
+    <pre id="var-docstr">Replaces :do nodes with no :statements with their :ret expression</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/6a92e32160dc49529fc1c41f675db73e42228007/src/main/clojure/clojure/tools/analyzer/passes/trim_do.clj#L11" id="var-source">Source</a>
   </div>
 </div>
 <br />
