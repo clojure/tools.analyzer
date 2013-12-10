@@ -380,7 +380,7 @@
        :children [:bindings :body]})))
 
 (defn analyze-let
-  [[op bindings & body :as form] {:keys [context] :as env}]
+  [[op bindings & body :as form] {:keys [context loop-id] :as env}]
   {:pre [(vector? bindings)
          (even? (count bindings))]}
   (let [loop? (= 'loop* op)]
@@ -408,6 +408,7 @@
               body (parse (cons 'do body)
                           (if loop?
                             (assoc body-env
+                              :loop-id     loop-id
                               :loop-locals (mapv :form binds))
                             body-env))]
           {:body     body
@@ -423,13 +424,16 @@
 
 (defmethod -parse 'loop*
   [form env]
-  (into {:op   :loop
-         :form form
-         :env  env}
-        (analyze-let form (dissoc env :in-try))))
+  (let [loop-id (gensym "loop_")
+        env (dissoc (assoc env :loop-id loop-id) :in-try)]
+    (into {:op      :loop
+           :form    form
+           :env     env
+           :loop-id loop-id}
+         (analyze-let form env))))
 
 (defmethod -parse 'recur
-  [[_ & exprs :as form] {:keys [context loop-locals in-try]
+  [[_ & exprs :as form] {:keys [context loop-locals loop-id in-try]
                          :as env}]
   {:pre [(= :return context)
          loop-locals
@@ -441,6 +445,7 @@
      :env         env
      :form        form
      :exprs       exprs
+     :loop-id     loop-id
      :children    [:exprs]}))
 
 (defn analyze-fn-method [[params & body :as form] {:keys [locals local] :as env}]
@@ -463,9 +468,11 @@
         fixed-arity (if variadic?
                       (dec arity)
                       arity)
+        loop-id (gensym "loop_")
         body-env (into (update-in env [:locals]
                                   merge (zipmap params-names params-expr))
                        {:context     :return
+                        :loop-id      loop-id
                         :loop-locals (mapv :form params-expr)})
         body (parse (cons 'do body) body-env)]
     (when variadic?
@@ -522,6 +529,7 @@
             :form            form
             :name            name
             :variadic?       variadic?
+            :loop-id         loop-id
             :max-fixed-arity max-fixed-arity
             :methods         methods-exprs}
            (when n
