@@ -483,6 +483,7 @@
     (merge
      {:op          :fn-method
       :form        form
+      :loop-id     loop-id
       :env         env
       :variadic?   variadic?
       :params      params-expr
@@ -529,7 +530,6 @@
             :form            form
             :name            name
             :variadic?       variadic?
-            :loop-id         loop-id
             :max-fixed-arity max-fixed-arity
             :methods         methods-exprs}
            (when n
