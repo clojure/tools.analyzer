@@ -302,7 +302,7 @@
     (when-not (empty? fbs)
       (throw (ex-info "only one finally clause allowed in try expression"
                       {:expr fblocks})))
-    (let [body (parse (cons 'do body) (assoc env :in-try true)) ;; avoid recur
+    (let [body (parse (cons 'do body) (assoc env :in-try true :no-recur true))
           cenv (ctx env :expr)
           cblocks (mapv #(parse % cenv) cblocks)
           fblock (when-not (empty? fblock)
@@ -425,7 +425,7 @@
 (defmethod -parse 'loop*
   [form env]
   (let [loop-id (gensym "loop_")
-        env (dissoc (assoc env :loop-id loop-id) :in-try)]
+        env (dissoc (assoc env :loop-id loop-id) :no-recur)]
     (into {:op      :loop
            :form    form
            :env     env
@@ -433,11 +433,11 @@
          (analyze-let form env))))
 
 (defmethod -parse 'recur
-  [[_ & exprs :as form] {:keys [context loop-locals loop-id in-try]
+  [[_ & exprs :as form] {:keys [context loop-locals loop-id no-recur]
                          :as env}]
   {:pre [(= :return context)
          loop-locals
-         (not in-try)
+         (not no-recur)
          (= (count exprs) (count loop-locals))]}
   (let [exprs (mapv (analyze-in-env (ctx env :expr))
                     exprs)]
@@ -505,7 +505,7 @@
                    :local :fn
                    :name  name}
         e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
-        menv (assoc (dissoc e :in-try)
+        menv (assoc (dissoc e :no-recur)
                :once (-> op meta :once boolean))
         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
         methods-exprs (mapv #(analyze-fn-method % menv) meths)
