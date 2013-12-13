@@ -12,12 +12,14 @@
 (defn cycling
   "Combine the given passes in a single pass that will be repeatedly
    applied to the AST until applying it another time will have no effect"
-  [& fns]
-  (fn [ast]
-    (let [new-ast (reduce #(%2 %) ast fns)]
-      (if (= new-ast ast)
-        ast
-        (recur new-ast)))))
+  [& fns*]
+  (let [fns (cycle fns*)]
+    (fn [ast]
+      (loop [[f & fns] fns ast ast res (zipmap fns* (repeat nil))]
+        (let [ast* (f ast)]
+          (if (= ast* (res f))
+            ast
+            (recur fns ast* (assoc res f ast*))))))))
 
 (defn children*
   "Return a vector of the children expression of the AST node, if it has any.
