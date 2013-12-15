@@ -6,7 +6,8 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.passes.emit-form)
+(ns clojure.tools.analyzer.passes.emit-form
+  (:require [clojure.walk :as w]))
 
 (defmulti -emit-form (fn [{:keys [op]} _] op))
 
@@ -74,13 +75,31 @@
   `(loop* [~@(emit-bindings bindings hygienic?)]
            ~(-emit-form* body hygienic?)))
 
+(defn walk* [f form]
+  (if (seq? form)
+    (w/walk f identity form)
+    (f form)))
+
 (defmethod -emit-form :const
-  [{:keys [form]} _]
-  form)
+  [{:keys [form quoted?]} _]
+  (if quoted?
+    form
+    (walk* (fn f [form]
+
+              (cond
+               (and (seq? form)
+                    (= 'do (first form)))
+               form
+
+               (symbol? form)
+               (list 'quote form)
+
+               :else (w/walk f identity form)))
+           form)))
 
 (defmethod -emit-form :quote
   [{:keys [expr]} hygienic?]
-  (list 'quote (-emit-form* expr hygienic?)))
+  (list 'quote (-emit-form* (assoc expr :quoted? true) hygienic?)))
 
 (defmethod -emit-form :vector
   [{:keys [items]} hygienic?]
