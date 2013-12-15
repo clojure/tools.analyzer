@@ -128,8 +128,10 @@
 
 (defmethod -emit-form :fn-method
   [{:keys [variadic? params body]} hygienic?]
-  (let [params (if variadic? (concat (butlast params) '[&] (last params)) params)]
-    `(~(mapv #(-emit-form* % hygienic?) params)
+  (let [params-form (mapv #(-emit-form* % hygienic?) params)]
+    `(~(if variadic? (into (pop params-form)
+                           (conj '[&] (peek params-form)))
+           params-form)
       ~(-emit-form* body hygienic?))))
 
 (defmethod -emit-form :fn
