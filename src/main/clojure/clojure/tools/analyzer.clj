@@ -176,9 +176,7 @@
   (loop [mform (macroexpand-1 form env)]
     (if (= mform form)
       mform
-      (recur (if (obj? mform)
-               (with-meta mform (meta form))
-               mform)))))
+      (recur mform))))
 
 (defmethod -analyze :symbol
   [_ sym env]
