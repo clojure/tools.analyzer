@@ -55,7 +55,7 @@
 
 (defmethod -collect-closed-overs :local
   [{:keys [op name] :as ast}]
-  (update! *collects* update-in [:closed-overs] assoc name ast)
+  (update! *collects* update-in [:closed-overs] assoc name (dissoc ast :env))
   ast)
 
 (defmethod -collect-closed-overs :binding
@@ -64,6 +64,7 @@
   (when init
     (-collect-closed-overs init)) ;; since we're in a postwalk, a bit of trickery is necessary
   ast)
+
 (defmethod -collect-closed-overs :fn-method
   [{:keys [params] :as ast}]
   (update! *collects* update-in [:closed-overs]
@@ -105,7 +106,9 @@
                                               (when (and (= :deftype op)
                                                          (:closed-overs what))
                                                 {:closed-overs
-                                                 (zipmap (mapv :name (:fields ast)) (:fields ast))}))))
+                                                 (zipmap (mapv :name (:fields ast))
+                                                         (map (fn [ast] (dissoc ast :env))
+                                                              (:fields ast)))}))))
             collect*       (fn [{:keys [op] :as ast}]
                              (let [ast (f ast)]
                                (if (where op)
