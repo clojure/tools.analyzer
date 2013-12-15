@@ -19,7 +19,7 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/838035822a47ed9306740528125fb0601d0594e7/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/blob/5dc2188cb5d489cf82daebb74c5aa962625d5cb7/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-api.html",
    :name "clojure.tools.analyzer.passes.collect",
@@ -305,15 +305,15 @@
    :name "collect",
    :namespace "clojure.tools.analyzer.passes.collect",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/838035822a47ed9306740528125fb0601d0594e7/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L91",
+   "https://github.com/clojure/tools.analyzer/blob/5dc2188cb5d489cf82daebb74c5aa962625d5cb7/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L92",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/838035822a47ed9306740528125fb0601d0594e7/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5dc2188cb5d489cf82daebb74c5aa962625d5cb7/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect",
    :doc
    "Takes a map with:\n* :what        set of keywords describing what to collect, some of:\n  ** :constants     constant expressions\n  ** :closed-overs  closed over local bindings\n  ** :callsites     keyword and protocol callsites\n* :where       set of :op nodes where to attach collected info\n* :top-level?  if true attach collected info to the top-level node",
    :var-type "function",
-   :line 91,
+   :line 92,
    :file "src/main/clojure/clojure/tools/analyzer/passes/collect.clj"}
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
