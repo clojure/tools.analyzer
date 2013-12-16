@@ -77,9 +77,16 @@
   `(loop* [~@(emit-bindings bindings hygienic?)]
            ~(-emit-form* body hygienic?)))
 
+;; Fixes clojure.walk for <=clojure-1.6.0-alpha2
+;; see http://dev.clojure.org/jira/browse/CLJ-1105
+(defn -walk [inner outer form]
+  (if (instance? clojure.lang.IRecord form)
+    (outer (reduce (fn [r x] (conj r (inner x))) form form))
+    (w/walk inner outer form)))
+
 (defn walk* [f form]
   (if (seq? form)
-    (w/walk f identity form)
+    (-walk f identity form)
     (f form)))
 
 (defmethod -emit-form :const
@@ -96,7 +103,7 @@
                (symbol? form)
                (list 'quote form)
 
-               :else (w/walk f identity form)))
+               :else (-walk f identity form)))
            form)))
 
 (defmethod -emit-form :quote
