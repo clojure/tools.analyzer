@@ -155,11 +155,13 @@
   `(recur ~@(mapv #(-emit-form* % hygienic?) exprs)))
 
 (defmethod -emit-form :fn-method
-  [{:keys [variadic? params body]} hygienic?]
+  [{:keys [variadic? params body form]} hygienic?]
   (let [params-form (mapv #(-emit-form* % hygienic?) params)]
-    `(~(if variadic? (into (pop params-form)
-                           (conj '[&] (peek params-form)))
-           params-form)
+    `(~(with-meta
+         (if variadic? (into (pop params-form)
+                             (conj '[&] (peek params-form)))
+             params-form)
+         (meta (first form)))
       ~(-emit-form* body hygienic?))))
 
 (defmethod -emit-form :fn
