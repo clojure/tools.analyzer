@@ -64,12 +64,12 @@
        (post (update-children (pre ast) walk fix)))))
 
 (defn prewalk
-  "Shortrand for (walk ast f identity)"
+  "Shorthand for (walk ast f identity)"
   [ast f]
   (walk ast f identity))
 
 (defn postwalk
-  "Shortrand for (walk ast identity f reversed?)"
+  "Shorthand for (walk ast identity f reversed?)"
   ([ast f]
      (walk ast identity f false))
   ([ast f reversed?]
