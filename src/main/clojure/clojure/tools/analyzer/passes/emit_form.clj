@@ -47,11 +47,11 @@
 
 (defmethod -emit-form :local
   [{:keys [name form]} hygienic?]
-  (if hygienic? name form))
+  (if hygienic? (with-meta name (meta form)) form))
 
 (defmethod -emit-form :binding
   [{:keys [name form]} hygienic?]
-  (if hygienic? name form))
+  (if hygienic? (with-meta name (meta form)) form))
 
 (defmethod -emit-form :var
   [{:keys [form]} hygienic?]
