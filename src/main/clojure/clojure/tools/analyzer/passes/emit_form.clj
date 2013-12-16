@@ -13,12 +13,14 @@
 
 (def ^:dynamic -emit-form* -emit-form)
 
-(defn emit-form [ast]
+(defn emit-form
   "Return the form represented by the given AST"
+  [ast]
   (-emit-form* ast false))
 
-(defn emit-hygienic-form [ast]
+(defn emit-hygienic-form
   "Return an hygienic form represented by the given AST"
+  [ast]
   (-emit-form* ast true))
 
 (defmethod -emit-form :maybe-class
