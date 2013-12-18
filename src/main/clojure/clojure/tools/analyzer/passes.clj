@@ -79,4 +79,4 @@
   "Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order."
   [ast]
   (lazy-seq
-   (cons ast (mapcat ast-nodes (children ast)))))
+   (cons ast (mapcat nodes (children ast)))))
