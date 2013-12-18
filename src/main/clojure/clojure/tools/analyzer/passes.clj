@@ -74,3 +74,9 @@
      (walk ast identity f false))
   ([ast f reversed?]
      (walk ast identity f reversed?)))
+
+(defn nodes
+  "Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order."
+  [ast]
+  (lazy-seq
+   (cons ast (mapcat ast-nodes (children ast)))))
