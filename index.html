@@ -82,30 +82,30 @@ namespace.
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
-    <a href="#clojure.tools.analyzer.passes" style="margin-top: 3px;">clojure.tools.analyzer.passes</a>
+    <a href="#clojure.tools.analyzer.ast" style="margin-top: 3px;">clojure.tools.analyzer.ast</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/children">children</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/children">children</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/children*">children*</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/children*">children*</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/cycling">cycling</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/cycling">cycling</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/nodes">nodes</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/nodes">nodes</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/postwalk">postwalk</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/postwalk">postwalk</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/prewalk">prewalk</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/prewalk">prewalk</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/update-children">update-children</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/update-children">update-children</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/walk">walk</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/walk">walk</a>
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
@@ -335,8 +335,8 @@ else returns form.</pre>
   </div>
 </div>
 <br />
-<h2 id="clojure.tools.analyzer.passes">clojure.tools.analyzer.passes</h2>
-<pre id="namespace-docstr">Utilities for passes handling and for AST walking/updating</pre>
+<h2 id="clojure.tools.analyzer.ast">clojure.tools.analyzer.ast</h2>
+<pre id="namespace-docstr">Utilities for AST walking/updating</pre>
 
 
 <br />
@@ -348,7 +348,7 @@ else returns form.</pre>
   <div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes/children">children</h2>
+    <h2 id="clojure.tools.analyzer.ast/children">children</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (children ast)
 </pre>
@@ -357,11 +357,11 @@ The children expressions are kept in order and flattened so that the returning
 vector contains only nodes and not vectors of nodes.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/54e97f961a708370345eaa6652fbb844e5392e97/src/main/clojure/clojure/tools/analyzer/passes.clj#L32" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L32" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes/children*">children*</h2>
+    <h2 id="clojure.tools.analyzer.ast/children*">children*</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (children* {:keys [children], :as ast})
 </pre>
@@ -370,11 +370,11 @@ The returned vector returns the childrens in the order as they appear in the
 :children field of the AST, and may be either a node or a vector of nodes.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/54e97f961a708370345eaa6652fbb844e5392e97/src/main/clojure/clojure/tools/analyzer/passes.clj#L24" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L24" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes/cycling">cycling</h2>
+    <h2 id="clojure.tools.analyzer.ast/cycling">cycling</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (cycling &amp; fns*)
 </pre>
@@ -382,22 +382,22 @@ The returned vector returns the childrens in the order as they appear in the
 applied to the AST until applying it another time will have no effect</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/54e97f961a708370345eaa6652fbb844e5392e97/src/main/clojure/clojure/tools/analyzer/passes.clj#L12" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L12" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes/nodes">nodes</h2>
+    <h2 id="clojure.tools.analyzer.ast/nodes">nodes</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (nodes ast)
 </pre>
     <pre id="var-docstr">Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/54e97f961a708370345eaa6652fbb844e5392e97/src/main/clojure/clojure/tools/analyzer/passes.clj#L78" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L78" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes/postwalk">postwalk</h2>
+    <h2 id="clojure.tools.analyzer.ast/postwalk">postwalk</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (postwalk ast f)
        (postwalk ast f reversed?)
@@ -405,22 +405,22 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Shorthand for (walk ast identity f reversed?)</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/54e97f961a708370345eaa6652fbb844e5392e97/src/main/clojure/clojure/tools/analyzer/passes.clj#L71" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L71" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes/prewalk">prewalk</h2>
+    <h2 id="clojure.tools.analyzer.ast/prewalk">prewalk</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (prewalk ast f)
 </pre>
     <pre id="var-docstr">Shorthand for (walk ast f identity)</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/54e97f961a708370345eaa6652fbb844e5392e97/src/main/clojure/clojure/tools/analyzer/passes.clj#L66" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L66" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes/update-children">update-children</h2>
+    <h2 id="clojure.tools.analyzer.ast/update-children">update-children</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (update-children ast f)
        (update-children ast f fix)
@@ -431,11 +431,11 @@ children nodes and then applies `fix` to the update children.
 An example of a useful `fix` function is `rseq`.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/54e97f961a708370345eaa6652fbb844e5392e97/src/main/clojure/clojure/tools/analyzer/passes.clj#L40" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L40" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes/walk">walk</h2>
+    <h2 id="clojure.tools.analyzer.ast/walk">walk</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (walk ast pre post)
        (walk ast pre post reversed?)
@@ -445,7 +445,7 @@ If reversed? is not-nil, pre and post will be applied starting from the last
 children of the AST node to the first one.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/54e97f961a708370345eaa6652fbb844e5392e97/src/main/clojure/clojure/tools/analyzer/passes.clj#L55" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L55" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -472,7 +472,7 @@ the same atom will be shared between all occurences of that local.
 The atom is put in the :atom field of the node.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/44ef85900e499d990b6c78256c671f7ebe7811f3/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L30" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L30" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -502,7 +502,7 @@ The atom is put in the :atom field of the node.</pre>
 * :top-level?  if true attach collected info to the top-level node</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/5dc2188cb5d489cf82daebb74c5aa962625d5cb7/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L92" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L92" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -670,7 +670,7 @@ dissoc all the keys in elides from the metadata.</pre>
 bindings' :name field</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/6cb20871879dc6513f8869ec8dff28eb60c13533/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L76" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L76" id="var-source">Source</a>
   </div>
 </div>
 <br />
