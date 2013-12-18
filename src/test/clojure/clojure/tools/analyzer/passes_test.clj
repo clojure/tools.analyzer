@@ -1,6 +1,6 @@
 (ns clojure.tools.analyzer.passes-test
   (:refer-clojure :exclude [macroexpand-1])
-  (:require [clojure.tools.analyzer.passes :refer :all]
+  (:require [clojure.tools.analyzer.ast :refer :all]
             [clojure.test :refer [deftest is]]
             [clojure.set :as set]
             [clojure.tools.analyzer.core-test :refer [ast e]]

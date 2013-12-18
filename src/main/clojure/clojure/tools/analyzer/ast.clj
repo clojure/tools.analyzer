@@ -6,8 +6,8 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.passes
-  "Utilities for passes handling and for AST walking/updating")
+(ns clojure.tools.analyzer.ast
+  "Utilities for AST walking/updating")
 
 (defn cycling
   "Combine the given passes in a single pass that will be repeatedly

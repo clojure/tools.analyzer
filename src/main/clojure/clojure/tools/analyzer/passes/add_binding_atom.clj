@@ -7,7 +7,7 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.add-binding-atom
-  (:require [clojure.tools.analyzer.passes :refer [prewalk]]
+  (:require [clojure.tools.analyzer.ast :refer [prewalk]]
             [clojure.tools.analyzer.utils :refer [update!]]))
 
 (def ^:dynamic ^:private *bindings* {})

@@ -8,7 +8,7 @@
 
 (ns clojure.tools.analyzer.passes.collect
   (:require [clojure.tools.analyzer.utils :refer [protocol-node? update!]]
-            [clojure.tools.analyzer.passes :refer [postwalk]]))
+            [clojure.tools.analyzer.ast :refer [postwalk]]))
 
 (def ^:private ^:dynamic *collects*
   {:constants           {}

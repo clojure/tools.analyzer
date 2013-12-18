@@ -8,7 +8,7 @@
 
 (ns clojure.tools.analyzer.passes.uniquify
   (:require [clojure.tools.analyzer.utils :refer [update!]]
-            [clojure.tools.analyzer.passes :refer [update-children children]]))
+            [clojure.tools.analyzer.ast :refer [update-children children]]))
 
 (def ^:dynamic *locals-counter* {})
 (def ^:dynamic *locals-frame* {})
