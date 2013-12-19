@@ -74,23 +74,14 @@
     (or (get-in @namespaces [ns :aliases ns-sym])
         (:ns (@namespaces ns-sym)))))
 
-(defn maybe-var [sym {:keys [ns namespaces] :as env}]
+(defn resolve-var [sym {:keys [ns namespaces] :as env}]
   (when (symbol? sym)
     (let [name (-> sym name symbol)
           sym-ns (when-let [ns (namespace sym)]
                    (symbol ns))
           full-ns (resolve-ns sym-ns env)]
       (when (or (not sym-ns) full-ns)
-        (if-let [var (-> (@namespaces (or full-ns ns)) :mappings (get name))]
-          (when (var? var)
-            var))))))
-
-(defn resolve-var [sym env]
-  (or (maybe-var sym env)
-      (when (symbol? sym)
-       (when-let [ns (namespace sym)]
-         (when (resolve-ns (symbol ns) env)
-           (throw (ex-info (str "no such var: " sym) {:var sym})))))))
+        (-> (@namespaces (or full-ns ns)) :mappings (get name))))))
 
 ;; should also use :variadic? and :max-fixed-arity
 (defn arglist-for-arity [fn argc]

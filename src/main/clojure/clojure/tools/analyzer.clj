@@ -14,11 +14,12 @@
 
    Platform implementers must provide dynamic bindings for:
    * macroexpand-1
-   * create-var
    * parse
+   * create-var
+   * var?
 
    See clojure.tools.analyzer.core-test for an example on how to setup the analyzer."
-  (:refer-clojure :exclude [macroexpand-1 macroexpand])
+  (:refer-clojure :exclude [macroexpand-1 macroexpand var?])
   (:require [clojure.tools.analyzer.utils :refer :all]))
 
 (defmulti -analyze (fn [op form env & _] op))
@@ -92,14 +93,19 @@
   macroexpand-1)
 
 (def ^{:dynamic  true
+       :arglists '([[op & args] env])
+       :doc      "Multimethod that dispatches on op, should default to -parse"}
+  parse)
+
+(def ^{:dynamic  true
        :arglists '([sym env])
        :doc      "Creates a var for sym and returns it"}
   create-var)
 
 (def ^{:dynamic  true
-       :arglists '([[op & args] env])
-       :doc      "Multimethod that dispatches on op, should default to -parse"}
-  parse)
+       :arglists '([obj])
+       :doc      "Returns true if obj represent a var form as returned by create-var"}
+  var?)
 
 (defn wrapping-meta [{:keys [form env] :as expr}]
   (let [meta (meta form)]
@@ -188,13 +194,14 @@
                       {:op          :local
                        :assignable? (boolean mutable)
                        :children    (vec (remove #{:init} children))})
-               (if-let [var (resolve-var sym env)]
+               (if-let [var (let [v (resolve-var sym env)]
+                              (and (var? v) v))]
                  {:op          :var
                   :assignable? (dynamic? var)
                   :var         var}
                  (if-let [maybe-class (namespace sym)] ;; e.g. js/foo.bar or Long/MAX_VALUE
                    (let [maybe-class (symbol maybe-class)]
-                     (if-not (find-ns maybe-class)
+                     (if-not (resolve-ns maybe-class env)
                        {:op    :maybe-host-form
                         :class maybe-class
                         :field (symbol (name sym))}

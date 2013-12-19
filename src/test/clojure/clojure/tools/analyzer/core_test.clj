@@ -2,7 +2,7 @@
   (:refer-clojure :exclude [macroexpand-1])
   (:require [clojure.tools.analyzer :as ana]
             [clojure.test :refer [deftest is]]
-            [clojure.tools.analyzer.utils :refer [maybe-var]]))
+            [clojure.tools.analyzer.utils :refer [resolve-var]]))
 
 (defn desugar-host-expr [[op & expr :as form]]
   (if (symbol? op)
@@ -28,7 +28,7 @@
     (let [op (first form)]
       (if (ana/specials op)
         form
-        (let [v (maybe-var op env)]
+        (let [v (resolve-var op env)]
           (if (and (not (-> env :locals (get op))) ;; locals cannot be macros
                    (:macro (meta v)))
             (apply v form env (rest form)) ; (m &form &env & args)
@@ -54,7 +54,8 @@
              ana/create-var    ~(fn [sym env]
                                   (doto (intern (:ns env) sym)
                                     (reset-meta! (meta sym))))
-             ana/parse         ana/-parse]
+             ana/parse         ana/-parse
+             ana/var?          ~var?]
      (ana/analyze '~form e)))
 
 (defmacro mexpand [form]
