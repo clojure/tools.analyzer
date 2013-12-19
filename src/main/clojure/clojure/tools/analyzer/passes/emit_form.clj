@@ -6,8 +6,7 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.passes.emit-form
-  (:require [clojure.walk :as w]))
+(ns clojure.tools.analyzer.passes.emit-form)
 
 (defmulti -emit-form (fn [{:keys [op]} _] op))
 
@@ -77,38 +76,13 @@
   `(loop* [~@(emit-bindings bindings hygienic?)]
            ~(-emit-form* body hygienic?)))
 
-;; Fixes clojure.walk for <=clojure-1.6.0-alpha2
-;; see http://dev.clojure.org/jira/browse/CLJ-1105
-(defn -walk [inner outer form]
-  (if (instance? clojure.lang.IRecord form)
-    (outer (reduce (fn [r x] (conj r (inner x))) form form))
-    (w/walk inner outer form)))
-
-(defn walk* [f form]
-  (if (seq? form)
-    (-walk f identity form)
-    (f form)))
-
 (defmethod -emit-form :const
   [{:keys [form quoted?]} _]
-  (if quoted?
-    form
-    (walk* (fn f [form]
-
-              (cond
-               (and (seq? form)
-                    (= 'do (first form)))
-               form
-
-               (symbol? form)
-               (list 'quote form)
-
-               :else (-walk f identity form)))
-           form)))
+  form)
 
 (defmethod -emit-form :quote
   [{:keys [expr]} hygienic?]
-  (list 'quote (-emit-form* (assoc expr :quoted? true) hygienic?)))
+  (list 'quote (-emit-form* expr hygienic?)))
 
 (defmethod -emit-form :vector
   [{:keys [items]} hygienic?]
@@ -171,10 +145,7 @@
 
 (defmethod -emit-form :def
   [{:keys [name doc init]} hygienic?]
-  (let [name (if-let [arglists (:arglists (meta name))]
-               (with-meta name (assoc (meta name) :arglists (list 'quote arglists)))
-               name)]
-   `(def ~name ~@(when doc [doc]) ~@(when init [(-emit-form* init hygienic?)]))))
+  `(def ~name ~@(when doc [doc]) ~@(when init [(-emit-form* init hygienic?)])))
 
 (defmethod -emit-form :invoke
   [{:keys [fn args]} hygienic?]

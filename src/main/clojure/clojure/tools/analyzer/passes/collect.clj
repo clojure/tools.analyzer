@@ -30,11 +30,11 @@
         id)))
 
 (defn -collect-constants
-  [{:keys [op var form tag type] :as ast}]
+  [{:keys [op var val tag type] :as ast}]
   (if (and (= op :const)
            (not= type :nil)
            (not= type :boolean))
-    (let [id (-register-constant form tag type)]
+    (let [id (-register-constant val tag type)]
       (assoc ast :id id))
     (if (#{:def :var :the-var} op)
       (let [id (-register-constant var clojure.lang.Var :var)]

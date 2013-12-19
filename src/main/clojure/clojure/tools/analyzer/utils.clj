@@ -117,7 +117,7 @@
    (when-let [column (get-col x env)]
      {:column column})))
 
-(defn const-val [{:keys [op form expr]}]
+(defn const-val [{:keys [op val expr]}]
   (if (= :quote op)
-    (:form expr)
-    form))
+    (:val expr)
+    val))

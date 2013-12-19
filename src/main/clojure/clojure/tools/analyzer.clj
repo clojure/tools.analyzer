@@ -122,6 +122,7 @@
       :env      env
       :type     type
       :literal? true
+      :val      form
       :form     form}
      (when (seq m)
        {:meta     (-analyze :const m (ctx env :expr) :map)
