@@ -145,7 +145,10 @@
 
 (defmethod -emit-form :def
   [{:keys [name doc init]} hygienic?]
-  `(def ~name ~@(when doc [doc]) ~@(when init [(-emit-form* init hygienic?)])))
+  (let [name (if-let [arglists (:arglists (meta name))]
+               (with-meta name (assoc (meta name) :arglists (list 'quote arglists)))
+               name)]
+    `(def ~name ~@(when doc [doc]) ~@(when init [(-emit-form* init hygienic?)]))))
 
 (defmethod -emit-form :invoke
   [{:keys [fn args]} hygienic?]
