@@ -455,8 +455,10 @@
      :children    [:exprs]}))
 
 (defn analyze-fn-method [[params & body :as form] {:keys [locals local] :as env}]
-  {:pre [(every? symbol? params)
-         (not-any? namespace params)]}
+  {:pre [(every? symbol? params)]}
+  (when (some namespace params)
+    (throw (ex-info (str "unexpected namespace in parameter(s).  One possible source of mistake is a macro with x# in most places but x in a parameter list: " (seq (filter namespace params)))
+                    {:params params})))
   (let [variadic? (boolean (some '#{&} params))
         params-names (vec (remove '#{&} params))
         env (dissoc env :local)
