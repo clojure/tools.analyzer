@@ -18,16 +18,17 @@
 
 (defn -register-constant
   [form tag type]
-  (or (:id ((:constants *collects*) [form (meta form) tag]))
-      (let [id (count (:constants *collects*))]
-        (update! *collects* assoc-in [:constants {:form form
-                                                  :meta (meta form)
-                                                  :tag  tag}]
-                 {:id   id
-                  :tag  tag
-                  :val  form
-                  :type type})
-        id)))
+  (let [key {:form form
+             :meta (meta form)
+             :tag  tag}]
+    (or (:id ((:constants *collects*) key))
+        (let [id (count (:constants *collects*))]
+          (update! *collects* assoc-in [:constants key]
+                   {:id   id
+                    :tag  tag
+                    :val  form
+                    :type type})
+          id))))
 
 (defn -collect-constants
   [{:keys [op var val tag type] :as ast}]
