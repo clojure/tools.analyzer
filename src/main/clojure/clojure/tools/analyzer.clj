@@ -117,7 +117,7 @@
        :meta     (analyze meta (ctx env :expr))
        :expr     (assoc-in expr [:env :context] :expr)
        :children [:meta :expr]}
-     expr)))
+      expr)))
 
 (defmethod -analyze :const
   [_ form env & [type]]
@@ -436,7 +436,7 @@
            :form    form
            :env     env
            :loop-id loop-id}
-         (analyze-let form env))))
+          (analyze-let form env))))
 
 (defmethod -parse 'recur
   [[_ & exprs :as form] {:keys [context loop-locals loop-id no-recur]
@@ -504,8 +504,8 @@
 (defmethod -parse 'fn*
   [[op & args :as form] {:keys [name] :as env}]
   (let [[n meths] (if (symbol? (first args))
-                       [(first args) (next args)]
-                       [nil (seq args)])
+                    [(first args) (next args)]
+                    [nil (seq args)])
         name (or n name)
         name-expr {:op    :binding
                    :env   env
@@ -646,4 +646,4 @@
               :args args-expr}
              (when m
                {:meta m}) ;; this implies it's not going to be evaluated
-       {:children [:args :fn]}))))
+             {:children [:args :fn]}))))
