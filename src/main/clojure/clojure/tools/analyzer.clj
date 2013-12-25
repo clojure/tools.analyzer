@@ -603,29 +603,32 @@
                           [(-> m-or-f name (subs 1) symbol) true]
                           [(if args (cons m-or-f args) m-or-f) false])
         target-expr (analyze target (ctx env :expr))
-        call? (and (not field?) (seq? m-or-f))
-        expr (cond
-              call?
-              {:op       :host-call
-               :target   target-expr
-               :method   (symbol (name (first m-or-f)))
-               :args     (mapv (analyze-in-env (ctx env :expr)) (next m-or-f))
-               :children [:target :args]}
+        call? (and (not field?) (seq? m-or-f))]
 
-              field?
-              {:op       :host-field
-               :target   target-expr
-               :field    (symbol (name m-or-f))
-               :children [:target]}
-
-              :else
-              {:op       :host-interop ;; either field access or single method call
-               :target   target-expr
-               :m-or-f   (symbol (name m-or-f))
-               :children [:target]})]
+    (when (and call? (not (symbol? (first m-or-f))))
+      (throw (ex-info (str "method name must be a symbol, had: " (class (first m-or-f)))
+                      {:form form})))
     (merge {:form form
             :env  env}
-           expr)))
+           (cond
+            call?
+            {:op       :host-call
+             :target   target-expr
+             :method   (symbol (name (first m-or-f)))
+             :args     (mapv (analyze-in-env (ctx env :expr)) (next m-or-f))
+             :children [:target :args]}
+
+            field?
+            {:op       :host-field
+             :target   target-expr
+             :field    (symbol (name m-or-f))
+             :children [:target]}
+
+            :else
+            {:op       :host-interop ;; either field access or single method call
+             :target   target-expr
+             :m-or-f   (symbol (name m-or-f))
+             :children [:target]}))))
 
 ;; invoke
 (defmethod -parse :default
