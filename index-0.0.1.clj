@@ -43,6 +43,12 @@
    :name "clojure.tools.analyzer.passes.emit-form",
    :doc nil}
   {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/d7bd68f6e01a7b241c0133cdca592ec1ab25949e/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.index-vector-nodes-api.html",
+   :name "clojure.tools.analyzer.passes.index-vector-nodes",
+   :doc nil}
+  {:source-url
    "https://github.com/clojure/tools.analyzer/blob/0cf008c5ac5a343c58813d0c9f6b7951ef9347d1/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.source-info-api.html",
@@ -421,6 +427,21 @@
    :line 20,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj"}
+  {:arglists ([{:keys [children], :as ast}]),
+   :name "index-vector-nodes",
+   :namespace "clojure.tools.analyzer.passes.index-vector-nodes",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/d7bd68f6e01a7b241c0133cdca592ec1ab25949e/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj#L11",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/d7bd68f6e01a7b241c0133cdca592ec1ab25949e/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.index-vector-nodes/index-vector-nodes",
+   :doc
+   "Adds an :idx attribute to nodes in vector children, representing the position\nof the node vector.",
+   :var-type "function",
+   :line 11,
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj"}
   {:arglists ([{:keys [form env], :as ast}]),
    :name "source-info",
    :namespace "clojure.tools.analyzer.passes.source-info",
