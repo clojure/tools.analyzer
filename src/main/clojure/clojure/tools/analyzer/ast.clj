@@ -80,3 +80,15 @@
   [ast]
   (lazy-seq
    (cons ast (mapcat nodes (children ast)))))
+
+(defn ast->eav
+  "Returns an EAV representation of the current AST that can be used by
+   Datomic's Datalog."
+  [ast]
+  (let [children (set (:children ast))]
+    (mapcat (fn [[k v]]
+              (if (children k)
+                (if (map? v)
+                  (into [[ast k v]] (ast->eav v))
+                  (mapcat (fn [v] (into [[ast k v]] (ast->eav v))) v))
+                [[ast k v]])) ast)))
