@@ -112,3 +112,11 @@
   (if (= :quote op)
     (:val expr)
     val))
+
+
+(defmacro compile-if
+  [exp then & else]
+  (if (try (eval exp)
+           (catch Throwable _ false))
+    `(do ~then)
+    `(do ~@else)))

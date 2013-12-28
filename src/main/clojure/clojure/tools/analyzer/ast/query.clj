@@ -8,8 +8,8 @@
 
 (ns clojure.tools.analyzer.ast.query
   "Utilities for querying tools.analyzer ASTs with Datomic"
-  (:require [datomic.api :as d]
-            [clojure.tools.analyzer.ast :as ast]))
+  (:require [clojure.tools.analyzer.ast :as ast]
+            [clojure.tools.analyzer.utils :refer [compile-if]]))
 
 (defn query-map
   "Transoforms a Datomic query from its vector representation to its map one.
@@ -74,6 +74,7 @@
                            form)
                          form)) where)))))
 
+
 (defn db
   "Given a list of ASTs, returns a representation of those
    that can be used as a database in a Datomic Datalog query"
@@ -87,4 +88,7 @@
    `unfold-expression-clauses` is automatically applied to the
    query."
   [query asts & inputs]
-  (apply d/q (unfold-expression-clauses query) (db asts) inputs))
+  (compile-if (Class/forName "datomic.Datom")
+    (do (require '[datomic.api :as d])
+        (apply d/q (unfold-expression-clauses query) (db asts) inputs))
+    (throw (Exception. "Datomic is required"))))

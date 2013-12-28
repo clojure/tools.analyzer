@@ -19,22 +19,6 @@
     </developer>
   </developers>
 
-  <repositories>
-    <repository>
-      <id>clojars.org</id>
-      <url>http://clojars.org/repo</url>
-    </repository>
-  </repositories>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.datomic</groupId>
-      <artifactId>datomic-free</artifactId>
-      <version>0.9.4384</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-
   <scm>
     <connection>scm:git:git://github.com/clojure/tools.analyzer.git</connection>
     <developerConnection>scm:git:git://github.com/clojure/tools.analyzer.git</developerConnection>
