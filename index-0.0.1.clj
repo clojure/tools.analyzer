@@ -13,7 +13,7 @@
    :name "clojure.tools.analyzer.ast",
    :doc "Utilities for AST walking/updating"}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   "https://github.com/clojure/tools.analyzer/blob/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.ast.query-api.html",
    :name "clojure.tools.analyzer.ast.query",
@@ -351,9 +351,9 @@
    :name "db",
    :namespace "clojure.tools.analyzer.ast.query",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L78",
+   "https://github.com/clojure/tools.analyzer/blob/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L78",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   "https://github.com/clojure/tools.analyzer/raw/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/db",
    :doc
@@ -365,9 +365,9 @@
    :name "q",
    :namespace "clojure.tools.analyzer.ast.query",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L84",
+   "https://github.com/clojure/tools.analyzer/blob/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L84",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   "https://github.com/clojure/tools.analyzer/raw/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/q",
    :doc
@@ -379,9 +379,9 @@
    :name "query-map",
    :namespace "clojure.tools.analyzer.ast.query",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L14",
+   "https://github.com/clojure/tools.analyzer/blob/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L14",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   "https://github.com/clojure/tools.analyzer/raw/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/query-map",
    :doc
@@ -393,9 +393,9 @@
    :name "resolve-calls",
    :namespace "clojure.tools.analyzer.ast.query",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L59",
+   "https://github.com/clojure/tools.analyzer/blob/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L59",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   "https://github.com/clojure/tools.analyzer/raw/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/resolve-calls",
    :doc
@@ -407,9 +407,9 @@
    :name "unfold-expression-clauses",
    :namespace "clojure.tools.analyzer.ast.query",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L29",
+   "https://github.com/clojure/tools.analyzer/blob/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L29",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/4b5b23695149ba2200e415221a294be5d1207276/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   "https://github.com/clojure/tools.analyzer/raw/2103d1030a00e15ddc4cf84b379966935eb82660/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/unfold-expression-clauses",
    :doc
