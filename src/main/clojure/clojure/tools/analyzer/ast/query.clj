@@ -74,7 +74,6 @@
                            form)
                          form)) where)))))
 
-
 (defn db
   "Given a list of ASTs, returns a representation of those
    that can be used as a database in a Datomic Datalog query"
