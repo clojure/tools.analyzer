@@ -8,7 +8,7 @@
             [clojure.tools.analyzer.utils :refer [compile-if]]
             [clojure.tools.analyzer.passes.index-vector-nodes :refer [index-vector-nodes]]))
 
-(compile-if (Class/forName "datomic.Datoms")
+(compile-if (Class/forName "datomic.Datom")
  (deftest query
    (let [ast (ast/prewalk (ast (defn x [] "misplaced docstring" 1))
                           index-vector-nodes)]

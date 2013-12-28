@@ -90,5 +90,5 @@
   [query asts & inputs]
   (compile-if (Class/forName "datomic.Datom")
     (do (require '[datomic.api :as d])
-        (apply d/q (unfold-expression-clauses query) (db asts) inputs))
+        (apply (resolve 'datomic.api/q) (unfold-expression-clauses query) (db asts) inputs))
     (throw (Exception. "Datomic is required"))))
