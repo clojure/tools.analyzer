@@ -73,6 +73,7 @@ Shortcuts:<br />
 <span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.add-binding-atom/add-binding-atom">add-binding-atom</a><span id="line-content">             function      clojure.tools.analyzer.passes.add-binding-atom Walks the AST and adds...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer/analyze">analyze</a><span id="line-content">                      function      clojure.tools.analyzer Given a form to analyze and an environment, a ...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer/analyze-in-env">analyze-in-env</a><span id="line-content">               function      clojure.tools.analyzer Takes an env map and returns a function that a...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.ast/ast-&gt;eav">ast-&gt;eav</a><span id="line-content">                     function      clojure.tools.analyzer.ast Returns an EAV representation of the curre...
 </span></span>
   </pre>
 </div><div id="index-body">
@@ -96,7 +97,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="D"><span id="section-head">D</span></h2>
   <pre>
-
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.ast.query/db">db</a><span id="line-content">                           function      clojure.tools.analyzer.ast.query Given a list of ASTs, returns a repr...
+</span></span>
   </pre>
 </div><div id="index-body">
   <h2 id="E"><span id="section-head">E</span></h2>
@@ -174,12 +176,15 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="Q"><span id="section-head">Q</span></h2>
   <pre>
-
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.ast.query/q">q</a><span id="line-content">                            function      clojure.tools.analyzer.ast.query Execute a Datomic Datalog query agai...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.ast.query/query-map">query-map</a><span id="line-content">                    function      clojure.tools.analyzer.ast.query Transoforms a Datomic query from its...
+</span></span>
   </pre>
 </div><div id="index-body">
   <h2 id="R"><span id="section-head">R</span></h2>
   <pre>
-
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.ast.query/resolve-calls">resolve-calls</a><span id="line-content">                function      clojure.tools.analyzer.ast.query Automatically replace fn name symbol...
+</span></span>
   </pre>
 </div><div id="index-body">
   <h2 id="S"><span id="section-head">S</span></h2>
@@ -197,7 +202,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="U"><span id="section-head">U</span></h2>
   <pre>
-<span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.uniquify/uniquify-locals">uniquify-locals</a><span id="line-content">              function      clojure.tools.analyzer.passes.uniquify Walks the AST performing alpha...
+<span id="section-content"> <a href="index.html#clojure.tools.analyzer.ast.query/unfold-expression-clauses">unfold-expression-clauses</a><span id="line-content">    function      clojure.tools.analyzer.ast.query Given a Datomic query, walk the :whe...
+</span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.passes.uniquify/uniquify-locals">uniquify-locals</a><span id="line-content">              function      clojure.tools.analyzer.passes.uniquify Walks the AST performing alpha...
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.utils/update!">update!</a><span id="line-content">                      macro         clojure.tools.analyzer.utils Shortrand for (set! x (f x a0 .. an)).
 </span></span><span id="section-content"> <a href="index.html#clojure.tools.analyzer.ast/update-children">update-children</a><span id="line-content">              function      clojure.tools.analyzer.ast Applies `f` to the nodes in the AST nodes ...
 </span></span>

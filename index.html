@@ -87,6 +87,9 @@ namespace.
   </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#clojure.tools.analyzer.ast" style="margin-top: 3px;">clojure.tools.analyzer.ast</a>
     <div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/ast-&gt;eav">ast-&gt;eav</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/children">children</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
@@ -109,6 +112,24 @@ namespace.
       
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/walk">walk</a>
+      
+    </div>
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#clojure.tools.analyzer.ast.query" style="margin-top: 3px;">clojure.tools.analyzer.ast.query</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast.query/db">db</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast.query/q">q</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast.query/query-map">query-map</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast.query/resolve-calls">resolve-calls</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast.query/unfold-expression-clauses">unfold-expression-clauses</a>
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
@@ -369,6 +390,18 @@ else returns form.</pre>
   <div id="var-entry">
     <br />
     <hr />
+    <h2 id="clojure.tools.analyzer.ast/ast-&gt;eav">ast-&gt;eav</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (ast-&gt;eav ast)
+</pre>
+    <pre id="var-docstr">Returns an EAV representation of the current AST that can be used by
+Datomic's Datalog.</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L84" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
     <h2 id="clojure.tools.analyzer.ast/children">children</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (children ast)
@@ -378,7 +411,7 @@ The children expressions are kept in order and flattened so that the returning
 vector contains only nodes and not vectors of nodes.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L32" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L32" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -391,7 +424,7 @@ The returned vector returns the childrens in the order as they appear in the
 :children field of the AST, and may be either a node or a vector of nodes.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L24" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L24" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -403,7 +436,7 @@ The returned vector returns the childrens in the order as they appear in the
 applied to the AST until applying it another time will have no effect</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L12" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L12" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -414,7 +447,7 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L78" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L78" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -426,7 +459,7 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Shorthand for (walk ast identity f reversed?)</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L71" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L71" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -437,7 +470,7 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Shorthand for (walk ast f identity)</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L66" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L66" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -452,7 +485,7 @@ children nodes and then applies `fix` to the update children.
 An example of a useful `fix` function is `rseq`.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L40" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L40" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -466,7 +499,88 @@ If reversed? is not-nil, pre and post will be applied starting from the last
 children of the AST node to the first one.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L55" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L55" id="var-source">Source</a>
+  </div>
+</div>
+<br />
+<h2 id="clojure.tools.analyzer.ast.query">clojure.tools.analyzer.ast.query</h2>
+<pre id="namespace-docstr">Utilities for querying tools.analyzer ASTs with Datomic</pre>
+
+
+<br />
+
+
+<div id="var-section">
+  <p></p>
+  <h2>Public Variables and Functions</h2>
+  <div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.ast.query/db">db</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (db asts)
+</pre>
+    <pre id="var-docstr">Given a list of ASTs, returns a representation of those
+that can be used as a database in a Datomic Datalog query</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L78" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.ast.query/q">q</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (q query asts &amp; inputs)
+</pre>
+    <pre id="var-docstr">Execute a Datomic Datalog query against the ASTs.
+The first input is always assumed to be an AST database, if more
+are required, it's required to call `db` on them.
+`unfold-expression-clauses` is automatically applied to the
+query.</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L84" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.ast.query/query-map">query-map</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (query-map query)
+</pre>
+    <pre id="var-docstr">Transoforms a Datomic query from its vector representation to its map one.
+If the given query is already in its map representation, the original query
+is returned.</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L14" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.ast.query/resolve-calls">resolve-calls</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (resolve-calls query)
+</pre>
+    <pre id="var-docstr">Automatically replace fn name symbols in expression clauses with
+their namespace qualified one if the symbol can be resolved in the
+current namespace.</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L59" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.ast.query/unfold-expression-clauses">unfold-expression-clauses</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (unfold-expression-clauses query)
+</pre>
+    <pre id="var-docstr">Given a Datomic query, walk the :where clauses searching for
+expression clauses with nested calls, unnesting those calls.
+
+E.g {:where [[(inc (dec ?foo)) ?bar] ..] ..} will be transformed in
+{:where [[(dec ?foo) ?1234] [(inc ?1234) ?bar] ..] ..}</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L29" id="var-source">Source</a>
   </div>
 </div>
 <br />

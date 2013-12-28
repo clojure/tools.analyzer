@@ -7,11 +7,17 @@
    :doc
    "Analyzer for clojure code, host agnostic.\n\nEntry point:\n* analyze\n\nPlatform implementers must provide dynamic bindings for:\n* macroexpand-1\n* parse\n* create-var\n* var?\n\nSee clojure.tools.analyzer.core-test for an example on how to setup the analyzer."}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.ast-api.html",
    :name "clojure.tools.analyzer.ast",
    :doc "Utilities for AST walking/updating"}
+  {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.ast.query-api.html",
+   :name "clojure.tools.analyzer.ast.query",
+   :doc "Utilities for querying tools.analyzer ASTs with Datomic"}
   {:source-url
    "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
@@ -218,12 +224,26 @@
    :line 105,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
   {:arglists ([ast]),
+   :name "ast->eav",
+   :namespace "clojure.tools.analyzer.ast",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L84",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/ast->eav",
+   :doc
+   "Returns an EAV representation of the current AST that can be used by\nDatomic's Datalog.",
+   :var-type "function",
+   :line 84,
+   :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
+  {:arglists ([ast]),
    :name "children",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L32",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L32",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/children",
    :doc
@@ -235,9 +255,9 @@
    :name "children*",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L24",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L24",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/children*",
    :doc
@@ -249,9 +269,9 @@
    :name "cycling",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L12",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L12",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/cycling",
    :doc
@@ -263,9 +283,9 @@
    :name "nodes",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L78",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L78",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/nodes",
    :doc
@@ -277,9 +297,9 @@
    :name "postwalk",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L71",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L71",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/postwalk",
    :doc "Shorthand for (walk ast identity f reversed?)",
@@ -290,9 +310,9 @@
    :name "prewalk",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L66",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L66",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/prewalk",
    :doc "Shorthand for (walk ast f identity)",
@@ -303,9 +323,9 @@
    :name "update-children",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L40",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L40",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/update-children",
    :doc
@@ -317,9 +337,9 @@
    :name "walk",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj#L55",
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj#L55",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/walk",
    :doc
@@ -327,6 +347,76 @@
    :var-type "function",
    :line 55,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
+  {:arglists ([asts]),
+   :name "db",
+   :namespace "clojure.tools.analyzer.ast.query",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L78",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/db",
+   :doc
+   "Given a list of ASTs, returns a representation of those\nthat can be used as a database in a Datomic Datalog query",
+   :var-type "function",
+   :line 78,
+   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
+  {:arglists ([query asts & inputs]),
+   :name "q",
+   :namespace "clojure.tools.analyzer.ast.query",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L84",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/q",
+   :doc
+   "Execute a Datomic Datalog query against the ASTs.\nThe first input is always assumed to be an AST database, if more\nare required, it's required to call `db` on them.\n`unfold-expression-clauses` is automatically applied to the\nquery.",
+   :var-type "function",
+   :line 84,
+   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
+  {:arglists ([query]),
+   :name "query-map",
+   :namespace "clojure.tools.analyzer.ast.query",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L14",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/query-map",
+   :doc
+   "Transoforms a Datomic query from its vector representation to its map one.\nIf the given query is already in its map representation, the original query\nis returned.",
+   :var-type "function",
+   :line 14,
+   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
+  {:arglists ([query]),
+   :name "resolve-calls",
+   :namespace "clojure.tools.analyzer.ast.query",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L59",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/resolve-calls",
+   :doc
+   "Automatically replace fn name symbols in expression clauses with\ntheir namespace qualified one if the symbol can be resolved in the\ncurrent namespace.",
+   :var-type "function",
+   :line 59,
+   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
+  {:arglists ([query]),
+   :name "unfold-expression-clauses",
+   :namespace "clojure.tools.analyzer.ast.query",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L29",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/651c1899519de94c748063adaa9a1bffb133e487/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/unfold-expression-clauses",
+   :doc
+   "Given a Datomic query, walk the :where clauses searching for\nexpression clauses with nested calls, unnesting those calls.\n\nE.g {:where [[(inc (dec ?foo)) ?bar] ..] ..} will be transformed in\n{:where [[(dec ?foo) ?1234] [(inc ?1234) ?bar] ..] ..}",
+   :var-type "function",
+   :line 29,
+   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
   {:arglists ([ast]),
    :name "add-binding-atom",
    :namespace "clojure.tools.analyzer.passes.add-binding-atom",
