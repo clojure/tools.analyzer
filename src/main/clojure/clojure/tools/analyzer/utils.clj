@@ -107,6 +107,15 @@
    (when-let [column (get-col x env)]
      {:column column})))
 
+(defn source-info [{:keys [file line column]}]
+  (merge {}
+         (when file
+           {:file file})
+         (when line
+           {:line line})
+         (when column
+           {:column column})))
+
 (defn const-val [{:keys [op val expr]}]
   (if (= :quote op)
     (:val expr)

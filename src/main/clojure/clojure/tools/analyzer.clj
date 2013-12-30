@@ -205,7 +205,7 @@
                        {:op    :maybe-host-form
                         :class maybe-class
                         :field (symbol (name sym))}
-                       (throw (ex-info (str "could not resolve var: " sym)
+                       (throw (ex-info (str "Could not resolve var: " sym)
                                        (merge {:var mform}
                                               (-source-info sym env))))))
                    {:op    :maybe-class ;; e.g. java.lang.Integer or Long
@@ -696,7 +696,7 @@
         call? (and (not field?) (seq? m-or-f))]
 
     (when (and call? (not (symbol? (first m-or-f))))
-      (throw (ex-info (str "method name must be a symbol, had: " (class (first m-or-f)))
+      (throw (ex-info (str "Method name must be a symbol, had: " (class (first m-or-f)))
                       (merge {:form   form
                               :method m-or-f}
                              (-source-info form env)))))
