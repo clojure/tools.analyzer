@@ -187,7 +187,7 @@
 
 (defmethod -analyze :symbol
   [_ sym env]
-  (let [mform (macroexpand-1 sym env)]
+  (let [mform (macroexpand-1 sym env)] ;; t.a.j/macroexpand-1 macroexpands Class/Field into (. Class Field)
     (if (= mform sym)
       (merge (if-let [{:keys [mutable children] :as local-binding} (-> env :locals sym)]
                (merge (dissoc local-binding :init)
@@ -206,7 +206,8 @@
                         :class maybe-class
                         :field (symbol (name sym))}
                        (throw (ex-info (str "could not resolve var: " sym)
-                                       {:var mform}))))
+                                       (merge {:var mform}
+                                              (-source-info sym env))))))
                    {:op    :maybe-class ;; e.g. java.lang.Integer or Long
                     :class mform})))
              {:env  env
@@ -248,8 +249,10 @@
 
 (defmethod -parse 'if
   [[_ test then else :as form] env]
-  {:pre [(or (= 3 (count form))
-             (= 4 (count form)))]}
+  (when-not (<= 3 (count form) 4)
+    (throw (ex-info (str "Wrong number of args to if, had: " (dec (count form)))
+                    (merge {:form form}
+                           (-source-info form env)))))
   (let [test-expr (analyze test (ctx env :expr))
         then-expr (analyze then env)
         else-expr (analyze else env)]
@@ -263,7 +266,10 @@
 
 (defmethod -parse 'new
   [[_ class & args :as form] env]
-  {:pre [(>= (count form) 2)]}
+  (when-not (>= (count form) 2)
+    (throw (ex-info (str "Wrong number of args to new, had: " (dec (count form)))
+                    (merge {:form form}
+                           (-source-info form env)))))
   (let [args-env (ctx env :expr)
         args (mapv (analyze-in-env args-env) args)]
     {:op          :new
@@ -275,6 +281,10 @@
 
 (defmethod -parse 'quote
   [[_ expr :as form] env]
+  (when-not (<= 1 (count form) 2)
+    (throw (ex-info (str "Wrong number of args to quote, had: " (dec (count form)))
+                    (merge {:form form}
+                           (-source-info form env)))))
   (let [const (-analyze :const expr (assoc env :quoted? true))]
     {:op       :quote
      :expr     const
@@ -285,7 +295,10 @@
 
 (defmethod -parse 'set!
   [[_ target val :as form] env]
-  {:pre [(= (count form) 3)]}
+  (when-not (= 3 (count form))
+    (throw (ex-info (str "Wrong number of args to set!, had: " (dec (count form)))
+                    (merge {:form form}
+                           (-source-info form env)))))
   (let [target (analyze target (ctx env :expr))
         val (analyze val (ctx env :expr))]
     {:op       :set!
@@ -303,11 +316,15 @@
         [cblocks tail] (split-with catch? tail)
         [[fblock & fbs :as fblocks] tail] (split-with finally? tail)]
     (when-not (empty? tail)
-      (throw (ex-info "only catch or finally clause can follow catch in try expression"
-                      {:expr tail})))
+      (throw (ex-info "Only catch or finally clause can follow catch in try expression"
+                      (merge {:expr tail
+                              :form form}
+                             (-source-info form env)))))
     (when-not (empty? fbs)
-      (throw (ex-info "only one finally clause allowed in try expression"
-                      {:expr fblocks})))
+      (throw (ex-info "Only one finally clause allowed in try expression"
+                      (merge {:expr fblocks
+                              :form form}
+                             (-source-info form env)))))
     (let [body (parse (cons 'do body) (assoc env :in-try true :no-recur true))
           cenv (ctx env :expr)
           cblocks (mapv #(parse % cenv) cblocks)
@@ -339,27 +356,54 @@
        :form        form
        :body        (parse (cons 'do body) (assoc-in env [:locals ename] local))
        :children    [:local :body]})
-    (throw (ex-info (str "invalid binding form: " ename) {:sym ename}))))
+    (throw (ex-info (str "Bad binding form: " ename)
+                    (merge {:sym ename
+                            :form form}
+                           (-source-info form env))))))
 
 (defmethod -parse 'throw
   [[_ throw :as form] env]
+  (when-not (= 2 (count form))
+    (throw (ex-info (str "Wrong number of args to throw, had: " (dec (count form)))
+                    (merge {:form form}
+                           (-source-info form env)))))
   {:op        :throw
    :env       env
    :form      form
    :exception (analyze throw (ctx env :expr))
    :children  [:exception]})
 
+(defn validate-bindings
+  [[op bindings & _ :as form] env]
+  (when-let [error-msg
+             (cond
+              (not (vector? bindings))
+              (str op " requires a vector for its bindings, had: "
+                   (class bindings))
+
+              (not (even? (count bindings)))
+              (str op " requires an even number of forms in binding vector, had: "
+                   (count bindings))
+
+              :else nil)]
+    (throw (ex-info error-msg
+                    (merge {:form     form
+                            :bindings bindings}
+                           (-source-info form env))))))
+
 (defmethod -parse 'letfn*
   [[_ bindings & body :as form] {:keys [context] :as env}]
-  {:pre [(vector? bindings)
-         (even? (count bindings))]}
+  (validate-bindings form env)
   (let [bindings (apply hash-map bindings)
         fns (keys bindings)]
     (when-not (every? #(and (symbol? %)
                        (not (namespace %)))
                  fns)
-      (throw (ex-info (str "bad binding form: " (first (remove symbol? fns)))
-                      {:form form})))
+      (let [sym (first (remove symbol? fns))]
+        (throw (ex-info (str "Bad binding form: " sym)
+                        (merge {:form form
+                                :sym sym}
+                               (-source-info form env))))))
     (let [binds (reduce (fn [binds name]
                           (assoc binds name
                                  {:op    :binding
@@ -387,17 +431,19 @@
 
 (defn analyze-let
   [[op bindings & body :as form] {:keys [context loop-id] :as env}]
-  {:pre [(vector? bindings)
-         (even? (count bindings))]}
+  (validate-bindings form env)
   (let [loop? (= 'loop* op)]
     (loop [bindings (seq (partition 2 bindings))
            env (ctx env :expr)
            binds []]
       (if-let [[name init] (first bindings)]
-        (if (or (namespace name)
+        (if (or (not (symbol name))
+                (namespace name)
                 (.contains (str name) "."))
-          (throw (ex-info (str "invalid binding form: " name)
-                          {:sym name}))
+          (throw (ex-info (str "Bad binding form: " name)
+                          (merge {:form form
+                                  :sym  name}
+                                 (-source-info form env))))
           (let [init-expr (analyze init env)
                 bind-expr {:op       :binding
                            :env      env
@@ -441,10 +487,24 @@
 (defmethod -parse 'recur
   [[_ & exprs :as form] {:keys [context loop-locals loop-id no-recur]
                          :as env}]
-  {:pre [(= :return context)
-         loop-locals
-         (not no-recur)
-         (= (count exprs) (count loop-locals))]}
+  (when-let [error-msg
+             (cond
+              (not (= :return context))
+              "Can only recur from tail position"
+
+              no-recur
+              "Cannot recur across try"
+
+              (not (= (count exprs) (count loop-locals)))
+              (str "Mismatched argument count to recur, expected: " (count loop-locals)
+                   " args, had: " (count exprs))
+
+              :else nil)]
+    (throw (ex-info error-msg
+                    (merge {:exprs exprs
+                            :form  form}
+                           (-source-info form env)))))
+
   (let [exprs (mapv (analyze-in-env (ctx env :expr))
                     exprs)]
     {:op          :recur
@@ -455,10 +515,22 @@
      :children    [:exprs]}))
 
 (defn analyze-fn-method [[params & body :as form] {:keys [locals local] :as env}]
-  {:pre [(every? symbol? params)]}
-  (when (some namespace params)
-    (throw (ex-info (str "unexpected namespace in parameter(s).  One possible source of mistake is a macro with x# in most places but x in a parameter list: " (seq (filter namespace params)))
-                    {:params params})))
+  (when-let [error-msg
+             (cond
+              (not (every? symbol? params))
+              (str "Params must be symbols, had: "
+                   (mapv class params))
+
+              (some namespace params)
+              (str "Unexpected namespace in parameter(s) name: "
+                   (seq (filter namespace params)))
+
+              :else nil)]
+    (throw (ex-info error-msg
+                    (merge {:params params
+                            :form   form}
+                           (-source-info form env)
+                           (-source-info params env))))) ;; more specific
   (let [variadic? (boolean (some '#{&} params))
         params-names (vec (remove '#{&} params))
         env (dissoc env :local)
@@ -486,8 +558,12 @@
     (when variadic?
       (let [x (drop-while #(not= % '&) params)]
         (when (not= 2 (count x))
-          (throw (ex-info (str "unexpected parameter: " (first (drop 2 x)))
-                          {:params params})))))
+          (throw (ex-info (str "Unexpected parameter: " (first (drop 2 x))
+                               " after variadic parameter: " (second x))
+                          (merge {:params params
+                                  :form   form}
+                                 (-source-info form env)
+                                 (-source-info params env)))))))
     (merge
      {:op          :fn-method
       :form        form
@@ -522,17 +598,21 @@
         fixed-arities (seq (map :fixed-arity (remove :variadic? methods-exprs)))
         max-fixed-arity (when fixed-arities (apply max fixed-arities))]
     (when (>= (count variadic) 2)
-      (throw (ex-info "can't have more than 1 variadic overload"
-                      {:variadics (mapv :form variadic)})))
+      (throw (ex-info "Can't have more than 1 variadic overload"
+                      (merge {:variadics (mapv :form variadic)
+                              :form      form}
+                             (-source-info form env)))))
     (when (not= (seq (distinct fixed-arities)) fixed-arities)
-      (throw (ex-info "can't have 2 overloads with the same arity"
-                      {:form form})))
+      (throw (ex-info "Can't have 2 or more overloads with the same arity"
+                      (merge {:form form}
+                             (-source-info form env)))))
     (when (and variadic?
                (not-every? #(<= (:fixed-arity %)
                           (:fixed-arity (first variadic)))
                       (remove :variadic? methods-exprs)))
-      (throw (ex-info "Can't have fixed arity function with more params than variadic function"
-                      {:form form})))
+      (throw (ex-info "Can't have fixed arity overload with more params than variadic overload"
+                      (merge {:form form}
+                             (-source-info form env)))))
     (merge {:op              :fn
             :env             env
             :form            form
@@ -546,9 +626,16 @@
 
 (defmethod -parse 'def
   [[_ sym & expr :as form] {:keys [ns namespaces] :as env}]
-  {:pre [(symbol? sym)
-         (or (not (namespace sym))
-             (= *ns* (the-ns (symbol (namespace sym)))))]}
+  (when (not (symbol? sym))
+    (throw (ex-info (str "First argument to def must be a symbol, had: " (class sym))
+                    (merge {:form form}
+                           (-source-info form env)))))
+  (when (and (namespace sym)
+             (not= *ns* (the-ns (symbol (namespace sym)))))
+    (throw (ex-info "Cannot def namespace qualified symbol")
+           (merge {:form form
+                   :sym sym}
+                  (-source-info form env))))
   (let [pfn (fn
               ([])
               ([init]
@@ -597,7 +684,10 @@
 
 (defmethod -parse '.
   [[_ target & [m-or-f & args] :as form] env]
-  {:pre [(>= (count form) 3)]}
+  (when (>= (count form) 4)
+    (throw (ex-info (str "Wrong number of args to ., had: " (dec (count form)))
+                    (merge {:form form}
+                           (-source-info form env)))))
   (let [[m-or-f field?] (if (and (symbol? m-or-f)
                                  (= \- (first (name m-or-f))))
                           [(-> m-or-f name (subs 1) symbol) true]
@@ -607,7 +697,9 @@
 
     (when (and call? (not (symbol? (first m-or-f))))
       (throw (ex-info (str "method name must be a symbol, had: " (class (first m-or-f)))
-                      {:form form})))
+                      (merge {:form   form
+                              :method m-or-f}
+                             (-source-info form env)))))
     (merge {:form form
             :env  env}
            (cond

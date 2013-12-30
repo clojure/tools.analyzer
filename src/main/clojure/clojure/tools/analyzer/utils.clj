@@ -83,9 +83,8 @@
       (when (or (not sym-ns) full-ns)
         (-> (@namespaces (or full-ns ns)) :mappings (get name))))))
 
-;; should also use :variadic? and :max-fixed-arity
 (defn arglist-for-arity [fn argc]
-  (let [arglists (->> fn :arglists (sort-by count)) ;; :init :arglists when vars won't map to Vars
+  (let [arglists (->> fn :arglists (sort-by count))
         arglist (->> arglists (filter #(= argc (count %))) first)
         last-arglist (last arglists)]
     (or arglist
@@ -112,7 +111,6 @@
   (if (= :quote op)
     (:val expr)
     val))
-
 
 (defmacro compile-if
   [exp then & else]
