@@ -383,9 +383,7 @@
 
               (not (even? (count bindings)))
               (str op " requires an even number of forms in binding vector, had: "
-                   (count bindings))
-
-              :else nil)]
+                   (count bindings)))]
     (throw (ex-info error-msg
                     (merge {:form     form
                             :bindings bindings}
@@ -497,9 +495,7 @@
 
               (not (= (count exprs) (count loop-locals)))
               (str "Mismatched argument count to recur, expected: " (count loop-locals)
-                   " args, had: " (count exprs))
-
-              :else nil)]
+                   " args, had: " (count exprs)))]
     (throw (ex-info error-msg
                     (merge {:exprs exprs
                             :form  form}
@@ -523,9 +519,7 @@
 
               (some namespace params)
               (str "Unexpected namespace in parameter(s) name: "
-                   (seq (filter namespace params)))
-
-              :else nil)]
+                   (seq (filter namespace params))))]
     (throw (ex-info error-msg
                     (merge {:params params
                             :form   form}
@@ -684,7 +678,7 @@
 
 (defmethod -parse '.
   [[_ target & [m-or-f & args] :as form] env]
-  (when (>= (count form) 4)
+  (when-not (>= (count form) 3)
     (throw (ex-info (str "Wrong number of args to ., had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
