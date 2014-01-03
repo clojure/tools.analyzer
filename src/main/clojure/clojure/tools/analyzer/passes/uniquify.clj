@@ -27,19 +27,24 @@
 (defn uniquify-locals* [ast]
   (update-children ast -uniquify-locals))
 
+(defn update-loop-locals [ast]
+  (update-in ast 
+             [:env :loop-locals] 
+             (partial mapv normalize)))
+
 (defmethod -uniquify-locals :fn
   [{:keys [name] :as ast}]
   (binding [*locals-frame* *locals-frame*]
     (when name
       (uniquify name))
-    (uniquify-locals* ast)))
+    (-> ast uniquify-locals* update-loop-locals)))
 
 (defmethod -uniquify-locals :local
   [{:keys [name local init] :as ast}]
   (if (not= :field local)
     (let [name (normalize name)]
-      (assoc ast :name name))
-    ast))
+      (update-loop-locals (assoc ast :name name)))
+    (update-loop-locals ast)))
 
 (defn uniquify-binding
   [{:keys [init name] :as b}]
@@ -55,23 +60,23 @@
   [{:keys [name local] :as ast}]
   (case local
     (:let :letfn :loop)
-    (uniquify-binding ast)
+    (-> ast uniquify-binding update-loop-locals)
 
     :field
-    ast
+    (update-loop-locals ast)
 
     :fn
     (assoc ast :name (normalize name))
 
     (do (uniquify name)
-        (assoc ast :name (normalize name)))))
+        (update-loop-locals (assoc ast :name (normalize name))))))
 
 (defmethod -uniquify-locals :default
   [ast]
   (if (some (comp #{:binding} :op) (children ast))
     (binding [*locals-frame* *locals-frame*]
-      (uniquify-locals* ast))
-    (uniquify-locals* ast)))
+      (-> ast uniquify-locals* update-loop-locals))
+    (-> ast uniquify-locals* update-loop-locals)))
 
 (defn uniquify-locals
   "Walks the AST performing alpha-conversion on local
