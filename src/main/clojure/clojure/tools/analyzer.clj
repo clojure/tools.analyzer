@@ -626,10 +626,10 @@
                            (-source-info form env)))))
   (when (and (namespace sym)
              (not= *ns* (the-ns (symbol (namespace sym)))))
-    (throw (ex-info "Cannot def namespace qualified symbol")
-           (merge {:form form
-                   :sym sym}
-                  (-source-info form env))))
+    (throw (ex-info "Cannot def namespace qualified symbol"
+                    (merge {:form form
+                            :sym sym}
+                           (-source-info form env)))))
   (let [pfn (fn
               ([])
               ([init]
