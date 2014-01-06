@@ -646,16 +646,15 @@
                     (-source-info form env)
                     (when doc {:doc doc}))
 
+        var (create-var sym env)
+        _ (swap! namespaces assoc-in [ns :mappings sym] var)
+
         sym (with-meta (symbol (name sym))
               meta)
-        env (assoc env :name sym)
-
         sym (if arglists
               (vary-meta sym assoc :arglists arglists)
               sym)
-
-        var (create-var sym env)
-        _ (swap! namespaces assoc-in [ns :mappings sym] var)
+        env (assoc env :name sym)
 
         meta-expr (when meta (analyze meta
                                       (ctx env :expr)))
