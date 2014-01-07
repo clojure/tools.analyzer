@@ -6,12 +6,23 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.passes.trim-do)
+(ns clojure.tools.analyzer.passes.trim)
 
-(defn trim-do
-  "Replaces :do nodes with no :statements with their :ret expression"
-  [{:keys [op ret statements] :as ast}]
-  (if (and (= :do op)
-           (empty? statements))
+
+(defmulti trim :op)
+(defmethod trim :default [ast] ast)
+
+(defmethod trim :do
+  [{:keys [statements ret] :as ast}]
+  (if (or (and (every? :literal? statements)
+               (:literal? ret))
+          (empty? statements))
     ret
+    ast))
+
+(defmethod trim :let
+  [{:keys [bindings body] :as ast}]
+  (if (and (every? (comp :literal? :init) bindings)
+           (:literal? body))
+    body
     ast))
