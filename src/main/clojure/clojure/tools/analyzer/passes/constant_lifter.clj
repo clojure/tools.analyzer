@@ -53,4 +53,18 @@
         :form form))
     ast))
 
+(defmethod constant-lift :do
+  [{:keys [statements ret] :as ast}]
+  (if (and (every? :literal? statements)
+           (:literal? ret))
+    ret
+    ast))
+
+(defmethod constant-lift :let
+  [{:keys [bindings body] :as ast}]
+  (if (and (every? :literal? bindings)
+           (:literal? body))
+    body
+    ast))
+
 (defmethod constant-lift :default [ast] ast)
