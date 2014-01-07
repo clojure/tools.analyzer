@@ -8,13 +8,15 @@
 
 (ns clojure.tools.analyzer.passes.collect
   (:require [clojure.tools.analyzer.utils :refer [protocol-node? update!]]
-            [clojure.tools.analyzer.ast :refer [postwalk]]))
+            [clojure.tools.analyzer.ast :refer [update-children]]))
 
 (def ^:private ^:dynamic *collects*
   {:constants           {}
-   :closed-overs        {}
    :protocol-callsites #{}
-   :keyword-callsites  #{}})
+   :keyword-callsites  #{}
+   :where              #{}
+   :what               #{}
+   :closed-overs        {}})
 
 (defn -register-constant
   [form tag type]
@@ -30,65 +32,103 @@
                     :type type})
           id))))
 
-(defn -collect-constants
-  [{:keys [op var val tag type] :as ast}]
-  (if (and (= op :const)
-           (not= type :nil)
+(defmulti -collect-const       :op)
+(defmulti -collect-callsite    :op)
+(defmulti -collect-closed-over :op)
+
+(defmethod -collect-const       :default [ast] ast)
+(defmethod -collect-callsite    :default [ast] ast)
+(defmethod -collect-closed-over :default [ast] ast)
+
+(defmethod -collect-const :const
+  [{:keys [val tag type] :as ast}]
+  (if (and (not= type :nil)
            (not= type :boolean))
     (let [id (-register-constant val tag type)]
-      (assoc ast :id id))
-    (if (#{:def :var :the-var} op)
-      (let [id (-register-constant var clojure.lang.Var :var)]
-        (assoc ast :id id))
-      ast)))
+      (assoc ast :id id))))
 
-(defn -collect-callsites
-  [{:keys [op fn] :as ast}]
-  (when (= :keyword-invoke op)
-    (update! *collects* update-in [:keyword-callsites] conj (:form fn)))
+(defmethod -collect-const :def
+  [{:keys [var] :as ast}]
+  (let [id (-register-constant var clojure.lang.Var :var)]
+    (assoc ast :id id)))
 
-  (when (= :protocol-invoke op)
-    (update! *collects* update-in [:protocol-callsites] conj (:var fn)))
+(defmethod -collect-const :var
+  [{:keys [var] :as ast}]
+  (let [id (-register-constant var clojure.lang.Var :var)]
+    (assoc ast :id id)))
+
+(defmethod -collect-const :the-var
+  [{:keys [var] :as ast}]
+  (let [id (-register-constant var clojure.lang.Var :var)]
+    (assoc ast :id id)))
+
+(defmethod -collect-callsite :keyword-invoke
+  [{:keys [fn] :as ast}]
+  (update! *collects* update-in [:keyword-callsites] conj (:form fn))
   ast)
 
-(defmulti -collect-closed-overs :op)
-(defmethod -collect-closed-overs :default [ast] ast)
+(defmethod -collect-callsite :protocol-invoke
+  [{:keys [fn] :as ast}]
+  (update! *collects* update-in [:protocol-callsites] conj (:form fn))
+  ast)
 
-(defmethod -collect-closed-overs :local
+(defmethod -collect-closed-over :local
   [{:keys [op name] :as ast}]
-  (update! *collects* update-in [:closed-overs] assoc name (dissoc ast :env))
+  (update! *collects* update-in [:closed-overs] assoc name (dissoc ast :env :atom))
   ast)
 
-(defmethod -collect-closed-overs :binding
+(defmethod -collect-closed-over :binding
   [{:keys [init name tag] :as ast}]
   (update! *collects* update-in [:closed-overs] dissoc name)
-  (when init
-    (-collect-closed-overs init)) ;; since we're in a postwalk, a bit of trickery is necessary
   ast)
 
-(defmethod -collect-closed-overs :fn-method
+(defmethod -collect-closed-over :fn-method
   [{:keys [params] :as ast}]
   (update! *collects* update-in [:closed-overs]
            #(apply dissoc % (mapv :name params)))
   ast)
 
-(defmethod -collect-closed-overs :method
+(defmethod -collect-closed-over :method
   [{:keys [params] :as ast}]
   (update! *collects* update-in [:closed-overs]
            #(apply dissoc % (mapv :name params)))
   ast)
 
-(defmethod -collect-closed-overs :fn
+(defmethod -collect-closed-over :fn
   [{:keys [name] :as ast}]
   (update! *collects* update-in [:closed-overs] dissoc name)
   ast)
 
 (defn collect-fns [what]
   (case what
-    :constants    -collect-constants
-    :closed-overs -collect-closed-overs
-    :callsites    -collect-callsites
+    :constants    -collect-const
+    :closed-overs -collect-closed-over
+    :callsites    -collect-callsite
     nil))
+
+(defn merge-collects [{:keys [op fields] :as ast}]
+  (let [{:keys [where what]} *collects*]
+    (merge ast (select-keys *collects* what)
+           (when (and (= :deftype op)
+                      (:closed-overs what))
+             {:closed-overs
+              (zipmap (mapv :name fields)
+                      (map (fn [ast] (dissoc ast :env)) fields))}))))
+
+(defn -collect [{:keys [op] :as ast} collect-fn]
+  (let [{:keys [where what]} *collects*
+        collect? (where op)
+
+        ast (with-bindings
+              (if collect? {#'*collects* *collects*} {})
+              (let [ast (-> ast (update-children #(-collect % collect-fn) (comp vec rseq))
+                           collect-fn)]
+                (if collect?
+                  (merge-collects ast)
+                  ast)))]
+    (when (and collect? (:closed-overs what) (not (= :deftype op)))
+      (update! *collects* update-in [:closed-overs] merge (:closed-overs ast)))
+    ast))
 
 (defn collect
   "Takes a map with:
@@ -98,24 +138,10 @@
      ** :callsites     keyword and protocol callsites
    * :where       set of :op nodes where to attach collected info
    * :top-level?  if true attach collected info to the top-level node"
-  [{:keys [what where top-level?]}]
+  [{:keys [what top-level?] :as opts}]
   (fn [ast]
-    (binding [*collects* *collects*]
-      (let [f              (apply comp (keep collect-fns what))
-            merge-collects (fn [{:keys [op] :as ast}]
-                             (into ast (merge *collects*
-                                              (when (and (= :deftype op)
-                                                         (:closed-overs what))
-                                                {:closed-overs
-                                                 (zipmap (mapv :name (:fields ast))
-                                                         (map (fn [ast] (dissoc ast :env))
-                                                              (:fields ast)))}))))
-            collect*       (fn [{:keys [op] :as ast}]
-                             (let [ast (f ast)]
-                               (if (where op)
-                                 (merge-collects ast)
-                                 ast)))
-            ast            (postwalk ast collect* :reversed)]
+    (binding [*collects* (merge *collects* opts)]
+      (let [ast (-collect ast (apply comp (keep collect-fns what)))]
         (if top-level?
           (merge-collects ast)
           ast)))))

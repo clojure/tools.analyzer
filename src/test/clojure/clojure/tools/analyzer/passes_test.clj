@@ -117,7 +117,7 @@
                        {:form {}
                         :tag  nil
                         :meta nil}}
-                     (-> c-test :constants keys set))) ;; it registers metadata too (line+col info)
+                     (-> c-test :methods first :body :ret :constants keys set))) ;; it registers metadata too (line+col info)
     (is (= '#{a x} (-> c-test :methods first :body :ret :closed-overs keys set)))))
 
 (deftest deeply-nested-uniquify
