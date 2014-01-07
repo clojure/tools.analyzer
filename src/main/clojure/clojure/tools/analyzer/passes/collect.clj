@@ -45,7 +45,8 @@
   (if (and (not= type :nil)
            (not= type :boolean))
     (let [id (-register-constant val tag type)]
-      (assoc ast :id id))))
+      (assoc ast :id id))
+    ast))
 
 (defmethod -collect-const :def
   [{:keys [var] :as ast}]
