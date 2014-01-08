@@ -70,7 +70,7 @@
 
 (defmethod -collect-callsite :protocol-invoke
   [{:keys [fn] :as ast}]
-  (update! *collects* update-in [:protocol-callsites] conj (:form fn))
+  (update! *collects* update-in [:protocol-callsites] conj (:var fn))
   ast)
 
 (defmethod -collect-closed-over :local
