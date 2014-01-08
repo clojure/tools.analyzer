@@ -642,11 +642,12 @@
         doc (or (:doc args) (-> sym meta :doc))
         arglists (when-let [arglists (:arglists (meta sym))]
                    (second arglists)) ;; drop quote
+
+        sym (with-meta (symbol (name sym)) (meta sym))
+
         meta (merge (meta sym)
                     (-source-info form env)
                     (when doc {:doc doc}))
-
-        sym (with-meta (symbol (name sym)) (meta sym))
 
         var (create-var sym env)
         _ (swap! namespaces assoc-in [ns :mappings sym] var)
