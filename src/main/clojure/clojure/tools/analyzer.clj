@@ -646,7 +646,7 @@
                     (-source-info form env)
                     (when doc {:doc doc}))
 
-        sym (symbol (name sym))
+        sym (with-meta (symbol (name sym)) (meta sym))
 
         var (create-var sym env)
         _ (swap! namespaces assoc-in [ns :mappings sym] var)
