@@ -646,11 +646,12 @@
                     (-source-info form env)
                     (when doc {:doc doc}))
 
+        sym (symbol (name sym))
+
         var (create-var sym env)
         _ (swap! namespaces assoc-in [ns :mappings sym] var)
 
-        sym (with-meta (symbol (name sym))
-              meta)
+        sym (with-meta sym meta)
         sym (if arglists
               (vary-meta sym assoc :arglists arglists)
               sym)
