@@ -7,6 +7,7 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.utils
+  (:refer-clojure :exclude [record?])
   (:import (clojure.lang IRecord IType IObj
                          IReference Var)
            java.util.regex.Pattern))
