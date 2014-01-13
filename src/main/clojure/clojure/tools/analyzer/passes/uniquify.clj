@@ -13,7 +13,7 @@
 (def ^:dynamic *locals-frame*)
 
 (defn normalize [name]
-  (if-let [idx (*locals-frame* name)]
+  (if-let [idx (@*locals-frame* name)]
     (symbol (str name "__#" idx))
     name))
 
