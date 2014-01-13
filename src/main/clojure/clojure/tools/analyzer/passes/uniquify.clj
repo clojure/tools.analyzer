@@ -7,11 +7,10 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.uniquify
-  (:require [clojure.tools.analyzer.utils :refer [update!]]
-            [clojure.tools.analyzer.ast :refer [update-children children]]))
+  (:require [clojure.tools.analyzer.ast :refer [update-children children]]))
 
-(def ^:dynamic *locals-counter* {})
-(def ^:dynamic *locals-frame* {})
+(def ^:dynamic *locals-counter*)
+(def ^:dynamic *locals-frame*)
 
 (defn normalize [name]
   (if-let [idx (*locals-frame* name)]
@@ -19,8 +18,8 @@
     name))
 
 (defn uniquify [name]
-  (update! *locals-counter* update-in [name] (fnil inc -1))
-  (update! *locals-frame* assoc-in [name] (*locals-counter* name)))
+  (swap! *locals-counter* update-in [name] (fnil inc -1))
+  (swap! *locals-frame* assoc-in [name] (@*locals-counter* name)))
 
 (defmulti -uniquify-locals :op)
 
@@ -28,13 +27,13 @@
   (update-children ast -uniquify-locals))
 
 (defn update-loop-locals [ast]
-  (update-in ast 
-             [:env :loop-locals] 
+  (update-in ast
+             [:env :loop-locals]
              (partial mapv normalize)))
 
 (defmethod -uniquify-locals :fn
   [{:keys [name] :as ast}]
-  (binding [*locals-frame* *locals-frame*]
+  (binding [*locals-frame* (atom @*locals-frame*)]
     (when name
       (uniquify name))
     (-> ast uniquify-locals* update-loop-locals)))
@@ -48,7 +47,7 @@
 
 (defn uniquify-binding
   [{:keys [init name] :as b}]
-  (let [i (binding [*locals-frame* *locals-frame*]
+  (let [i (binding [*locals-frame* (atom @*locals-frame*)]
             (-uniquify-locals init))]
     (uniquify name)
     (let [name (normalize name)]
@@ -74,7 +73,7 @@
 (defmethod -uniquify-locals :default
   [ast]
   (if (some (comp #{:binding} :op) (children ast))
-    (binding [*locals-frame* *locals-frame*]
+    (binding [*locals-frame* (atom @*locals-frame*)]
       (-> ast uniquify-locals* update-loop-locals))
     (-> ast uniquify-locals* update-loop-locals)))
 
@@ -82,5 +81,6 @@
   "Walks the AST performing alpha-conversion on local
    bindings' :name field"
   [ast]
-  (binding [*locals-counter* *locals-counter*]
+  (binding [*locals-counter* (atom {})
+            *locals-frame*   (atom {})]
     (-uniquify-locals ast)))

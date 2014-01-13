@@ -7,10 +7,9 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.add-binding-atom
-  (:require [clojure.tools.analyzer.ast :refer [prewalk]]
-            [clojure.tools.analyzer.utils :refer [update!]]))
+  (:require [clojure.tools.analyzer.ast :refer [prewalk]]))
 
-(def ^:dynamic ^:private *bindings* {})
+(def ^:dynamic ^:private *bindings*)
 
 (defmulti ^:private -add-binding-atom :op)
 
@@ -19,12 +18,12 @@
 (defmethod -add-binding-atom :binding
   [{:keys [name] :as ast}]
   (let [a (atom {})]
-    (update! *bindings* assoc name a)
+    (swap! *bindings* assoc name a)
     (assoc ast :atom a)))
 
 (defmethod -add-binding-atom :local
   [{:keys [name] :as ast}]
-  (assoc ast :atom (or (*bindings* name)
+  (assoc ast :atom (or (@*bindings* name)
                        (atom {}))))
 
 (defn add-binding-atom
@@ -33,5 +32,5 @@
 
    The atom is put in the :atom field of the node."
   [ast]
-  (binding [*bindings* *bindings*]
+  (binding [*bindings* (atom {})]
     (prewalk ast -add-binding-atom)))
