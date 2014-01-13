@@ -151,9 +151,12 @@
     `(def ~name ~@(when doc [doc]) ~@(when init [(-emit-form* init hygienic?)]))))
 
 (defmethod -emit-form :invoke
-  [{:keys [fn args]} hygienic?]
-  `(~(-emit-form* fn hygienic?)
-    ~@(mapv #(-emit-form* % hygienic?) args)))
+  [{:keys [fn args meta]} hygienic?]
+  (let [expr `(~(-emit-form* fn hygienic?)
+               ~@(mapv #(-emit-form* % hygienic?) args))]
+    (if meta
+      (with-meta expr meta)
+      expr)))
 
 (defmethod -emit-form :try
   [{:keys [body catches finally]} hygienic?]
