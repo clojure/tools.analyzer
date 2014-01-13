@@ -7,25 +7,20 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.collect
-  (:require [clojure.tools.analyzer.utils :refer [protocol-node? update!]]
+  (:require [clojure.tools.analyzer.utils :refer [protocol-node?]]
             [clojure.tools.analyzer.ast :refer [update-children]]))
 
-(def ^:private ^:dynamic *collects*
-  {:constants           {}
-   :protocol-callsites #{}
-   :keyword-callsites  #{}
-   :where              #{}
-   :what               #{}
-   :closed-overs        {}})
+(def ^:private ^:dynamic *collects*)
 
 (defn -register-constant
   [form tag type]
   (let [key {:form form
              :meta (meta form)
-             :tag  tag}]
-    (or (:id ((:constants *collects*) key))
-        (let [id (count (:constants *collects*))]
-          (update! *collects* assoc-in [:constants key]
+             :tag  tag}
+        {:keys [constants]} @*collects*]
+    (or (:id (constants key))
+        (let [id (count constants)]
+          (swap! *collects* assoc-in [:constants key]
                    {:id   id
                     :tag  tag
                     :val  form
@@ -65,39 +60,39 @@
 
 (defmethod -collect-callsite :keyword-invoke
   [{:keys [fn] :as ast}]
-  (update! *collects* update-in [:keyword-callsites] conj (:form fn))
+  (swap! *collects* update-in [:keyword-callsites] conj (:form fn))
   ast)
 
 (defmethod -collect-callsite :protocol-invoke
   [{:keys [fn] :as ast}]
-  (update! *collects* update-in [:protocol-callsites] conj (:var fn))
+  (swap! *collects* update-in [:protocol-callsites] conj (:var fn))
   ast)
 
 (defmethod -collect-closed-over :local
   [{:keys [op name] :as ast}]
-  (update! *collects* update-in [:closed-overs] assoc name (dissoc ast :env :atom))
+  (swap! *collects* update-in [:closed-overs] assoc name (dissoc ast :env :atom))
   ast)
 
 (defmethod -collect-closed-over :binding
   [{:keys [init name tag] :as ast}]
-  (update! *collects* update-in [:closed-overs] dissoc name)
+  (swap! *collects* update-in [:closed-overs] dissoc name)
   ast)
 
 (defmethod -collect-closed-over :fn-method
   [{:keys [params] :as ast}]
-  (update! *collects* update-in [:closed-overs]
+  (swap! *collects* update-in [:closed-overs]
            #(apply dissoc % (mapv :name params)))
   ast)
 
 (defmethod -collect-closed-over :method
   [{:keys [params] :as ast}]
-  (update! *collects* update-in [:closed-overs]
+  (swap! *collects* update-in [:closed-overs]
            #(apply dissoc % (mapv :name params)))
   ast)
 
 (defmethod -collect-closed-over :fn
   [{:keys [name] :as ast}]
-  (update! *collects* update-in [:closed-overs] dissoc name)
+  (swap! *collects* update-in [:closed-overs] dissoc name)
   ast)
 
 (defn collect-fns [what]
@@ -108,8 +103,8 @@
     nil))
 
 (defn merge-collects [{:keys [op fields] :as ast}]
-  (let [{:keys [where what]} *collects*]
-    (merge ast (dissoc *collects* :where :what)
+  (let [{:keys [where what] :as collects} @*collects*]
+    (merge ast (dissoc collects :where :what)
            (when (and (= :deftype op)
                       (:closed-overs what))
              {:closed-overs
@@ -117,18 +112,18 @@
                       (map (fn [ast] (dissoc ast :env)) fields))}))))
 
 (defn -collect [{:keys [op] :as ast} collect-fn]
-  (let [{:keys [where what]} *collects*
+  (let [{:keys [where what] :as collects} @*collects*
         collect? (where op)
 
         ast (with-bindings
-              (if collect? {#'*collects* *collects*} {})
+              (if collect? {#'*collects* (atom collects)} {})
               (let [ast (-> ast (update-children #(-collect % collect-fn) (comp vec rseq))
                            collect-fn)]
                 (if collect?
                   (merge-collects ast)
                   ast)))]
     (when (and collect? (:closed-overs what) (not (= :deftype op)))
-      (update! *collects* update-in [:closed-overs] merge (:closed-overs ast)))
+      (swap! *collects* update-in [:closed-overs] merge (:closed-overs ast)))
     ast))
 
 (defn collect
@@ -141,7 +136,13 @@
    * :top-level?  if true attach collected info to the top-level node"
   [{:keys [what top-level?] :as opts}]
   (fn [ast]
-    (binding [*collects* (merge *collects* opts)]
+    (binding [*collects* (atom (merge {:constants           {}
+                                       :protocol-callsites #{}
+                                       :keyword-callsites  #{}
+                                       :where              #{}
+                                       :what               #{}
+                                       :closed-overs        {}}
+                                      opts))]
       (let [ast (-collect ast (apply comp (keep collect-fns what)))]
         (if top-level?
           (merge-collects ast)
