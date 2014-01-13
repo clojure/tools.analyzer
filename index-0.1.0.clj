@@ -61,7 +61,7 @@
    :name "clojure.tools.analyzer.passes.source-info",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   "https://github.com/clojure/tools.analyzer/blob/3e633087e832bfe3f52fea0c488f908c1fb5a0be/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.uniquify-api.html",
    :name "clojure.tools.analyzer.passes.uniquify",
@@ -545,9 +545,9 @@
    :name "uniquify-locals",
    :namespace "clojure.tools.analyzer.passes.uniquify",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L80",
+   "https://github.com/clojure/tools.analyzer/blob/3e633087e832bfe3f52fea0c488f908c1fb5a0be/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L80",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   "https://github.com/clojure/tools.analyzer/raw/3e633087e832bfe3f52fea0c488f908c1fb5a0be/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.uniquify/uniquify-locals",
    :doc
