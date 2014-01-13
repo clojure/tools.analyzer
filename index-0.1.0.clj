@@ -19,7 +19,7 @@
    :name "clojure.tools.analyzer.ast.query",
    :doc "Utilities for querying tools.analyzer ASTs with Datomic"}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   "https://github.com/clojure/tools.analyzer/blob/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.add-binding-atom-api.html",
    :name "clojure.tools.analyzer.passes.add-binding-atom",
@@ -61,7 +61,7 @@
    :name "clojure.tools.analyzer.passes.source-info",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/b06fd1a17c1e8b0b0fbb108aeb63fa0623bddfbe/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   "https://github.com/clojure/tools.analyzer/blob/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.uniquify-api.html",
    :name "clojure.tools.analyzer.passes.uniquify",
@@ -415,15 +415,15 @@
    :name "add-binding-atom",
    :namespace "clojure.tools.analyzer.passes.add-binding-atom",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L30",
+   "https://github.com/clojure/tools.analyzer/blob/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L29",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/e75ad977e8883ebb99d3c4992134ab0d4c4c17c3/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   "https://github.com/clojure/tools.analyzer/raw/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.add-binding-atom/add-binding-atom",
    :doc
    "Walks the AST and adds an atom-backed-map to every local binding,\nthe same atom will be shared between all occurences of that local.\n\nThe atom is put in the :atom field of the node.",
    :var-type "function",
-   :line 30,
+   :line 29,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj"}
   {:arglists ([{:keys [what top-level?], :as opts}]),
@@ -545,15 +545,15 @@
    :name "uniquify-locals",
    :namespace "clojure.tools.analyzer.passes.uniquify",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/b06fd1a17c1e8b0b0fbb108aeb63fa0623bddfbe/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L81",
+   "https://github.com/clojure/tools.analyzer/blob/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L80",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/b06fd1a17c1e8b0b0fbb108aeb63fa0623bddfbe/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   "https://github.com/clojure/tools.analyzer/raw/eaebace038a2b312311b4da1b2487d302c09273d/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.uniquify/uniquify-locals",
    :doc
    "Walks the AST performing alpha-conversion on local\nbindings' :name field",
    :var-type "function",
-   :line 81,
+   :line 80,
    :file "src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj"}
   {:arglists ([{:keys [op name var], :as ast}]),
    :name "warn-earmuff",
