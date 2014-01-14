@@ -10,7 +10,12 @@
 
 (defmulti -emit-form (fn [{:keys [op]} _] op))
 
-(def ^:dynamic -emit-form* -emit-form)
+(def ^:dynamic -emit-form*
+  (fn [{:keys [form] :as ast} hygienic?]
+    (let [expr (-emit-form ast hygienic?)]
+      (if-let [m (meta form)]
+        (with-meta expr (merge (meta expr) m))
+        expr))))
 
 (defn emit-form
   "Return the form represented by the given AST"
