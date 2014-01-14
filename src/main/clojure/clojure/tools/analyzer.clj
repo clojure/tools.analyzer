@@ -308,6 +308,9 @@
      :val      val
      :children [:target :val]}))
 
+(defn analyze-body [body env]
+  (assoc (parse (cons 'do body) env) :body? true))
+
 (defmethod -parse 'try
   [[_ & body :as form] {:keys [context] :as env}]
   (let [catch? (every-pred seq? #(= (first %) 'catch))
@@ -325,11 +328,11 @@
                       (merge {:expr fblocks
                               :form form}
                              (-source-info form env)))))
-    (let [body (parse (cons 'do body) (assoc env :in-try true :no-recur true))
+    (let [body (analyze-body body (assoc env :in-try true :no-recur true))
           cenv (ctx env :expr)
           cblocks (mapv #(parse % cenv) cblocks)
           fblock (when-not (empty? fblock)
-                   (parse (cons 'do (rest fblock)) (ctx env :statement)))]
+                   (analyze-body (rest fblock) (ctx env :statement)))]
       (merge {:op      :try
               :env     env
               :form    form
@@ -354,7 +357,7 @@
        :local       local
        :env         env
        :form        form
-       :body        (parse (cons 'do body) (assoc-in env [:locals ename] local))
+       :body        (analyze-body body (assoc-in env [:locals ename] local))
        :children    [:local :body]})
     (throw (ex-info (str "Bad binding form: " ename)
                     (merge {:sym ename
@@ -419,7 +422,7 @@
                                             :children [:init]})))
                            {} binds)
           e (update-in env [:locals] merge binds)
-          body (parse (cons 'do body) e)]
+          body (analyze-body body e)]
       {:op       :letfn
        :env      env
        :form     form
@@ -455,12 +458,12 @@
                    (conj binds bind-expr))))
         (let [body-env (assoc env
                          :context (if loop? :return context))
-              body (parse (cons 'do body)
-                          (if loop?
-                            (assoc body-env
-                              :loop-id     loop-id
-                              :loop-locals (mapv :form binds))
-                            body-env))]
+              body (analyze-body body
+                               (if loop?
+                                 (assoc body-env
+                                   :loop-id     loop-id
+                                   :loop-locals (mapv :form binds))
+                                 body-env))]
           {:body     body
            :bindings binds
            :children [:bindings :body]})))))
@@ -548,7 +551,7 @@
                        {:context     :return
                         :loop-id      loop-id
                         :loop-locals (mapv :form params-expr)})
-        body (parse (cons 'do body) body-env)]
+        body (analyze-body body body-env)]
     (when variadic?
       (let [x (drop-while #(not= % '&) params)]
         (when (not= 2 (count x))

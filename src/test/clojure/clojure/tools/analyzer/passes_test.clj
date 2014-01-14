@@ -80,7 +80,7 @@
   (is (= [1 2 3] (emit-form (ast [1 2 3]))))
   (is (= {:a 1 [:b] 2} (emit-form (ast {:a 1 [:b] 2}))))
   (is (= {:a 1} (meta (emit-form (ast ^{:a 1} [:foo])))))
-  (is (= 1 (emit-form (ast (do 1)))))
+  (is (= '(do 1) (emit-form (ast (do 1)))))
   (is (= '(do a b c) (emit-form (ast (do a b c)))))
   (is (= '(if 1 2) (emit-form (ast (if 1 2)))))
   (is (= '(if 1 2 3) (emit-form (ast (if 1 2 3)))))

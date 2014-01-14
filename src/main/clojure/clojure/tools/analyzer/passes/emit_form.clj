@@ -109,9 +109,11 @@
     (-emit-form* meta hygienic?)))
 
 (defmethod -emit-form :do
-  [{:keys [ret statements]} hygienic?]
-  `(do ~@(mapv #(-emit-form* % hygienic?) statements)
-       ~(-emit-form* ret hygienic?)))
+  [{:keys [ret statements body?]} hygienic?]
+  (if (and body? (empty? statements))
+    (-emit-form* ret hygienic?)
+    `(do ~@(mapv #(-emit-form* % hygienic?) statements)
+         ~(-emit-form* ret hygienic?))))
 
 (defmethod -emit-form :if
   [{:keys [test then else]} hygienic?]
