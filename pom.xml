@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>tools.analyzer</artifactId>
-  <version>0.1.0-alpha2</version>
+  <version>0.1.1-SNAPSHOT</version>
   <name>${artifactId}</name>
   <description>An analyzer for Clojure code, written in Clojure and producing AST in EDN</description>
 
@@ -23,6 +23,6 @@
     <connection>scm:git:git://github.com/clojure/tools.analyzer.git</connection>
     <developerConnection>scm:git:git://github.com/clojure/tools.analyzer.git</developerConnection>
     <url>http://github.com/clojure/tools.analyzer</url>
-    <tag>tools.analyzer-0.1.0-alpha2</tag>
+    <tag>HEAD</tag>
   </scm>
 </project>
