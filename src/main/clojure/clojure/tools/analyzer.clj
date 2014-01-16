@@ -554,6 +554,12 @@
         body (analyze-body body body-env)]
     (when variadic?
       (let [x (drop-while #(not= % '&) params)]
+        (when (= '& (second x))
+          (throw (ex-info "Invalid parameter list"
+                          (merge {:params params
+                                  :form   form}
+                                 (-source-info form env)
+                                 (-source-info params env)))))
         (when (not= 2 (count x))
           (throw (ex-info (str "Unexpected parameter: " (first (drop 2 x))
                                " after variadic parameter: " (second x))
