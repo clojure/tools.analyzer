@@ -95,6 +95,14 @@
   (swap! *collects* update-in [:closed-overs] dissoc name)
   ast)
 
+(defmethod -collect-closed-over :let
+  [ast]
+  (update-in ast [:bindings] #(mapv (:collect @*collects*) %)))
+
+(defmethod -collect-closed-over :loop
+  [ast]
+  (update-in ast [:bindings] #(mapv (:collect @*collects*) %)))
+
 (defn collect-fns [what]
   (case what
     :constants    -collect-const
@@ -135,13 +143,14 @@
    * :where       set of :op nodes where to attach collected info
    * :top-level?  if true attach collected info to the top-level node"
   [{:keys [what top-level?] :as opts}]
-  (fn [ast]
+  (fn this [ast]
     (binding [*collects* (atom (merge {:constants           {}
                                        :protocol-callsites #{}
                                        :keyword-callsites  #{}
                                        :where              #{}
                                        :what               #{}
-                                       :closed-overs        {}}
+                                       :closed-overs        {}
+                                       :collect             this}
                                       opts))]
       (let [ast (-collect ast (apply comp (keep collect-fns what)))]
         (if top-level?
