@@ -25,7 +25,7 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/7d604bc753cbf86fc8169664a888c303d1d64808/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/blob/1e4e1bf9348dc44c7af8e8f4770897239d9bb19b/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-api.html",
    :name "clojure.tools.analyzer.passes.collect",
@@ -430,9 +430,9 @@
    :name "collect",
    :namespace "clojure.tools.analyzer.passes.collect",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/7d604bc753cbf86fc8169664a888c303d1d64808/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L137",
+   "https://github.com/clojure/tools.analyzer/blob/1e4e1bf9348dc44c7af8e8f4770897239d9bb19b/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L137",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/7d604bc753cbf86fc8169664a888c303d1d64808/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/raw/1e4e1bf9348dc44c7af8e8f4770897239d9bb19b/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect",
    :doc
