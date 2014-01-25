@@ -220,8 +220,8 @@
 (defmethod -analyze :seq
   [_ form env]
   (let [op (first form)]
-    (if (nil? op)
-      (ex-info "Can't call nil" {:form form}))
+    (when (nil? op)
+      (throw (ex-info "Can't call nil" {:form form})))
     (let [mform (macroexpand-1 form env)]
       (if (= form mform)
         (parse mform env) ;; invoke == :default
