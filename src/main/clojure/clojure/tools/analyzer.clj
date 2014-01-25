@@ -63,7 +63,8 @@
      (type? form)     (-analyze :const  form env :type)
      (record? form)   (-analyze :const  form env :record)
 
-     (seq? form)      (-analyze :seq    form env)
+     (and (seq? form)
+          (not (empty? form)))      (-analyze :seq    form env)
      (vector? form)   (-analyze :vector form env)
      (map? form)      (-analyze :map    form env)
      (set? form)      (-analyze :set    form env)
@@ -729,17 +730,15 @@
 ;; invoke
 (defmethod -parse :default
   [[f & args :as form] env]
-  (if-not f
-    (-analyze :const form env)
-    (let [e (ctx env :expr)
-          fn-expr (analyze f e)
-          args-expr (mapv (analyze-in-env e) args)
-          m (meta form)]
-      (merge {:op   :invoke
-              :form form
-              :env  env
-              :fn   fn-expr
-              :args args-expr}
-             (when m
-               {:meta m}) ;; this implies it's not going to be evaluated
-             {:children [:args :fn]}))))
+  (let [e (ctx env :expr)
+        fn-expr (analyze f e)
+        args-expr (mapv (analyze-in-env e) args)
+        m (meta form)]
+    (merge {:op   :invoke
+            :form form
+            :env  env
+            :fn   fn-expr
+            :args args-expr}
+           (when m
+             {:meta m}) ;; this implies it's not going to be evaluated
+           {:children [:args :fn]})))
