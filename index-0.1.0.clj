@@ -1,6 +1,6 @@
 {:namespaces
  ({:source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer-api.html",
    :name "clojure.tools.analyzer",
@@ -81,9 +81,9 @@
  :vars
  ({:file "src/main/clojure/clojure/tools/analyzer.clj",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L26",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L26",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/-parse",
    :namespace "clojure.tools.analyzer",
@@ -96,9 +96,9 @@
    :name "analyze",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L31",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L31",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/analyze",
    :doc
@@ -110,95 +110,95 @@
    :name "analyze-in-env",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L84",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L85",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/analyze-in-env",
    :doc
    "Takes an env map and returns a function that analyzes a form in that env",
    :var-type "function",
-   :line 84,
+   :line 85,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
   {:arglists ([sym env]),
    :name "create-var",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L100",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L101",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/create-var",
    :doc "Creates a var for sym and returns it",
    :var-type "function",
-   :line 100,
+   :line 101,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
   {:arglists ([]),
    :name "empty-env",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L73",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L74",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/empty-env",
    :doc "Returns an empty env",
    :var-type "function",
-   :line 73,
+   :line 74,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
   {:arglists ([form env]),
    :name "macroexpand",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L179",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L180",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/macroexpand",
    :doc
    "Repeatedly calls macroexpand-1 on form until it no longer\nrepresents a macro form, then returns it.",
    :var-type "function",
-   :line 179,
+   :line 180,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
   {:arglists ([form env]),
    :name "macroexpand-1",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L89",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L90",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/macroexpand-1",
    :doc
    "If form represents a macro form, returns its expansion,\nelse returns form.",
    :var-type "function",
-   :line 89,
+   :line 90,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
   {:arglists ([[op & args] env]),
    :name "parse",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L95",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L96",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/parse",
    :doc "Multimethod that dispatches on op, should default to -parse",
    :var-type "function",
-   :line 95,
+   :line 96,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
   {:file "src/main/clojure/clojure/tools/analyzer.clj",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L173",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L174",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/specials",
    :namespace "clojure.tools.analyzer",
-   :line 173,
+   :line 174,
    :var-type "var",
    :doc "Set of special forms common to every clojure variant",
    :name "specials"}
@@ -206,16 +206,16 @@
    :name "var?",
    :namespace "clojure.tools.analyzer",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj#L105",
+   "https://github.com/clojure/tools.analyzer/blob/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj#L106",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ee109b21cdd1495d0367baf835543f11f6e0dc5f/src/main/clojure/clojure/tools/analyzer.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f3dce8d91a48802a0cd344343d55f22686cd7906/src/main/clojure/clojure/tools/analyzer.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/var?",
    :doc
    "Returns true if obj represent a var form as returned by create-var",
    :var-type "function",
-   :line 105,
+   :line 106,
    :file "src/main/clojure/clojure/tools/analyzer.clj"}
   {:arglists ([ast]),
    :name "ast->eav",
