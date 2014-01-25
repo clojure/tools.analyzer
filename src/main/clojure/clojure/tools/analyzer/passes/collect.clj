@@ -112,7 +112,7 @@
 
 (defn merge-collects [{:keys [op fields] :as ast}]
   (let [{:keys [where what] :as collects} @*collects*]
-    (merge ast (dissoc collects :where :what)
+    (merge ast (dissoc collects :where :what :collect)
            (when (and (= :deftype op)
                       (:closed-overs what))
              {:closed-overs
