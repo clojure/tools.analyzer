@@ -113,9 +113,11 @@
   (update-children ast collect-closed-overs*))
 
 (defmethod -collect-closed-overs :binding
-  [{:keys [name init] :as ast}]
+  [{:keys [name init local] :as ast}]
   (let [ast (if init (update-in ast [:init] collect-closed-overs*) ast)]
-    (swap! *collects* update-in [:locals] conj name)
+    (if (= :field local)
+      (swap! *collects* assoc-in [:closed-overs name] (dissoc ast :env :atom))
+      (swap! *collects* update-in [:locals] conj name))
     ast))
 
 (defmethod -collect-closed-overs :local
