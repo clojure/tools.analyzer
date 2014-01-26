@@ -94,39 +94,29 @@
         ast))
 
 (defmulti -collect-closed-overs :op)
-(declare collect-closed-overs)
+
+(defn collect-closed-overs*
+  [{:keys [op] :as ast}]
+  (let [{:keys [where what] :as collects} @*collects*
+        collect? (where op)]
+    (if collect?
+      (let [[ast {:keys [closed-overs locals]}]
+            (binding [*collects* (atom (merge @*collects*
+                                              {:closed-overs {} :locals #{}}))]
+              [(update-children ast -collect-closed-overs) @*collects*])]
+        (swap! *collects* update-in [:closed-overs] merge (apply dissoc closed-overs (:locals @*collects*)))
+        (assoc ast :closed-overs closed-overs))
+      (-collect-closed-overs ast))))
 
 (defmethod -collect-closed-overs :default
   [ast]
-  (update-children ast -collect-closed-overs))
+  (update-children ast collect-closed-overs*))
 
 (defmethod -collect-closed-overs :binding
   [{:keys [name init] :as ast}]
-  (let [ast (if init (update-in ast [:init] -collect-closed-overs) ast)]
+  (let [ast (if init (update-in ast [:init] collect-closed-overs*) ast)]
     (swap! *collects* update-in [:locals] conj name)
     ast))
-
-(defmethod -collect-closed-overs :fn
-  [ast]
-  (let [[ast {:keys [closed-overs locals]}]
-        (binding [*collects* (atom {:closed-overs {} :locals #{}})]
-          [(update-children ast -collect-closed-overs) @*collects*])]
-    (swap! *collects* update-in [:closed-overs] merge (apply dissoc closed-overs (:locals @*collects*)))
-    (assoc ast :closed-overs closed-overs)))
-
-(defmethod -collect-closed-overs :reify
-  [ast]
-  (let [[ast {:keys [closed-overs locals]}]
-        (binding [*collects* (atom {:closed-overs {} :locals #{}})]
-          [(update-children ast -collect-closed-overs) @*collects*])]
-    (swap! *collects* update-in [:closed-overs] merge (apply dissoc closed-overs (:locals @*collects*)))
-    (assoc ast :closed-overs closed-overs)))
-
-(defmethod -collect-closed-overs :deftype
-  [{:keys [fields] :as ast}]
-  (assoc (update-children ast -collect-closed-overs)
-    :closed-overs (zipmap (mapv :name fields)
-                          (map (fn [ast] (dissoc ast :env)) fields))))
 
 (defmethod -collect-closed-overs :local
   [{:keys [name] :as ast}]
@@ -135,9 +125,11 @@
   ast)
 
 (defn collect-closed-overs
-  [ast]
-  (binding [*collects* (atom {:closed-overs {} :locals #{}})]
-    (-collect-closed-overs ast)))
+  [ast {:keys [what top-level?] :as opts}]
+  (if (what :closed-overs)
+    (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]
+      (collect-closed-overs* ast))
+    ast))
 
 (defn collect
   "Takes a map with:
@@ -149,17 +141,14 @@
    * :top-level?  if true attach collected info to the top-level node"
   [{:keys [what top-level?] :as opts}]
   (fn this [ast]
-    (let [ast
-          (binding [*collects* (atom (merge {:constants           {}
-                                             :protocol-callsites #{}
-                                             :keyword-callsites  #{}
-                                             :where              #{}
-                                             :what               #{}}
-                                            opts))]
-            (let [ast (-collect ast (apply comp (keep collect-fns what)))]
-              (if top-level?
-                (merge-collects ast)
-                ast)))]
-      (if (:closed-overs what)
-        (collect-closed-overs ast)
-        ast))))
+    (-> (binding [*collects* (atom (merge {:constants           {}
+                                          :protocol-callsites #{}
+                                          :keyword-callsites  #{}
+                                          :where              #{}
+                                          :what               #{}}
+                                         opts))]
+         (let [ast (-collect ast (apply comp (keep collect-fns what)))]
+           (if top-level?
+             (merge-collects ast)
+             ast)))
+      (collect-closed-overs opts))))
