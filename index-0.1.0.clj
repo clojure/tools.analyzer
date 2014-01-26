@@ -25,7 +25,7 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/1e4e1bf9348dc44c7af8e8f4770897239d9bb19b/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/blob/8bc05442443fca643c8be7a17bf280dc381519d6/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-api.html",
    :name "clojure.tools.analyzer.passes.collect",
@@ -430,15 +430,15 @@
    :name "collect",
    :namespace "clojure.tools.analyzer.passes.collect",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/1e4e1bf9348dc44c7af8e8f4770897239d9bb19b/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L137",
+   "https://github.com/clojure/tools.analyzer/blob/8bc05442443fca643c8be7a17bf280dc381519d6/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L142",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/1e4e1bf9348dc44c7af8e8f4770897239d9bb19b/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/raw/8bc05442443fca643c8be7a17bf280dc381519d6/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect",
    :doc
    "Takes a map with:\n* :what        set of keywords describing what to collect, some of:\n  ** :constants     constant expressions\n  ** :closed-overs  closed over local bindings\n  ** :callsites     keyword and protocol callsites\n* :where       set of :op nodes where to attach collected info\n* :top-level?  if true attach collected info to the top-level node",
    :var-type "function",
-   :line 137,
+   :line 142,
    :file "src/main/clojure/clojure/tools/analyzer/passes/collect.clj"}
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
