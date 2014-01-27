@@ -104,7 +104,10 @@
             (binding [*collects* (atom (merge @*collects*
                                               {:closed-overs {} :locals #{}}))]
               [(update-children ast -collect-closed-overs) @*collects*])]
-        (swap! *collects* update-in [:closed-overs] merge (apply dissoc closed-overs (:locals @*collects*)))
+        (swap! *collects* update-in [:closed-overs] merge
+               (apply dissoc (remove (fn [[_ {:keys [local]}]]
+                                       (= :field local))
+                                     closed-overs) (:locals @*collects*)))
         (assoc ast :closed-overs closed-overs))
       (-collect-closed-overs ast))))
 
