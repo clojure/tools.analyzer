@@ -107,7 +107,8 @@
         (swap! *collects* update-in [:closed-overs] merge
                (apply dissoc (into {}
                                    (remove (fn [[_ {:keys [local]}]]
-                                             (= :field local))
+                                             (and (= op :deftype)
+                                                  (= :field local)))
                                            closed-overs)) (:locals @*collects*)))
         (assoc ast :closed-overs closed-overs))
       (-collect-closed-overs ast))))
