@@ -592,7 +592,7 @@
                    :form  name
                    :local :fn
                    :name  name}
-        env (dissoc env :name)
+        env (dissoc env :name :once)
         e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
         menv (assoc (dissoc e :no-recur)
                :once (-> op meta :once boolean))
