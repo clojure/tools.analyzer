@@ -743,4 +743,4 @@
             :args args-expr}
            (when m
              {:meta m}) ;; this implies it's not going to be evaluated
-           {:children [:args :fn]})))
+           {:children [:fn :args]})))
