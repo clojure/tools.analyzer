@@ -434,7 +434,8 @@
 (defn analyze-let
   [[op bindings & body :as form] {:keys [context loop-id] :as env}]
   (validate-bindings form env)
-  (let [loop? (= 'loop* op)]
+  (let [loop? (= 'loop* op)
+        env (if loop? (dissoc env :once) env)]
     (loop [bindings (seq (partition 2 bindings))
            env (ctx env :expr)
            binds []]
