@@ -18,8 +18,8 @@
     name))
 
 (defn uniquify [name]
-  (swap! *locals-counter* update-in [name] (fnil inc -1))
-  (swap! *locals-frame* assoc-in [name] (@*locals-counter* name)))
+  (swap! *locals-counter* #(update-in % [name] (fnil inc -1)))
+  (swap! *locals-frame* #(assoc-in % [name] (@*locals-counter* name))))
 
 (defmulti -uniquify-locals :op)
 
@@ -29,7 +29,7 @@
 (defn update-loop-locals [ast]
   (update-in ast
              [:env :loop-locals]
-             (partial mapv normalize)))
+             #(mapv normalize %)))
 
 (defmethod -uniquify-locals :fn
   [{:keys [name] :as ast}]
@@ -72,7 +72,7 @@
 
 (defmethod -uniquify-locals :default
   [ast]
-  (if (some (comp #{:binding} :op) (children ast))
+  (if (some #(= :binding (:op %)) (children ast))
     (binding [*locals-frame* (atom @*locals-frame*)]
       (-> ast uniquify-locals* update-loop-locals))
     (-> ast uniquify-locals* update-loop-locals)))

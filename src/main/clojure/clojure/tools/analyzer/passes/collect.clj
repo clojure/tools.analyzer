@@ -20,11 +20,11 @@
         {:keys [constants]} @*collects*]
     (or (:id (constants key))
         (let [id (count constants)]
-          (swap! *collects* assoc-in [:constants key]
-                   {:id   id
-                    :tag  tag
-                    :val  form
-                    :type type})
+          (swap! *collects* #(assoc-in % [:constants key]
+                                       {:id   id
+                                        :tag  tag
+                                        :val  form
+                                        :type type}))
           id))))
 
 (defmulti -collect-const       :op)
@@ -58,12 +58,12 @@
 
 (defmethod -collect-callsite :keyword-invoke
   [{:keys [fn] :as ast}]
-  (swap! *collects* update-in [:keyword-callsites] conj (:form fn))
+  (swap! *collects* #(update-in % [:keyword-callsites] conj (:form fn)))
   ast)
 
 (defmethod -collect-callsite :protocol-invoke
   [{:keys [fn] :as ast}]
-  (swap! *collects* update-in [:protocol-callsites] conj (:var fn))
+  (swap! *collects* #(update-in % [:protocol-callsites] conj (:var fn)))
   ast)
 
 (defn collect-fns [what]
@@ -104,12 +104,13 @@
             (binding [*collects* (atom (merge @*collects*
                                               {:closed-overs {} :locals #{}}))]
               [(update-children ast -collect-closed-overs) @*collects*])]
-        (swap! *collects* update-in [:closed-overs] merge
-               (apply dissoc (into {}
-                                   (remove (fn [[_ {:keys [local]}]]
-                                             (and (= op :deftype)
-                                                  (= :field local)))
-                                           closed-overs)) (:locals @*collects*)))
+        (swap! *collects* #(update-in % [:closed-overs] merge
+                                      (into {}
+                                            (remove (fn [[_ {:keys [local]}]]
+                                                      (and (= op :deftype)
+                                                           (= :field local)))
+                                                    (apply dissoc closed-overs
+                                                           (:locals @*collects*))))))
         (assoc ast :closed-overs closed-overs))
       (-collect-closed-overs ast))))
 
@@ -121,14 +122,14 @@
   [{:keys [name init local] :as ast}]
   (let [ast (if init (update-in ast [:init] collect-closed-overs*) ast)]
     (if (= :field local)
-      (swap! *collects* assoc-in [:closed-overs name] (dissoc ast :env :atom))
-      (swap! *collects* update-in [:locals] conj name))
+      (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom)))
+      (swap! *collects* #(update-in % [:locals] conj name)))
     ast))
 
 (defmethod -collect-closed-overs :local
   [{:keys [name] :as ast}]
   (when-not ((:locals @*collects*) name)
-    (swap! *collects* assoc-in [:closed-overs name] (dissoc ast :env :atom)))
+    (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom))))
   ast)
 
 (defn collect-closed-overs

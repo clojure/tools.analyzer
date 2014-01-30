@@ -89,7 +89,7 @@
         arglist (->> arglists (filter #(= argc (count %))) first)
         last-arglist (last arglists)]
     (or arglist
-        (when (and (seq (filter '#{&} last-arglist))
+        (when (and (some '#{&} last-arglist)
                    (>= argc (- (count last-arglist) 2)))
           last-arglist))))
 

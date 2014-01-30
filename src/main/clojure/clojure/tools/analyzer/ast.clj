@@ -34,8 +34,8 @@
    The children expressions are kept in order and flattened so that the returning
    vector contains only nodes and not vectors of nodes."
   [ast]
-  (vec (mapcat (fn [c] (if (vector? c) c [c]))
-               (children* ast))))
+  (reduce (fn [acc c] ((if (vector? c) into conj) acc c))
+          [] (children* ast)))
 
 (defn update-children
   "Applies `f` to the nodes in the AST nodes children.
@@ -49,8 +49,10 @@
                  (assoc ast k (if (vector? v)
                                 (fix (mapv f (fix v)))
                                 (f v))))
-               ast (map list (fix (:children ast)) (fix c)))
+               ast (mapv list (fix (:children ast)) (fix c)))
        ast)))
+
+(def rseqv (comp vec rseq))
 
 (defn walk
   "Walk the ast applying pre when entering the nodes, and post when exiting.
@@ -59,7 +61,7 @@
   ([ast pre post]
      (walk ast pre post false))
   ([ast pre post reversed?]
-     (let [fix (if reversed? (comp vec rseq) identity)
+     (let [fix (if reversed? rseqv identity)
            walk #(walk % pre post reversed?)]
        (post (update-children (pre ast) walk fix)))))
 

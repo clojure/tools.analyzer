@@ -151,7 +151,7 @@
   (let [kv-env (ctx env :expr)
         keys (keys form)
         vals (vals form)
-        [ks vs] (map (partial mapv (analyze-in-env kv-env)) [keys vals])]
+        [ks vs] (map #(mapv (analyze-in-env kv-env) %) [keys vals])]
     (wrapping-meta
      {:op       :map
       :env      env
