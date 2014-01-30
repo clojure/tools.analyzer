@@ -52,7 +52,7 @@
    Additionaly if the AST node contains sub-nodes, it is guaranteed to have:
    * :children a vector of the keys of the AST node mapping to the sub-nodes"
 
-  [form {:keys [context] :as env}]
+  [form env]
   (let [form (if (seq? form)
                (or (seq form) ()) ;; force evaluation for analysis
                form)]
@@ -149,9 +149,8 @@
 (defmethod -analyze :map
   [_ form env]
   (let [kv-env (ctx env :expr)
-        keys (keys form)
-        vals (vals form)
-        [ks vs] (map #(mapv (analyze-in-env kv-env) %) [keys vals])]
+        ks (mapv (analyze-in-env kv-env) (keys form))
+        vs (mapv (analyze-in-env kv-env) (vals form))]
     (wrapping-meta
      {:op       :map
       :env      env
@@ -234,9 +233,12 @@
 (defn analyze-block
   [exprs env]
   (let [statements-env (ctx env :statement)
-        statements (mapv (analyze-in-env statements-env)
-                         (butlast exprs))
-        ret (analyze (last exprs) env)]
+        [statements ret] (loop [statements [] [e & exprs] exprs]
+                           (if (seq exprs)
+                             (recur (conj statements e) exprs)
+                             [statements e]))
+        statements (mapv (analyze-in-env statements-env) statements)
+        ret (analyze ret env)]
     {:statements statements
      :ret        ret
      :children   [:statements :ret]}))
@@ -257,13 +259,13 @@
   (let [test-expr (analyze test (ctx env :expr))
         then-expr (analyze then env)
         else-expr (analyze else env)]
-    {:op   :if
-     :form form
-     :env  env
-     :test test-expr
-     :then then-expr
-     :else else-expr
-     :children `[:test :then :else]}))
+    {:op       :if
+     :form     form
+     :env      env
+     :test     test-expr
+     :then     then-expr
+     :else     else-expr
+     :children [:test :then :else]}))
 
 (defmethod -parse 'new
   [[_ class & args :as form] env]
@@ -313,7 +315,7 @@
   (assoc (parse (cons 'do body) env) :body? true))
 
 (defmethod -parse 'try
-  [[_ & body :as form] {:keys [context] :as env}]
+  [[_ & body :as form] env]
   (let [catch? (every-pred seq? #(= (first %) 'catch))
         finally? (every-pred seq? #(= (first %) 'finally))
         [body tail] (split-with (complement (some-fn catch? finally?)) body)
@@ -345,25 +347,25 @@
 
 (defmethod -parse 'catch
   [[_ etype ename & body :as form] env]
-  (if (and (symbol? ename)
-           (not (namespace ename)))
-    (let [local {:op    :binding
-                 :env   env
-                 :form  ename
-                 :name  ename
-                 :local :catch
-                 :tag   etype}]
-      {:op          :catch
-       :class       etype
-       :local       local
-       :env         env
-       :form        form
-       :body        (analyze-body body (assoc-in env [:locals ename] local))
-       :children    [:local :body]})
+  (when (or (not (symbol? ename))
+          (namespace ename))
     (throw (ex-info (str "Bad binding form: " ename)
                     (merge {:sym ename
                             :form form}
-                           (-source-info form env))))))
+                           (-source-info form env)))))
+  (let [local {:op    :binding
+               :env   env
+               :form  ename
+               :name  ename
+               :local :catch
+               :tag   etype}]
+    {:op          :catch
+     :class       etype
+     :local       local
+     :env         env
+     :form        form
+     :body        (analyze-body body (assoc-in env [:locals ename] local))
+     :children    [:local :body]}))
 
 (defmethod -parse 'throw
   [[_ throw :as form] env]
@@ -394,7 +396,7 @@
                            (-source-info form env))))))
 
 (defmethod -parse 'letfn*
-  [[_ bindings & body :as form] {:keys [context] :as env}]
+  [[_ bindings & body :as form] env]
   (validate-bindings form env)
   (let [bindings (apply hash-map bindings)
         fns (keys bindings)]
@@ -436,7 +438,7 @@
   (validate-bindings form env)
   (let [loop? (= 'loop* op)
         env (if loop? (dissoc env :once) env)]
-    (loop [bindings (seq (partition 2 bindings))
+    (loop [bindings (partition 2 bindings)
            env (ctx env :expr)
            binds []]
       (if-let [[name init] (first bindings)]
@@ -578,16 +580,16 @@
       :params      params-expr
       :fixed-arity fixed-arity
       :body        body
-      :children    `[:params :body]}
+      :children    [:params :body]}
      (when local
        {:local (dissoc local :env)}))))
 
 (defmethod -parse 'fn*
-  [[op & args :as form] {:keys [name] :as env}]
+  [[op & args :as form] env]
   (let [[n meths] (if (symbol? (first args))
                     [(first args) (next args)]
                     [nil (seq args)])
-        name (or n name)
+        name (or n (:name env))
         name-expr {:op    :binding
                    :env   env
                    :form  name

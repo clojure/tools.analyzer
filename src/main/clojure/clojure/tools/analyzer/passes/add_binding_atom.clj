@@ -11,20 +11,17 @@
 
 (def ^:dynamic ^:private *bindings*)
 
-(defmulti ^:private -add-binding-atom :op)
-
-(defmethod -add-binding-atom :default [ast] ast)
-
-(defmethod -add-binding-atom :binding
-  [{:keys [name] :as ast}]
-  (let [a (atom {})]
-    (swap! *bindings* assoc name a)
-    (assoc ast :atom a)))
-
-(defmethod -add-binding-atom :local
-  [{:keys [name] :as ast}]
-  (assoc ast :atom (or (@*bindings* name)
-                       (atom {}))))
+(defn ^:private -add-binding-atom
+  [ast]
+  (case (:op ast)
+    :binding
+    (let [a (atom {})]
+      (swap! *bindings* assoc (:name ast) a)
+      (assoc ast :atom a))
+    :local
+    (assoc ast :atom (or (@*bindings* (:name ast))
+                         (atom {})))
+    ast))
 
 (defn add-binding-atom
   "Walks the AST and adds an atom-backed-map to every local binding,

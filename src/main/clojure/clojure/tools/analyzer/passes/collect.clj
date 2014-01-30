@@ -17,21 +17,22 @@
   (let [key {:form form
              :meta (meta form)
              :tag  tag}
-        {:keys [constants]} @*collects*]
-    (or (:id (constants key))
-        (let [id (count constants)]
-          (swap! *collects* #(assoc-in % [:constants key]
+        collects @*collects*]
+    (or (:id ((:constants collects) key))
+        (let [id (:next-id collects)]
+          (swap! *collects* #(assoc-in (update-in % [:next-id] inc)
+                                       [:constants key]
                                        {:id   id
                                         :tag  tag
                                         :val  form
                                         :type type}))
           id))))
 
-(defmulti -collect-const       :op)
-(defmulti -collect-callsite    :op)
+(defmulti -collect-const    :op)
+(defmulti -collect-callsite :op)
 
-(defmethod -collect-const       :default [ast] ast)
-(defmethod -collect-callsite    :default [ast] ast)
+(defmethod -collect-const    :default [ast] ast)
+(defmethod -collect-callsite :default [ast] ast)
 
 (defmethod -collect-const :const
   [{:keys [val tag type] :as ast}]
@@ -42,47 +43,41 @@
     ast))
 
 (defmethod -collect-const :def
-  [{:keys [var] :as ast}]
-  (let [id (-register-constant var clojure.lang.Var :var)]
+  [ast]
+  (let [id (-register-constant (:var ast) clojure.lang.Var :var)]
     (assoc ast :id id)))
 
 (defmethod -collect-const :var
-  [{:keys [var] :as ast}]
-  (let [id (-register-constant var clojure.lang.Var :var)]
+  [ast]
+  (let [id (-register-constant (:var ast) clojure.lang.Var :var)]
     (assoc ast :id id)))
 
 (defmethod -collect-const :the-var
-  [{:keys [var] :as ast}]
-  (let [id (-register-constant var clojure.lang.Var :var)]
+  [ast]
+  (let [id (-register-constant (:var ast) clojure.lang.Var :var)]
     (assoc ast :id id)))
 
 (defmethod -collect-callsite :keyword-invoke
-  [{:keys [fn] :as ast}]
-  (swap! *collects* #(update-in % [:keyword-callsites] conj (:form fn)))
+  [ast]
+  (swap! *collects* #(update-in % [:keyword-callsites] conj (-> ast :fn :form)))
   ast)
 
 (defmethod -collect-callsite :protocol-invoke
-  [{:keys [fn] :as ast}]
-  (swap! *collects* #(update-in % [:protocol-callsites] conj (:var fn)))
+  [ast]
+  (swap! *collects* #(update-in % [:protocol-callsites] conj (-> ast :fn :var)))
   ast)
 
-(defn collect-fns [what]
-  (case what
-    :constants    -collect-const
-    :callsites    -collect-callsite
-    nil))
+(defn merge-collects [ast]
+  (merge ast (dissoc @*collects* :where :what :next-id)))
 
-(defn merge-collects [{:keys [op fields] :as ast}]
-  (let [{:keys [where what] :as collects} @*collects*]
-    (merge ast (dissoc collects :where :what))))
-
-(defn -collect [{:keys [op] :as ast} collect-fn]
-  (let [{:keys [where what] :as collects} @*collects*
-        collect? (where op)
+(defn -collect [ast collect-fn]
+  (let [collects @*collects*
+        collect? ((:where collects) (:op ast))
 
         ast (with-bindings
               (if collect? {#'*collects* (atom (merge collects
-                                                      {:constants          {}
+                                                      {:next-id            0
+                                                       :constants          {}
                                                        :protocol-callsites #{}
                                                        :keyword-callsites  #{}}))}
                   {})
@@ -93,12 +88,28 @@
                   ast)))]
         ast))
 
-(defmulti -collect-closed-overs :op)
+(declare collect-closed-overs*)
+(defn -collect-closed-overs
+  [ast]
+  (case (:op ast)
+    :binding
+    (let [name (:name ast)
+          ast (if (:init ast) (update-in ast [:init] collect-closed-overs*) ast)]
+      (if (= :field (:local ast))
+        (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom)))
+        (swap! *collects* #(update-in % [:locals] conj name)))
+      ast)
+    :local
+    (let [name (:name ast)]
+      (when-not ((:locals @*collects*) name)
+        (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom))))
+      ast)
+      (update-children ast collect-closed-overs*)))
 
 (defn collect-closed-overs*
   [{:keys [op] :as ast}]
-  (let [{:keys [where what] :as collects} @*collects*
-        collect? (where op)]
+  (let [collects @*collects*
+        collect? ((:where collects) op)]
     (if collect?
       (let [[ast {:keys [closed-overs locals]}]
             (binding [*collects* (atom (merge @*collects*
@@ -114,30 +125,18 @@
         (assoc ast :closed-overs closed-overs))
       (-collect-closed-overs ast))))
 
-(defmethod -collect-closed-overs :default
-  [ast]
-  (update-children ast collect-closed-overs*))
-
-(defmethod -collect-closed-overs :binding
-  [{:keys [name init local] :as ast}]
-  (let [ast (if init (update-in ast [:init] collect-closed-overs*) ast)]
-    (if (= :field local)
-      (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom)))
-      (swap! *collects* #(update-in % [:locals] conj name)))
-    ast))
-
-(defmethod -collect-closed-overs :local
-  [{:keys [name] :as ast}]
-  (when-not ((:locals @*collects*) name)
-    (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom))))
-  ast)
-
 (defn collect-closed-overs
-  [ast {:keys [what top-level?] :as opts}]
-  (if (what :closed-overs)
+  [ast opts]
+  (if ((:what opts) :closed-overs)
     (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]
       (collect-closed-overs* ast))
     ast))
+
+(defn collect-fns [what]
+  (case what
+    :constants    -collect-const
+    :callsites    -collect-callsite
+    nil))
 
 (defn collect
   "Takes a map with:
@@ -153,7 +152,8 @@
                                           :protocol-callsites #{}
                                           :keyword-callsites  #{}
                                           :where              #{}
-                                          :what               #{}}
+                                          :what               #{}
+                                          :next-id             0}
                                          opts))]
          (let [ast (-collect ast (apply comp (keep collect-fns what)))]
            (if top-level?

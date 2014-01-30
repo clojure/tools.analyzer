@@ -12,42 +12,36 @@
   "Set of map keys to elide from metadata."
   (set (:elide-meta *compiler-options*)))
 
-(defn dissoc-meta [{:keys [op form keys vals env] :as meta}]
-  (let [form (apply dissoc form elides)]
-    (if (= :const op)
-      (assoc meta :form form)
-      (let [new-meta (mapv (fn [{:keys [form] :as k} v]
-                               (when-not (elides form)
-                                 [k v]))
-                             keys vals)]
-        (assoc meta
-          :form form
-          :keys (mapv first new-meta)
-          :vals (mapv second new-meta))))))
+(defn replace-meta [meta new-meta]
+  (if (= :const (:op meta))
+    (assoc meta :form new-meta)
+    (let [new-meta (mapv (fn [k v]
+                           (when-not (elides (:form k))
+                             [k v]))
+                         (:keys meta) (:vals meta))]
+      (assoc meta
+        :form new-meta
+        :keys (mapv first new-meta)
+        :vals (mapv second new-meta)))))
 
-(defmulti -elide-meta :op)
-
-(defmethod -elide-meta :with-meta
-  [{:keys [meta expr env] :as ast}]
-  (let [new-meta (apply dissoc (:form meta) elides)]
-    (if (not (empty? new-meta))
-      (if (= new-meta (:form meta))
-        ast
-        (let [new-meta (dissoc-meta meta)]
-          (assoc ast :meta new-meta)))
-      (assoc-in expr [:env :context] (:context env)))))
-
-(defmethod -elide-meta :def
-  [{:keys [meta env] :as ast}]
-  (let [new-meta (apply dissoc (:form meta) elides)]
-    (if (not (empty? new-meta))
-      (if (= new-meta (:form meta))
-        ast
-        (let [new-meta (dissoc-meta meta)]
-          (assoc ast :meta new-meta)))
-      (dissoc ast :meta))))
-
-(defmethod -elide-meta :default [ast] ast)
+(defn -elide-meta
+  [{:keys [op meta expr env] :as ast}]
+  (case op
+    :with-meta
+    (let [new-meta (apply dissoc (:form meta) elides)]
+      (if (not (empty? new-meta))
+        (if (= new-meta (:form meta))
+          ast
+          (assoc ast :meta (replace-meta meta new-meta)))
+        (assoc-in expr [:env :context] (:context env))))
+    :def
+    (let [new-meta (apply dissoc (:form meta) elides)]
+      (if (not (empty? new-meta))
+        (if (= new-meta (:form meta))
+          ast
+          (assoc ast :meta (replace-meta meta new-meta)))
+        (dissoc ast :meta)))
+    ast))
 
 (defn elide-meta
   "If elides is not empty and the AST node contains metadata,

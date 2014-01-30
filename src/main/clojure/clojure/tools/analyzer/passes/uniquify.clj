@@ -32,23 +32,24 @@
              #(mapv normalize %)))
 
 (defmethod -uniquify-locals :fn
-  [{:keys [name] :as ast}]
+  [ast]
   (binding [*locals-frame* (atom @*locals-frame*)]
-    (when name
+    (when-let [name (:name ast)]
       (uniquify name))
     (-> ast uniquify-locals* update-loop-locals)))
 
 (defmethod -uniquify-locals :local
-  [{:keys [name local init] :as ast}]
-  (if (not= :field local)
-    (let [name (normalize name)]
+  [ast]
+  (if (not= :field (:local ast))
+    (let [name (normalize (:name ast))]
       (update-loop-locals (assoc ast :name name)))
     (update-loop-locals ast)))
 
 (defn uniquify-binding
-  [{:keys [init name] :as b}]
+  [b]
   (let [i (binding [*locals-frame* (atom @*locals-frame*)]
-            (-uniquify-locals init))]
+            (-uniquify-locals (:init b)))
+        name (:name b)]
     (uniquify name)
     (let [name (normalize name)]
       (assoc b

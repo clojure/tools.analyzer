@@ -8,7 +8,7 @@
 
 (ns clojure.tools.analyzer.passes.constant-lifter
   (:require [clojure.tools.analyzer :refer [-analyze]]
-            [clojure.tools.analyzer.utils :refer [constant? const-val classify]]))
+            [clojure.tools.analyzer.utils :refer [const-val classify]]))
 
 (defmulti constant-lift
   "If op is :vector/:set/:map, and every item of the collection is a literal

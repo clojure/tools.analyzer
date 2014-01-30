@@ -11,7 +11,7 @@
 (defn index-vector-nodes
   "Adds an :idx attribute to nodes in vector children, representing the position
    of the node vector."
-  [{:keys [children] :as ast}]
+  [ast]
   (merge ast
          (reduce (fn [m c]
                    (let [v (c ast)
@@ -19,4 +19,4 @@
                              (mapv (fn [x i] (assoc x :idx i ))
                                    v (range))
                              v)]
-                     (assoc m c v))) {} children)))
+                     (assoc m c v))) {} (:children ast))))
