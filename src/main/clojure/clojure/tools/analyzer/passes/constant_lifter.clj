@@ -30,8 +30,8 @@
            (every? :literal? vals)
            (not (meta form)))
     (assoc (-analyze :const (into (empty form)
-                                  (zipmap (map const-val keys)
-                                          (map const-val vals))) env :map)
+                                  (zipmap (mapv const-val keys)
+                                          (mapv const-val vals))) env :map)
       :form form)
     ast))
 
@@ -42,15 +42,6 @@
     (assoc (-analyze :const (into (empty form)
                                   (set (mapv const-val items))) env :set)
       :form form)
-    ast))
-
-;; this is actually jvm specific, should we move it?
-(defmethod constant-lift :var
-  [{:keys [var env form] :as ast}]
-  (if (constant? var)
-    (let [val @var]
-      (assoc (-analyze :const val env (classify val))
-        :form form))
     ast))
 
 (defmethod constant-lift :default [ast] ast)
