@@ -149,8 +149,11 @@
 (defmethod -analyze :map
   [_ form env]
   (let [kv-env (ctx env :expr)
-        ks (mapv (analyze-in-env kv-env) (keys form))
-        vs (mapv (analyze-in-env kv-env) (vals form))]
+        [keys vals] (reduce-kv (fn [[keys vals] [k v]]
+                                 [(conj keys k) (conj vals v)])
+                               [[] []] form)
+        ks (mapv (analyze-in-env kv-env) keys)
+        vs (mapv (analyze-in-env kv-env) vals)]
     (wrapping-meta
      {:op       :map
       :env      env
