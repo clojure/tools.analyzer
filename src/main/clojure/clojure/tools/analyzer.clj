@@ -592,13 +592,15 @@
   (let [[n meths] (if (symbol? (first args))
                     [(first args) (next args)]
                     [nil (seq args)])
-        name (or n (:name env))
+        name (or n "fn")
+        full-name (str (when-let [n (:name env)]
+                         (str n "$")) name (gensym "__"))
         name-expr {:op    :binding
                    :env   env
                    :form  name
                    :local :fn
                    :name  name}
-        env (dissoc env :name :once)
+        env (assoc (dissoc env :once) :name full-name)
         e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
         menv (assoc (dissoc e :no-recur)
                :once (-> op meta :once boolean))
@@ -627,7 +629,7 @@
     (merge {:op              :fn
             :env             env
             :form            form
-            :name            name
+            :name            full-name
             :variadic?       variadic?
             :max-fixed-arity max-fixed-arity
             :methods         methods-exprs}
