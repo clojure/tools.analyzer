@@ -154,7 +154,7 @@
   (let [f-ast (ast (fn a ([y & x] [x y]) ([] a) ([z] z)))]
     (is (= 1 (-> f-ast :max-fixed-arity)))
     (is (:variadic? f-ast))
-    (is (= 'a (-> f-ast :name)))
+    (is (.startsWith (-> f-ast :name) "a"))
     (is (= true (-> f-ast :methods first :variadic?))))
 
   (let [d-ast (ast (def ^{c d} a 1))]

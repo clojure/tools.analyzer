@@ -34,7 +34,7 @@
 (defmethod -uniquify-locals :fn
   [ast]
   (binding [*locals-frame* (atom @*locals-frame*)]
-    (when-let [name (:name ast)]
+    (when-let [name (-> ast :local :form)]
       (uniquify name))
     (-> ast uniquify-locals* update-loop-locals)))
 
