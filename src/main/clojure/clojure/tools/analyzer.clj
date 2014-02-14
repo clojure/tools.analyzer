@@ -452,7 +452,7 @@
                           (merge {:form form
                                   :sym  name}
                                  (-source-info form env))))
-          (let [init-expr (analyze init env)
+          (let [init-expr (analyze init (update-in env [:name] str "$" name))
                 bind-expr {:op       :binding
                            :env      env
                            :name     name
