@@ -129,7 +129,10 @@
   [ast opts]
   (if ((:what opts) :closed-overs)
     (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]
-      (collect-closed-overs* ast))
+      (let [ast (collect-closed-overs* ast)]
+        (if (:top-level? opts)
+          (assoc ast :closed-overs (:closed-overs @*collects*))
+          ast)))
     ast))
 
 (defn collect-fns [what]
