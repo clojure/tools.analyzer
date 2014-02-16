@@ -478,7 +478,7 @@
               body (analyze-body body (merge body-env
                                              (when loop?
                                                {:loop-id     loop-id
-                                                :loop-locals (mapv :form binds)})))]
+                                                :loop-locals (count binds)})))]
           {:body     body
            :bindings binds
            :children [:bindings :body]})))))
@@ -511,8 +511,8 @@
               no-recur
               "Cannot recur across try"
 
-              (not (= (count exprs) (count loop-locals)))
-              (str "Mismatched argument count to recur, expected: " (count loop-locals)
+              (not (= (count exprs) loop-locals))
+              (str "Mismatched argument count to recur, expected: " loop-locals
                    " args, had: " (count exprs)))]
     (throw (ex-info error-msg
                     (merge {:exprs exprs
@@ -563,7 +563,7 @@
                                   merge (zipmap params-names params-expr))
                        {:context     :return
                         :loop-id     loop-id
-                        :loop-locals (mapv :form params-expr)})
+                        :loop-locals (count params-expr)})
         body (analyze-body body body-env)]
     (when variadic?
       (let [x (drop-while #(not= % '&) params)]

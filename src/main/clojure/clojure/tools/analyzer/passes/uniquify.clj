@@ -26,17 +26,12 @@
 (defn uniquify-locals* [ast]
   (update-children ast -uniquify-locals))
 
-(defn update-loop-locals [ast] ;; keep :loop-locals updated
-  (update-in ast
-             [:env :loop-locals]
-             #(mapv normalize %)))
-
 (defmethod -uniquify-locals :local
   [ast]
   (if (= :field (:local ast)) ;; deftype fields cannot be uniquified
-    (update-loop-locals ast)  ;; to allow field access/set! to work
+    ast                       ;; to allow field access/set! to work
     (let [name (normalize (:name ast))]
-      (update-loop-locals (assoc ast :name name)))))
+      (assoc ast :name name))))
 
 (defn uniquify-binding
   [b]
@@ -51,23 +46,22 @@
 
 (defmethod -uniquify-locals :binding
   [{:keys [name local] :as ast}]
-  (-> (case local
-       (:let :letfn :loop)
-       (uniquify-binding ast)
+  (case local
+    (:let :letfn :loop)
+    (uniquify-binding ast)
 
-       :field
-       ast
+    :field
+    ast
 
-       (do (uniquify name)
-           (assoc ast :name (normalize name))))
-    update-loop-locals))
+    (do (uniquify name)
+        (assoc ast :name (normalize name)))))
 
 (defmethod -uniquify-locals :default
   [ast]
   (if (some #(= :binding (:op %)) (children ast))
     (binding [*locals-frame* (atom @*locals-frame*)] ;; set up frame so locals won't leak
-      (-> ast uniquify-locals* update-loop-locals))
-    (-> ast uniquify-locals* update-loop-locals)))
+      (uniquify-locals* ast))
+    (uniquify-locals* ast)))
 
 (defn uniquify-locals
   "Walks the AST performing alpha-conversion on local
@@ -75,4 +69,4 @@
   [ast]
   (binding [*locals-counter* (atom {})
             *locals-frame*   (atom {})]
-    (-uniquify-locals ast)))
+     (-uniquify-locals ast)))
