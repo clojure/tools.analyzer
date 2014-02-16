@@ -18,7 +18,7 @@
              :meta (meta form)
              :tag  tag}
         collects @*collects*]
-    (or (:id ((:constants collects) key))
+    (or (:id ((:constants collects) key)) ;; constant already in the constant table
         (let [id (:next-id collects)]
           (swap! *collects* #(assoc-in (update-in % [:next-id] inc)
                                        [:constants key]
@@ -36,8 +36,8 @@
 
 (defmethod -collect-const :const
   [{:keys [val tag type] :as ast}]
-  (if (and (not= type :nil)
-           (not= type :boolean))
+  (if (and (not= type :nil)        ;; nil and true/false can be emitted as literals,
+           (not= type :boolean)) ;; no need to put them on the constant table
     (let [id (-register-constant val tag type)]
       (assoc ast :id id))
     ast))
@@ -70,11 +70,12 @@
 (defn merge-collects [ast]
   (merge ast (dissoc @*collects* :where :what :next-id)))
 
+;; collects constants and callsites in one pass
 (defn -collect [ast collect-fn]
   (let [collects @*collects*
         collect? ((:where collects) (:op ast))
 
-        ast (with-bindings
+        ast (with-bindings ;; if it's a collection point, set up an empty constant/callsite frame
               (if collect? {#'*collects* (atom (merge collects
                                                       {:next-id            0
                                                        :constants          {}
@@ -91,20 +92,20 @@
 (declare collect-closed-overs*)
 (defn -collect-closed-overs
   [ast]
-  (case (:op ast)
-    :binding
-    (let [name (:name ast)
-          ast (if (:init ast) (update-in ast [:init] collect-closed-overs*) ast)]
-      (if (= :field (:local ast))
-        (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom)))
-        (swap! *collects* #(update-in % [:locals] conj name)))
-      ast)
-    :local
-    (let [name (:name ast)]
-      (when-not ((:locals @*collects*) name)
-        (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom))))
-      ast)
-      (update-children ast collect-closed-overs*)))
+  (-> (case (:op ast)
+       :binding
+       (let [name (:name ast)]
+         (if (= :field (:local ast))
+           (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom))) ;; special-case: put directly as closed-overs
+           (swap! *collects* #(update-in % [:locals] conj name)))                        ;; register the local as a frame-local locals
+         ast)
+       :local
+       (let [name (:name ast)]
+         (when-not ((:locals @*collects*) name)                                         ;; if the local is not in the frame-local locals
+           (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom)))) ;; then it's from the outer frame locals, thus a closed-over
+         ast)
+       ast)
+    (update-children collect-closed-overs*))) ;; recursively collect closed-overs in the children nodes
 
 (defn collect-closed-overs*
   [{:keys [op] :as ast}]
@@ -115,17 +116,19 @@
             (binding [*collects* (atom (merge @*collects*
                                               {:closed-overs {} :locals #{}}))]
               [(update-children ast -collect-closed-overs) @*collects*])]
-        (swap! *collects* #(update-in % [:closed-overs] merge
+        (swap! *collects* #(update-in % [:closed-overs] merge ;; propagate closed-overs from the inner frame to the outer frame
                                       (into {}
-                                            (remove (fn [[_ {:keys [local]}]]
+                                            (remove (fn [[_ {:keys [local]}]] ;; remove deftype fields from the closed-over locals
                                                       (and (= op :deftype)
                                                            (= :field local)))
-                                                    (apply dissoc closed-overs
-                                                           (:locals @*collects*))))))
+                                                    (apply dissoc closed-overs        ;; remove from the closed-overs locals that were
+                                                           (:locals @*collects*)))))) ;; local to the inner frame
         (assoc ast :closed-overs closed-overs))
       (-collect-closed-overs ast))))
 
 (defn collect-closed-overs
+  "Takes an AST and an opts map that takes the same options as collect,
+   but only collects closed-overs on the AST."
   [ast opts]
   (if ((:what opts) :closed-overs)
     (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]
@@ -148,7 +151,10 @@
      ** :closed-overs  closed over local bindings
      ** :callsites     keyword and protocol callsites
    * :where       set of :op nodes where to attach collected info
-   * :top-level?  if true attach collected info to the top-level node"
+   * :top-level?  if true attach collected info to the top-level node
+
+   Returns a function that does the takes an AST and returns an AST with the
+   collected info."
   [{:keys [what top-level?] :as opts}]
   (fn this [ast]
     (-> (binding [*collects* (atom (merge {:constants           {}
@@ -162,4 +168,6 @@
            (if top-level?
              (merge-collects ast)
              ast)))
+      ;; closed-overs collecting must be done in a separate pass than constant/callsites
+      ;; since it requires a different walking order
       (collect-closed-overs opts))))

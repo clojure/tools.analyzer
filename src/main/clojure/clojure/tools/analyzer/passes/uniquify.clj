@@ -26,29 +26,22 @@
 (defn uniquify-locals* [ast]
   (update-children ast -uniquify-locals))
 
-(defn update-loop-locals [ast]
+(defn update-loop-locals [ast] ;; keep :loop-locals updated
   (update-in ast
              [:env :loop-locals]
              #(mapv normalize %)))
 
-(defmethod -uniquify-locals :fn
-  [ast]
-  (binding [*locals-frame* (atom @*locals-frame*)]
-    (when-let [name (-> ast :local :form)]
-      (uniquify name))
-    (-> ast uniquify-locals* update-loop-locals)))
-
 (defmethod -uniquify-locals :local
   [ast]
-  (if (not= :field (:local ast))
+  (if (= :field (:local ast)) ;; deftype fields cannot be uniquified
+    (update-loop-locals ast)  ;; to allow field access/set! to work
     (let [name (normalize (:name ast))]
-      (update-loop-locals (assoc ast :name name)))
-    (update-loop-locals ast)))
+      (update-loop-locals (assoc ast :name name)))))
 
 (defn uniquify-binding
   [b]
-  (let [i (binding [*locals-frame* (atom @*locals-frame*)]
-            (-uniquify-locals (:init b)))
+  (let [i (binding [*locals-frame* (atom @*locals-frame*)] ;; inits need to be uniquified before the local
+            (-uniquify-locals (:init b)))                  ;; to avoid potential shadowings
         name (:name b)]
     (uniquify name)
     (let [name (normalize name)]
@@ -58,23 +51,21 @@
 
 (defmethod -uniquify-locals :binding
   [{:keys [name local] :as ast}]
-  (case local
-    (:let :letfn :loop)
-    (-> ast uniquify-binding update-loop-locals)
+  (-> (case local
+       (:let :letfn :loop)
+       (uniquify-binding ast)
 
-    :field
-    (update-loop-locals ast)
+       :field
+       ast
 
-    :fn
-    (assoc ast :name (normalize name))
-
-    (do (uniquify name)
-        (update-loop-locals (assoc ast :name (normalize name))))))
+       (do (uniquify name)
+           (assoc ast :name (normalize name))))
+    update-loop-locals))
 
 (defmethod -uniquify-locals :default
   [ast]
   (if (some #(= :binding (:op %)) (children ast))
-    (binding [*locals-frame* (atom @*locals-frame*)]
+    (binding [*locals-frame* (atom @*locals-frame*)] ;; set up frame so locals won't leak
       (-> ast uniquify-locals* update-loop-locals))
     (-> ast uniquify-locals* update-loop-locals)))
 
