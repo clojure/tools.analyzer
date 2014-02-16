@@ -298,7 +298,7 @@
 
 (defmethod -parse 'quote
   [[_ expr :as form] env]
-  (when-not (<= 1 (count form) 2)
+  (when-not (= 1 (count form))
     (throw (ex-info (str "Wrong number of args to quote, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
