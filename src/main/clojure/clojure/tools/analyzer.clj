@@ -298,7 +298,7 @@
 
 (defmethod -parse 'quote
   [[_ expr :as form] env]
-  (when-not (= 1 (count form))
+  (when-not (= 2 (count form))
     (throw (ex-info (str "Wrong number of args to quote, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
@@ -542,7 +542,7 @@
                            (-source-info form env)
                            (-source-info params env)))))
   (let [variadic? (boolean (some '#{&} params))
-        params-names (if variadic (vec (remove '#{&} params)) params)
+        params-names (if variadic? (vec (remove '#{&} params)) params)
         env (dissoc env :local)
         arity (count params-names)
         params-expr (mapv (fn [name id]
