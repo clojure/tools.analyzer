@@ -12,27 +12,34 @@
                          IReference Var)
            java.util.regex.Pattern))
 
-(defmacro update!
-  "Shortrand for (set! x (f x a0 .. an))"
-  [target f & args]
-  (list 'set! target (list* f target args)))
-
 (defn ctx
   "Returns a copy of the passed environment with :context set to ctx"
   [env ctx]
   (assoc env :context ctx))
 
-(defn record? [x]
+(defn record?
+  "Returns true if x is a record"
+  [x]
   (instance? IRecord x))
-(defn type? [x]
+(defn type?
+  "Returns true if x is a type"
+  [x]
   (instance? IType x))
-(defn obj? [x]
+(defn obj?
+  "Returns true if x implements IObj"
+  [x]
   (instance? IObj x))
-(defn reference? [x]
+(defn reference?
+  "Returns true if x implements IReference"
+  [x]
   (instance? IReference x))
-(defn regex? [x]
+(defn regex?
+  "Returns true if x is a regex"
+  [x]
   (instance? Pattern x))
-(defn boolean? [x]
+(defn boolean?
+  "Returns true if x is a boolean"
+  [x]
   (or (true? x) (false? x)))
 
 (defn classify
@@ -57,18 +64,28 @@
    (var? form)     :var
    :else           :unknown))
 
-(defn private? [var]
+(defn private?
+  "Returns true if the var is private"
+  [var]
   (:private (meta var)))
-(defn macro? [var]
+(defn macro?
+  "Returns true if the var maps to a macro"
+  [var]
   (:macro (meta var)))
-(defn constant? [var]
+(defn constant?
+  "Returns true if the var is a const"
+  [var]
   (:const (meta var)))
-(defn dynamic? [var]
+(defn dynamic?
+  "Returns true if the var is dynamic"
+  [var]
   (or (:dynamic (meta var))
-      (when (var? var)
+      (when (var? var) ;; workaround needed since Clojure doesn't always propagate :dynamic
         (.isDynamic ^Var var))))
-(defn protocol-node? [var]
-  (boolean (:protocol (meta var))))
+(defn protocol-node?
+  "Returns true if the var maps to a protocol function"
+  [var]
+  (boolean (:protocol (meta var)))) ;; conveniently this is true in both clojure and clojurescript
 
 (defn resolve-ns [ns-sym {:keys [ns namespaces]}]
   (when ns-sym

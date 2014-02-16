@@ -83,7 +83,7 @@
            ~(-emit-form* body hygienic?)))
 
 (defmethod -emit-form :const
-  [{:keys [form quoted?]} _]
+  [{:keys [form]} _]
   form)
 
 (defmethod -emit-form :quote

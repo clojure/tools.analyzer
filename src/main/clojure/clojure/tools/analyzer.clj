@@ -24,8 +24,8 @@
 
 (defmulti -analyze (fn [op form env & _] op))
 (defmulti -parse
-  "Takes a form and an env map and dispatches on the head of the form, a special
-   form."
+  "Takes a form and an env map and dispatches on the head of the form, that is
+   a special form."
   (fn [[op & rest] env] op))
 
 (defn analyze
@@ -39,18 +39,24 @@
                  analyzed, must be present in the :namespaces map
    * :namespaces an atom containing a map from namespace symbol to namespace map,
                  the namespace map contains the following keys:
-    ** :mappings   a map of mappings of the namespace, symbol to var
+    ** :mappings   a map of mappings of the namespace, symbol to var/class
     ** :aliases    a map of the aliases of the namespace, symbol to symbol
     ** :ns         a symbol representing the namespace
+
    returns an AST for that form.
 
-   The AST is a map that is *guaranteed* to have the following keys:
+   Every node in the AST is a map that is *guaranteed* to have the following keys:
    * :op   a keyword describing the AST node
    * :form the form represented by the AST node
    * :env  the environment map of the AST node
 
    Additionaly if the AST node contains sub-nodes, it is guaranteed to have:
-   * :children a vector of the keys of the AST node mapping to the sub-nodes"
+   * :children a vector of the keys of the AST node mapping to the sub-nodes,
+               ordered, when that makes sense
+
+   It is considered a node either the top-level map or a node that can be
+   reached via :children; if a node contains a node-like map that is not reachable
+   by :children, there's no guarantee that such a map will contain the guaranteed keys."
 
   [form env]
   (let [form (if (seq? form)
@@ -58,18 +64,19 @@
                form)]
     (cond
 
-     (symbol? form)   (-analyze :symbol form env)
+     (symbol? form)          (-analyze :symbol form env)
 
-     (type? form)     (-analyze :const  form env :type)
-     (record? form)   (-analyze :const  form env :record)
-
+     (type? form)            (-analyze :const  form env :type)
+     (record? form)          (-analyze :const  form env :record) ;; since recors are maps too, record? *needs*
+                                                                 ;; to be before map?
      (and (seq? form)
-          (not (empty? form)))      (-analyze :seq    form env)
-     (vector? form)   (-analyze :vector form env)
-     (map? form)      (-analyze :map    form env)
-     (set? form)      (-analyze :set    form env)
+          (not (empty? form))) (-analyze :seq    form env)         ;; handles function/macro/special-form invocations
 
-     :else            (-analyze :const  form env))))
+     (vector? form)          (-analyze :vector form env)
+     (map? form)             (-analyze :map    form env)
+     (set? form)             (-analyze :set    form env)
+
+     :else                   (-analyze :const  form env))))
 
 (defn empty-env
   "Returns an empty env"
@@ -108,7 +115,10 @@
        :doc      "Returns true if obj represent a var form as returned by create-var"}
   var?)
 
-(defn wrapping-meta [{:keys [form env] :as expr}]
+;; this node wraps non-quoted collections literals with metadata attached
+;; to them, the metadata will be evaluated at run-time, not treated like a constant
+(defn wrapping-meta
+  [{:keys [form env] :as expr}]
   (let [meta (meta form)]
     (if (and (obj? form)
              (seq meta))
@@ -132,7 +142,8 @@
       :val      form
       :form     form}
      (when (seq m)
-       {:meta     (-analyze :const m (ctx env :expr) :map)
+       {:meta     (-analyze :const m (ctx env :expr) :map) ;; metadata on a constant literal will not be evaluated at
+                                                           ;; runtime, this is also true for metadata on quoted collection literals
         :children [:meta]}))))
 
 (defmethod -analyze :vector
@@ -192,19 +203,20 @@
   [_ sym env]
   (let [mform (macroexpand-1 sym env)] ;; t.a.j/macroexpand-1 macroexpands Class/Field into (. Class Field)
     (if (= mform sym)
-      (merge (if-let [{:keys [mutable children] :as local-binding} (-> env :locals sym)]
-               (merge (dissoc local-binding :init)
+      (merge (if-let [{:keys [mutable children] :as local-binding} (-> env :locals sym)] ;; locals shadow globals
+               (merge (dissoc local-binding :init) ;; avoids useless passes later
                       {:op          :local
                        :assignable? (boolean mutable)
                        :children    (vec (remove #{:init} children))})
                (if-let [var (let [v (resolve-var sym env)]
                               (and (var? v) v))]
                  {:op          :var
-                  :assignable? (dynamic? var)
+                  :assignable? (dynamic? var) ;; we cannot statically determine if a Var is in a thread-local context
+                                              ;; so checking whether it's dynamic or not is the most we can do
                   :var         var}
                  (if-let [maybe-class (namespace sym)] ;; e.g. js/foo.bar or Long/MAX_VALUE
                    (let [maybe-class (symbol maybe-class)]
-                     (if-not (resolve-ns maybe-class env)
+                     (if-not (resolve-ns maybe-class env) ;; namespaces shadow classes
                        {:op    :maybe-host-form
                         :class maybe-class
                         :field (symbol (name sym))}
@@ -215,6 +227,7 @@
                     :class mform})))
              {:env  env
               :form mform})
+      ;; should this preserve the original form?
       (analyze (if (obj? mform)
                  (with-meta mform (meta sym))
                  mform)
@@ -224,17 +237,19 @@
   [_ form env]
   (let [op (first form)]
     (when (nil? op)
-      (throw (ex-info "Can't call nil" {:form form})))
+      (throw (ex-info "Can't call nil"
+                      (merge {:form form}
+                             (-source-info form env)))))
     (let [mform (macroexpand-1 form env)]
-      (if (= form mform)
-        (parse mform env) ;; invoke == :default
+      (if (= form mform)  ;; function/special-form invocation
+        (parse mform env) ;; invokes get handled by :default -parse method
         (analyze (if (obj? mform)
                    (with-meta mform (meta form))
                    mform)
                  env)))))
 
-(defn analyze-block
-  [exprs env]
+(defmethod -parse 'do
+  [[_ & exprs :as form] env]
   (let [statements-env (ctx env :statement)
         [statements ret] (loop [statements [] [e & exprs] exprs]
                            (if (seq exprs)
@@ -242,16 +257,12 @@
                              [statements e]))
         statements (mapv (analyze-in-env statements-env) statements)
         ret (analyze ret env)]
-    {:statements statements
+    {:op         :do
+     :env        env
+     :form       form
+     :statements statements
      :ret        ret
      :children   [:statements :ret]}))
-
-(defmethod -parse 'do
-  [[_ & exprs :as form] env]
-  (into {:op   :do
-         :env  env
-         :form form}
-        (analyze-block exprs env)))
 
 (defmethod -parse 'if
   [[_ test then else :as form] env]
@@ -315,7 +326,13 @@
      :children [:target :val]}))
 
 (defn analyze-body [body env]
+  ;; :body is used by emit-form to remove the artificial 'do
   (assoc (parse (cons 'do body) env) :body? true))
+
+(defn valid-binding-symbol? [s]
+  (and (symbol? s)
+       (not (namespace s))
+       (not (.contains (str s) "."))))
 
 (defmethod -parse 'try
   [[_ & body :as form] env]
@@ -350,8 +367,7 @@
 
 (defmethod -parse 'catch
   [[_ etype ename & body :as form] env]
-  (when (or (not (symbol? ename))
-          (namespace ename))
+  (when-not (valid-binding-symbol? ename)
     (throw (ex-info (str "Bad binding form: " ename)
                     (merge {:sym ename
                             :form form}
@@ -401,16 +417,14 @@
 (defmethod -parse 'letfn*
   [[_ bindings & body :as form] env]
   (validate-bindings form env)
-  (let [bindings (apply hash-map bindings)
+  (let [bindings (apply hash-map bindings) ;; non-determinalistically pick only one local with the same name,
+                                           ;; if more are present.
         fns (keys bindings)]
-    (when-not (every? #(and (symbol? %)
-                       (not (namespace %)))
-                 fns)
-      (let [sym (first (remove symbol? fns))]
-        (throw (ex-info (str "Bad binding form: " sym)
-                        (merge {:form form
-                                :sym sym}
-                               (-source-info form env))))))
+    (when-let [[sym] (seq (remove valid-binding-symbol? fns))]
+      (throw (ex-info (str "Bad binding form: " sym)
+                      (merge {:form form
+                              :sym  sym}
+                             (-source-info form env)))))
     (let [binds (reduce (fn [binds name]
                           (assoc binds name
                                  {:op    :binding
@@ -419,7 +433,7 @@
                                   :form  name
                                   :local :letfn}))
                         {} fns)
-          e (update-in env [:locals] merge binds)
+          e (update-in env [:locals] merge binds) ;; pre-seed locals
           binds (reduce-kv (fn [binds name bind]
                              (assoc binds name
                                     (merge bind
@@ -432,7 +446,7 @@
       {:op       :letfn
        :env      env
        :form     form
-       :bindings (vec (vals binds))
+       :bindings (vec (vals binds)) ;; order is irrelevant
        :body     body
        :children [:bindings :body]})))
 
@@ -441,18 +455,16 @@
   (validate-bindings form env)
   (let [loop? (= 'loop* op)
         env (if loop? (dissoc env :once) env)]
-    (loop [bindings (partition 2 bindings)
+    (loop [bindings bindings
            env (ctx env :expr)
            binds []]
-      (if-let [[name init] (first bindings)]
-        (if (or (not (symbol name))
-                (namespace name)
-                (.contains (str name) "."))
+      (if-let [[name init & bindings] (seq bindings)]
+        (if (not (valid-binding-symbol? name))
           (throw (ex-info (str "Bad binding form: " name)
                           (merge {:form form
                                   :sym  name}
                                  (-source-info form env))))
-          (let [init-expr (analyze init (update-in env [:name] str "$" name))
+          (let [init-expr (analyze init (update-in env [:name] str "$" name)) ;; munged fn name, does not include namespace segment
                 bind-expr {:op       :binding
                            :env      env
                            :name     name
@@ -460,17 +472,14 @@
                            :form     name
                            :local    (if loop? :loop :let)
                            :children [:init]}]
-            (recur (next bindings)
+            (recur bindings
                    (assoc-in env [:locals name] bind-expr)
                    (conj binds bind-expr))))
-        (let [body-env (assoc env
-                         :context (if loop? :return context))
-              body (analyze-body body
-                               (if loop?
-                                 (assoc body-env
-                                   :loop-id     loop-id
-                                   :loop-locals (mapv :form binds))
-                                 body-env))]
+        (let [body-env (assoc env :context (if loop? :return context))
+              body (analyze-body body (merge body-env
+                                             (when loop?
+                                               {:loop-id     loop-id
+                                                :loop-locals (mapv :form binds)})))]
           {:body     body
            :bindings binds
            :children [:bindings :body]})))))
@@ -484,7 +493,7 @@
 
 (defmethod -parse 'loop*
   [form env]
-  (let [loop-id (gensym "loop_")
+  (let [loop-id (gensym "loop_") ;; can be used to find matching recur
         env (dissoc (assoc env :loop-id loop-id) :no-recur)]
     (into {:op      :loop
            :form    form
@@ -511,8 +520,7 @@
                             :form  form}
                            (-source-info form env)))))
 
-  (let [exprs (mapv (analyze-in-env (ctx env :expr))
-                    exprs)]
+  (let [exprs (mapv (analyze-in-env (ctx env :expr)) exprs)]
     {:op          :recur
      :env         env
      :form        form
@@ -521,22 +529,21 @@
      :children    [:exprs]}))
 
 (defn analyze-fn-method [[params & body :as form] {:keys [locals local] :as env}]
-  (when-let [error-msg
-             (cond
-              (not (every? symbol? params))
-              (str "Params must be symbols, had: "
-                   (mapv class params))
-
-              (some namespace params)
-              (str "Unexpected namespace in parameter(s) name: "
-                   (seq (filter namespace params))))]
-    (throw (ex-info error-msg
+  (when (not-every? valid-binding-symbol? params)
+    (throw (ex-info (str "Params must be valid binding symbols, had: "
+                         (mapv class params))
                     (merge {:params params
                             :form   form}
                            (-source-info form env)
                            (-source-info params env))))) ;; more specific
+  (when-not (vector? params)
+    (throw (ex-info "Parameter declaration should be a vector"
+                    (merge {:params params
+                            :form   form}
+                           (-source-info form env)
+                           (-source-info params env)))))
   (let [variadic? (boolean (some '#{&} params))
-        params-names (vec (remove '#{&} params))
+        params-names (if variadic (vec (remove '#{&} params)) params)
         env (dissoc env :local)
         arity (count params-names)
         params-expr (mapv (fn [name id]
@@ -556,12 +563,12 @@
         body-env (into (update-in env [:locals]
                                   merge (zipmap params-names params-expr))
                        {:context     :return
-                        :loop-id      loop-id
+                        :loop-id     loop-id
                         :loop-locals (mapv :form params-expr)})
         body (analyze-body body body-env)]
     (when variadic?
       (let [x (drop-while #(not= % '&) params)]
-        (when (= '& (second x))
+        (when (contains? #{nil '&} (second x))
           (throw (ex-info "Invalid parameter list"
                           (merge {:params params
                                   :form   form}
@@ -600,7 +607,7 @@
                    :form  name
                    :local :fn
                    :name  name}
-        env (assoc (dissoc env :once) :name full-name)
+        env (assoc (dissoc env :once) :name full-name) ;; munged fn name, does not include namespace segment
         e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
         menv (assoc (dissoc e :no-recur)
                :once (-> op meta :once boolean))
@@ -668,7 +675,7 @@
                     (-source-info form env)
                     (when doc {:doc doc}))
 
-        var (create-var sym env)
+        var (create-var sym env) ;; interned var will have quoted arglists, replaced on evaluation
         _ (swap! namespaces assoc-in [ns :mappings sym] var)
 
         sym (with-meta sym meta)
@@ -677,8 +684,7 @@
               sym)
         env (assoc env :name sym)
 
-        meta-expr (when meta (analyze meta
-                                      (ctx env :expr)))
+        meta-expr (when meta (analyze meta (ctx env :expr))) ;; meta on def sym will be evaluated
 
         args (when-let [[_ init] (find args :init)]
                (merge args {:init (analyze init (ctx env :expr))}))
@@ -691,7 +697,7 @@
             :name sym
             :var  var}
            (when meta
-             {:meta meta-expr}) ;; or meta?
+             {:meta meta-expr})
            args
            (when-not (empty? children)
              {:children children}))))
@@ -714,29 +720,27 @@
                       (merge {:form   form
                               :method m-or-f}
                              (-source-info form env)))))
-    (merge {:form form
-            :env  env}
+    (merge {:form   form
+            :env    env
+            :target target-expr}
            (cond
             call?
             {:op       :host-call
-             :target   target-expr
              :method   (symbol (name (first m-or-f)))
              :args     (mapv (analyze-in-env (ctx env :expr)) (next m-or-f))
              :children [:target :args]}
 
             field?
             {:op       :host-field
-             :target   target-expr
              :field    (symbol (name m-or-f))
              :children [:target]}
 
             :else
-            {:op       :host-interop ;; either field access or single method call
-             :target   target-expr
+            {:op       :host-interop ;; either field access or no-args method call
              :m-or-f   (symbol (name m-or-f))
              :children [:target]}))))
 
-;; invoke
+;; handles function calls
 (defmethod -parse :default
   [[f & args :as form] env]
   (let [e (ctx env :expr)
@@ -749,5 +753,5 @@
             :fn   fn-expr
             :args args-expr}
            (when m
-             {:meta m}) ;; this implies it's not going to be evaluated
+             {:meta m}) ;; meta on invoke form will not be evaluated
            {:children [:fn :args]})))
