@@ -52,7 +52,9 @@
                ast (mapv list (fix (:children ast)) (fix c)))
        ast)))
 
-(def rseqv (comp vec rseq))
+(defn rseqv [v]
+  "Same as (comp vec rseq)"
+  (vec (rseq v)))
 
 (defn walk
   "Walk the ast applying pre when entering the nodes, and post when exiting.

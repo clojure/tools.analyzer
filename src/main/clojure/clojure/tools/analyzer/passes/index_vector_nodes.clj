@@ -9,7 +9,7 @@
 (ns clojure.tools.analyzer.passes.index-vector-nodes)
 
 (defn index-vector-nodes
-  "Adds an :idx attribute to nodes in vector children, representing the position
+  "Adds an :idx attribute to nodes in a vector children, representing the position
    of the node vector."
   [ast]
   (merge ast

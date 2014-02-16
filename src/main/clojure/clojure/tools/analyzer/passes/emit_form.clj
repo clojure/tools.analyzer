@@ -10,13 +10,15 @@
 
 (defmulti -emit-form (fn [{:keys [op]} _] op))
 
-(def ^:dynamic -emit-form*
-  (fn [{:keys [form] :as ast} hygienic?]
-    (let [expr (-emit-form ast hygienic?)]
-      (if-let [m (and (instance? clojure.lang.IObj expr)
-                      (meta form))]
-        (with-meta expr (merge (meta expr) m))
-        expr))))
+(defn ^:dynamic -emit-form*
+  "Extension point for custom emit-form implementations, should be rebound
+   to a multimethod with custom emit-form :ops."
+  [{:keys [form] :as ast} hygienic?]
+  (let [expr (-emit-form ast hygienic?)]
+    (if-let [m (and (instance? clojure.lang.IObj expr)
+                    (meta form))]
+      (with-meta expr (merge (meta expr) m))
+      expr)))
 
 (defn emit-form
   "Return the form represented by the given AST"

@@ -9,7 +9,12 @@
 (ns clojure.tools.analyzer.passes.trim)
 
 
-(defmulti trim :op)
+(defmulti trim
+  "Trims the AST from duplicate :do nodes or useless :let nodes.
+   WARNING: Still experimental, possibly useful metadata-stored info
+            might get lost"
+  :op)
+
 (defmethod trim :default [ast] ast)
 
 (defmethod trim :do

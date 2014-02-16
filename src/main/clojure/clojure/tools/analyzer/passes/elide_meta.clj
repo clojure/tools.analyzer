@@ -9,7 +9,8 @@
 (ns clojure.tools.analyzer.passes.elide-meta)
 
 (def ^:dynamic elides
-  "Set of map keys to elide from metadata."
+  "Set of map keys to elide from metadata.
+   Defaults to (set (:elide-meta *compiler-options*))"
   (set (:elide-meta *compiler-options*)))
 
 (defn replace-meta [meta new-meta]

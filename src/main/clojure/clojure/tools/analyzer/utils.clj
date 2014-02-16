@@ -87,12 +87,16 @@
   [var]
   (boolean (:protocol (meta var)))) ;; conveniently this is true in both clojure and clojurescript
 
-(defn resolve-ns [ns-sym {:keys [ns namespaces]}]
+(defn resolve-ns
+  "Resolves the ns mapped by the given sym in the env"
+  [ns-sym {:keys [ns namespaces]}]
   (when ns-sym
     (or (get-in @namespaces [ns :aliases ns-sym])
         (:ns (@namespaces ns-sym)))))
 
-(defn resolve-var [sym {:keys [ns namespaces] :as env}]
+(defn resolve-var
+  "Resolves the var mapped by the given sym in the env"
+  [sym {:keys [ns namespaces] :as env}]
   (when (symbol? sym)
     (let [name (-> sym name symbol)
           sym-ns (when-let [ns (namespace sym)]
@@ -101,7 +105,9 @@
       (when (or (not sym-ns) full-ns)
         (-> (@namespaces (or full-ns ns)) :mappings (get name))))))
 
-(defn arglist-for-arity [fn argc]
+(defn arglist-for-arity
+  "Takes a fn node and an argc and returns the matching arglist"
+  [fn argc]
   (let [arglists (->> fn :arglists (sort-by count))
         arglist (->> arglists (filter #(= argc (count %))) first)
         last-arglist (last arglists)]
@@ -110,12 +116,18 @@
                    (>= argc (- (count last-arglist) 2)))
           last-arglist))))
 
-(defn get-line [x env]
+(defn get-line
+  "Returns the line number of x"
+  [x env]
   (-> x meta :line))
-(defn get-col [x env]
+(defn get-col
+  "Returns the column number of x"
+  [x env]
   (-> x meta :column))
 
-(defn -source-info [x env]
+(defn -source-info
+  "Returns the source-info of x"
+  [x env]
   (merge
    (when-let [file (and (not= *file* "NO_SOURCE_FILE")
                         *file*)]
@@ -125,16 +137,14 @@
    (when-let [column (get-col x env)]
      {:column column})))
 
-(defn source-info [{:keys [file line column]}]
-  (merge {}
-         (when file
-           {:file file})
-         (when line
-           {:line line})
-         (when column
-           {:column column})))
+(defn source-info
+  "Returns the source-info from an env"
+  [env]
+  (select-keys env #{:file :line :column}))
 
-(defn const-val [{:keys [op val expr]}]
+(defn const-val
+  "Returns the value of a constant node (either :quote or :const)"
+  [{:keys [op val expr]}]
   (if (= :quote op)
     (:val expr)
     val))

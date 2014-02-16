@@ -11,9 +11,8 @@
             [clojure.tools.analyzer.utils :refer [const-val classify]]))
 
 (defmulti constant-lift
-  "If op is :vector/:set/:map, and every item of the collection is a literal
-   and the collection ha no metadata or if op is :var and the var has :const
-   metadata, transform the node to an equivalent :const node."
+  "If the node represents a collection with no metadata, and every item of that
+   collection is a literal, transform the node to an equivalent :const node."
   :op)
 
 (defmethod constant-lift :vector
