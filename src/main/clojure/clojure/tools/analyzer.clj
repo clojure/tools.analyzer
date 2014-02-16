@@ -302,7 +302,7 @@
     (throw (ex-info (str "Wrong number of args to quote, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
-  (let [const (-analyze :const expr (assoc env :quoted? true))]
+  (let [const (-analyze :const expr env)]
     {:op       :quote
      :expr     const
      :form     form
@@ -351,7 +351,7 @@
                       (merge {:expr fblocks
                               :form form}
                              (-source-info form env)))))
-    (let [body (analyze-body body (assoc env :in-try true :no-recur true))
+    (let [body (analyze-body body (assoc env :no-recur true)) ;; cannot recur across try
           cenv (ctx env :expr)
           cblocks (mapv #(parse % cenv) cblocks)
           fblock (when-not (empty? fblock)
@@ -453,8 +453,7 @@
 (defn analyze-let
   [[op bindings & body :as form] {:keys [context loop-id] :as env}]
   (validate-bindings form env)
-  (let [loop? (= 'loop* op)
-        env (if loop? (dissoc env :once) env)]
+  (let [loop? (= 'loop* op)]
     (loop [bindings bindings
            env (ctx env :expr)
            binds []]
