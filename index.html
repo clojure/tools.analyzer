@@ -143,6 +143,9 @@ namespace.
     <div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.collect/collect">collect</a>
       
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.collect/collect-closed-overs">collect-closed-overs</a>
+      
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#clojure.tools.analyzer.passes.constant-lifter" style="margin-top: 3px;">clojure.tools.analyzer.passes.constant-lifter</a>
@@ -697,10 +700,25 @@ The atom is put in the :atom field of the node.</pre>
   ** :closed-overs  closed over local bindings
   ** :callsites     keyword and protocol callsites
 * :where       set of :op nodes where to attach collected info
-* :top-level?  if true attach collected info to the top-level node</pre>
+* :top-level?  if true attach collected info to the top-level node
+
+Returns a function that does the takes an AST and returns an AST with the
+collected info.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/e8c04cb75e4b3f997bea43cebd64353e7aa1c445/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L144" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/c991b22fa84da69b072fcd000a10ba09cc66b2c0/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L147" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.passes.collect/collect-closed-overs">collect-closed-overs</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (collect-closed-overs ast opts)
+</pre>
+    <pre id="var-docstr">Takes an AST and an opts map that takes the same options as collect,
+but only collects closed-overs on the AST.</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/c991b22fa84da69b072fcd000a10ba09cc66b2c0/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L129" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -906,7 +924,7 @@ WARNING: Still experimental, possibly useful metadata-stored info
 bindings' :name field</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/63bc13a86ed5c56b7dddfe207af0a914303c5ef6/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L81" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/c991b22fa84da69b072fcd000a10ba09cc66b2c0/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L72" id="var-source">Source</a>
   </div>
 </div>
 <br />
