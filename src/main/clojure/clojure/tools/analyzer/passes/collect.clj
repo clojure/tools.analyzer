@@ -68,7 +68,7 @@
   ast)
 
 (defn merge-collects [ast]
-  (merge ast (dissoc @*collects* :where :what :next-id)))
+  (merge ast (dissoc @*collects* :where :what :next-id :top-level?)))
 
 ;; collects constants and callsites in one pass
 (defn -collect [ast collect-fn]
