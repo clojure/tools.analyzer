@@ -608,8 +608,9 @@
                    :name  name}
         env (assoc (dissoc env :once) :name full-name) ;; munged fn name, does not include namespace segment
         e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
+        once? (-> op meta :once boolean)
         menv (assoc (dissoc e :no-recur)
-               :once (-> op meta :once boolean))
+               :once once?)
         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
         methods-exprs (mapv #(analyze-fn-method % menv) meths)
         variadic (seq (filter :variadic? methods-exprs))
@@ -638,7 +639,8 @@
             :name            full-name
             :variadic?       variadic?
             :max-fixed-arity max-fixed-arity
-            :methods         methods-exprs}
+            :methods         methods-exprs
+            :once            once?}
            (when n
              {:local name-expr})
            {:children `[~@(when n [:local]) :methods]})))
