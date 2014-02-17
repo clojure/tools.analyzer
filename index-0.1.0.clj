@@ -25,7 +25,7 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/c991b22fa84da69b072fcd000a10ba09cc66b2c0/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/blob/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-api.html",
    :name "clojure.tools.analyzer.passes.collect",
@@ -436,9 +436,9 @@
    :name "collect",
    :namespace "clojure.tools.analyzer.passes.collect",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/c991b22fa84da69b072fcd000a10ba09cc66b2c0/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L147",
+   "https://github.com/clojure/tools.analyzer/blob/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L147",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/c991b22fa84da69b072fcd000a10ba09cc66b2c0/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/raw/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect",
    :doc
@@ -450,9 +450,9 @@
    :name "collect-closed-overs",
    :namespace "clojure.tools.analyzer.passes.collect",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/c991b22fa84da69b072fcd000a10ba09cc66b2c0/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L129",
+   "https://github.com/clojure/tools.analyzer/blob/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L129",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/c991b22fa84da69b072fcd000a10ba09cc66b2c0/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/raw/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect-closed-overs",
    :doc
