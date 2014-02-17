@@ -9,8 +9,8 @@
 (ns clojure.tools.analyzer.passes.uniquify
   (:require [clojure.tools.analyzer.ast :refer [update-children children]]))
 
-(def ^:dynamic *locals-counter*)
-(def ^:dynamic *locals-frame*)
+(def ^:dynamic *locals-counter*) ;; global counter, map sym -> count
+(def ^:dynamic *locals-frame*)   ;; holds the id for the locals in the current frame
 
 (defn normalize [name]
   (if-let [idx (@*locals-frame* name)]
