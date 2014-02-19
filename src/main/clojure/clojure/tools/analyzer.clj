@@ -609,11 +609,11 @@
                    :form  name
                    :local :fn
                    :name  name}
-        env (assoc (dissoc env :once) :name full-name) ;; munged fn name, does not include namespace segment
         e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
         once? (-> op meta :once boolean)
-        menv (assoc (dissoc e :no-recur)
-               :once once?)
+        menv (assoc (dissoc e :no-recur :in-try)
+               :once once?
+               :name full-name) ;; munged fn name, does not include namespace segment
         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
         methods-exprs (mapv #(analyze-fn-method % menv) meths)
         variadic (seq (filter :variadic? methods-exprs))
