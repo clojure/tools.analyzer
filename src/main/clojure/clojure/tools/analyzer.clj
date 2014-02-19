@@ -338,8 +338,8 @@
   [[_ & body :as form] env]
   (let [catch? (every-pred seq? #(= (first %) 'catch))
         finally? (every-pred seq? #(= (first %) 'finally))
-        [body tail] (split-with (complement (some-fn catch? finally?)) body)
-        [cblocks tail] (split-with catch? tail)
+        [body tail'] (split-with (complement (some-fn catch? finally?)) body)
+        [cblocks tail] (split-with catch? tail')
         [[fblock & fbs :as fblocks] tail] (split-with finally? tail)]
     (when-not (empty? tail)
       (throw (ex-info "Only catch or finally clause can follow catch in try expression"
@@ -351,19 +351,22 @@
                       (merge {:expr fblocks
                               :form form}
                              (-source-info form env)))))
-    (let [body (analyze-body body (assoc env :no-recur true)) ;; cannot recur across try
-          cenv (ctx env :expr)
-          cblocks (mapv #(parse % cenv) cblocks)
-          fblock (when-not (empty? fblock)
-                   (analyze-body (rest fblock) (ctx env :statement)))]
-      (merge {:op      :try
-              :env     env
-              :form    form
-              :body    body
-              :catches cblocks}
-             (when fblock
-               {:finally fblock})
-             {:children `[:body :catches ~@(when fblock [:finally])]}))))
+    (if (and (empty? cblocks)
+             (empty? fblocks))
+      (assoc (analyze-body body env) :form form) ;; discard the useless try
+      (let [body (analyze-body body (assoc env :no-recur true :in-try true)) ;; cannot recur across try
+            cenv (ctx env :expr)
+            cblocks (mapv #(parse % cenv) cblocks)
+            fblock (when-not (empty? fblock)
+                     (analyze-body (rest fblock) (ctx env :statement)))]
+        (merge {:op      :try
+                :env     env
+                :form    form
+                :body    body
+                :catches cblocks}
+               (when fblock
+                 {:finally fblock})
+               {:children `[:body :catches ~@(when fblock [:finally])]})))))
 
 (defmethod -parse 'catch
   [[_ etype ename & body :as form] env]
