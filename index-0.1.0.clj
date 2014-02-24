@@ -25,7 +25,7 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/blob/e8d7eaf180f22d568bc43418f353825b3941ed91/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-api.html",
    :name "clojure.tools.analyzer.passes.collect",
@@ -436,29 +436,29 @@
    :name "collect",
    :namespace "clojure.tools.analyzer.passes.collect",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L147",
+   "https://github.com/clojure/tools.analyzer/blob/e8d7eaf180f22d568bc43418f353825b3941ed91/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L148",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/raw/e8d7eaf180f22d568bc43418f353825b3941ed91/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect",
    :doc
    "Takes a map with:\n* :what        set of keywords describing what to collect, some of:\n  ** :constants     constant expressions\n  ** :closed-overs  closed over local bindings\n  ** :callsites     keyword and protocol callsites\n* :where       set of :op nodes where to attach collected info\n* :top-level?  if true attach collected info to the top-level node\n\nReturns a function that does the takes an AST and returns an AST with the\ncollected info.",
    :var-type "function",
-   :line 147,
+   :line 148,
    :file "src/main/clojure/clojure/tools/analyzer/passes/collect.clj"}
   {:arglists ([ast opts]),
    :name "collect-closed-overs",
    :namespace "clojure.tools.analyzer.passes.collect",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L129",
+   "https://github.com/clojure/tools.analyzer/blob/e8d7eaf180f22d568bc43418f353825b3941ed91/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L130",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/1e1bb6d7134ebb0b03855a3c47a746cb46703e90/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/raw/e8d7eaf180f22d568bc43418f353825b3941ed91/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect-closed-overs",
    :doc
    "Takes an AST and an opts map that takes the same options as collect,\nbut only collects closed-overs on the AST.",
    :var-type "function",
-   :line 129,
+   :line 130,
    :file "src/main/clojure/clojure/tools/analyzer/passes/collect.clj"}
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
