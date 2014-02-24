@@ -8,7 +8,8 @@
 
 (ns clojure.tools.analyzer.passes.collect
   (:require [clojure.tools.analyzer.utils :refer [protocol-node?]]
-            [clojure.tools.analyzer.ast :refer [update-children]]))
+            [clojure.tools.analyzer.ast :refer [update-children]]
+            [clojure.tools.analyzer.passes.cleanup :refer [cleanup]]))
 
 (def ^:private ^:dynamic *collects*)
 
@@ -96,13 +97,13 @@
        :binding
        (let [name (:name ast)]
          (if (= :field (:local ast))
-           (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom))) ;; special-case: put directly as closed-overs
+           (swap! *collects* #(assoc-in % [:closed-overs name] (cleanup ast))) ;; special-case: put directly as closed-overs
            (swap! *collects* #(update-in % [:locals] conj name)))                        ;; register the local as a frame-local locals
          ast)
        :local
        (let [name (:name ast)]
          (when-not ((:locals @*collects*) name)                                         ;; if the local is not in the frame-local locals
-           (swap! *collects* #(assoc-in % [:closed-overs name] (dissoc ast :env :atom)))) ;; then it's from the outer frame locals, thus a closed-over
+           (swap! *collects* #(assoc-in % [:closed-overs name] (cleanup ast)))) ;; then it's from the outer frame locals, thus a closed-over
          ast)
        ast)
     (update-children collect-closed-overs*))) ;; recursively collect closed-overs in the children nodes
