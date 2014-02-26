@@ -44,11 +44,22 @@
         :name name
         :init i))))
 
+(defmethod -uniquify-locals :letfn
+  [ast]
+  (doseq [{:keys [name]} (:bindings ast)] ;; take into account that letfn
+    (uniquify name))                      ;; accepts parallel bindings
+  (update-children ast -uniquify-locals))
+
 (defmethod -uniquify-locals :binding
   [{:keys [name local] :as ast}]
   (case local
-    (:let :letfn :loop)
+    (:let :loop)
     (uniquify-binding ast)
+
+    :letfn
+    (-> ast
+      (assoc :name (normalize name))
+      (update-children -uniquify-locals))
 
     :field
     ast
