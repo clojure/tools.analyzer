@@ -673,20 +673,21 @@
         arglists (when-let [arglists (:arglists (meta sym))]
                    (second arglists)) ;; drop quote
 
-        sym (with-meta (symbol (name sym)) (meta sym))
-
-        meta (merge (meta sym)
-                    (-source-info form env)
-                    (when doc {:doc doc}))
+        sym (with-meta (symbol (name sym))
+              (merge (meta sym)
+                     (when arglists
+                       {:arglists arglists})
+                     (when doc
+                       {:doc doc})
+                     (-source-info form env)))
 
         var (create-var sym env) ;; interned var will have quoted arglists, replaced on evaluation
         _ (swap! namespaces assoc-in [ns :mappings sym] var)
 
-        sym (with-meta sym meta)
-        sym (if arglists
-              (vary-meta sym assoc :arglists arglists)
-              sym)
         env (assoc env :name sym)
+        meta (merge (meta sym)
+                    (when arglists
+                      {:arglists (list 'quote arglists)}))
 
         meta-expr (when meta (analyze meta (ctx env :expr))) ;; meta on def sym will be evaluated
 
