@@ -194,10 +194,11 @@
   "Repeatedly calls macroexpand-1 on form until it no longer
    represents a macro form, then returns it."
   [form env]
-  (loop [mform (macroexpand-1 form env)]
-    (if (= mform form)
-      mform
-      (recur mform))))
+  (loop [form form]
+    (let [mform (macroexpand-1 form env)]
+      (if (= mform form)
+        mform
+        (recur mform)))))
 
 (defmethod -analyze :symbol
   [_ sym env]
