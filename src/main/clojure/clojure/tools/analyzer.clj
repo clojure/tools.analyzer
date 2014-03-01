@@ -467,7 +467,7 @@
                           (merge {:form form
                                   :sym  name}
                                  (-source-info form env))))
-          (let [init-expr (analyze init (update-in env [:name] str "$" name)) ;; munged fn name, does not include namespace segment
+          (let [init-expr (analyze init env)
                 bind-expr {:op       :binding
                            :env      env
                            :name     name
@@ -602,19 +602,14 @@
   (let [[n meths] (if (symbol? (first args))
                     [(first args) (next args)]
                     [nil (seq args)])
-        name (or n "fn")
-        full-name (str (when-let [n (:name env)]
-                         (str n "$")) name (gensym "__"))
         name-expr {:op    :binding
                    :env   env
-                   :form  name
+                   :form  n
                    :local :fn
-                   :name  name}
-        e (if n (assoc (assoc-in env [:locals name] name-expr) :local name-expr) env)
+                   :name  n}
+        e (if n (assoc (assoc-in env [:locals n] name-expr) :local name-expr) env)
         once? (-> op meta :once boolean)
-        menv (assoc (dissoc e :no-recur :in-try)
-               :once once?
-               :name full-name) ;; munged fn name, does not include namespace segment
+        menv (assoc (dissoc e :no-recur :in-try) :once once?)
         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
         methods-exprs (mapv #(analyze-fn-method % menv) meths)
         variadic (seq (filter :variadic? methods-exprs))
@@ -640,7 +635,6 @@
     (merge {:op              :fn
             :env             env
             :form            form
-            :name            full-name
             :variadic?       variadic?
             :max-fixed-arity max-fixed-arity
             :methods         methods-exprs
@@ -685,7 +679,6 @@
         var (create-var sym env) ;; interned var will have quoted arglists, replaced on evaluation
         _ (swap! namespaces assoc-in [ns :mappings sym] var)
 
-        env (assoc env :name sym)
         meta (merge (meta sym)
                     (when arglists
                       {:arglists (list 'quote arglists)}))
