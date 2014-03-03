@@ -26,7 +26,8 @@
 (defmulti -parse
   "Takes a form and an env map and dispatches on the head of the form, that is
    a special form."
-  (fn [[op & rest] env] op))
+  (fn [[op & rest] env] op)
+  :default :invoke)
 
 (defn analyze
   "Given a form to analyze and an environment, a map containing:
@@ -243,7 +244,7 @@
                              (-source-info form env)))))
     (let [mform (macroexpand-1 form env)]
       (if (= form mform)  ;; function/special-form invocation
-        (parse mform env) ;; invokes get handled by :default -parse method
+        (parse mform env)
         (analyze (if (obj? mform)
                    (with-meta mform (meta form))
                    mform)
@@ -739,8 +740,7 @@
              :m-or-f   (symbol (name m-or-f))
              :children [:target]}))))
 
-;; handles function calls
-(defmethod -parse :default
+(defmethod -parse :invoke
   [[f & args :as form] env]
   (let [e (ctx env :expr)
         fn-expr (analyze f e)
