@@ -145,7 +145,7 @@
 
   (let [lfn-ast (ast (letfn [(a [] (b)) (b [] (a))] a))]
     (is (= :letfn (-> lfn-ast :body :ret :local)))
-    (is (= '[a b] (->> lfn-ast :bindings (mapv :name)))))
+    (is (= '#{a b} (->> lfn-ast :bindings (mapv :name) set))))
 
   (let [l-ast (ast (loop [x 1] (recur 2)))]
     (is (= :loop (-> l-ast :bindings first :local)))
