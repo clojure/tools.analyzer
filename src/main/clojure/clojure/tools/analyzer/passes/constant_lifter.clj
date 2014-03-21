@@ -28,10 +28,14 @@
   (if (and (every? :literal? keys)
            (every? :literal? vals)
            (not (meta form)))
-    (assoc (-analyze :const (into (empty form)
-                                  (zipmap (mapv const-val keys)
-                                          (mapv const-val vals))) env :map)
-      :form form)
+    (let [c (into (empty form)
+                  (zipmap (mapv const-val keys)
+                          (mapv const-val vals)))
+          c (if (= (class c) (class format))
+              c
+              (apply array-map (mapcat identity c)))]
+      (assoc (-analyze :const c env :map)
+        :form form))
     ast))
 
 (defmethod constant-lift :set
