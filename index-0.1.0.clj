@@ -31,7 +31,7 @@
    :name "clojure.tools.analyzer.passes.collect",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   "https://github.com/clojure/tools.analyzer/blob/9993be2abee919d11ace888ec921323a6d274c65/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.constant-lifter-api.html",
    :name "clojure.tools.analyzer.passes.constant-lifter",
@@ -463,9 +463,9 @@
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   "https://github.com/clojure/tools.analyzer/raw/9993be2abee919d11ace888ec921323a6d274c65/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L13",
+   "https://github.com/clojure/tools.analyzer/blob/9993be2abee919d11ace888ec921323a6d274c65/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L13",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.constant-lifter/constant-lift",
    :namespace "clojure.tools.analyzer.passes.constant-lifter",
