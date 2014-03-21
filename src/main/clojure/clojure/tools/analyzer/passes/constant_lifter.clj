@@ -31,7 +31,7 @@
     (let [c (into (empty form)
                   (zipmap (mapv const-val keys)
                           (mapv const-val vals)))
-          c (if (= (class c) (class format))
+          c (if (= (class c) (class form))
               c
               (apply array-map (mapcat identity c)))]
       (assoc (-analyze :const c env :map)
