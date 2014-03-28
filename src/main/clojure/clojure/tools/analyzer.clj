@@ -142,7 +142,8 @@
       :literal? true
       :val      form
       :form     form}
-     (when (seq m)
+     (when (and (obj? form)
+                (seq m))
        {:meta     (-analyze :const m (ctx env :expr) :map) ;; metadata on a constant literal will not be evaluated at
                                                            ;; runtime, this is also true for metadata on quoted collection literals
         :children [:meta]}))))
