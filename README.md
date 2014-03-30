@@ -1,6 +1,10 @@
 # tools.analyzer
 
-An analyzer for Clojure code, written in Clojure and producing AST in EDN
+An analyzer for Clojure code, written in Clojure and producing AST in EDN.
+
+Timothy Baldridge gave a talk on tools.analyzer at Clojure/West in
+March 2014.  Video
+[here](https://www.youtube.com/watch?v=KhRQmT22SSg&list=PLZdCLR02grLp__wRg5OTavVj4wefg69hM&index=11).
 
 ## SPONSORSHIP
 
