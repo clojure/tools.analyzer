@@ -247,7 +247,7 @@
       (if (= form mform)  ;; function/special-form invocation
         (parse mform env)
         (analyze (if (obj? mform)
-                   (with-meta mform (meta form))
+                   (vary-meta mform merge (meta form))
                    mform)
                  env)))))
 
