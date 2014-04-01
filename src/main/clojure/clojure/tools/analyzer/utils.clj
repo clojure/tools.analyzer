@@ -125,10 +125,16 @@
   [x env]
   (-> x meta :column))
 
+(defn source-info
+  "Returns the source-info from an env"
+  [env]
+  (select-keys env #{:file :line :column}))
+
 (defn -source-info
   "Returns the source-info of x"
   [x env]
   (merge
+   (source-info env)
    (when-let [file (and (not= *file* "NO_SOURCE_FILE")
                         *file*)]
      {:file file})
@@ -136,11 +142,6 @@
      {:line line})
    (when-let [column (get-col x env)]
      {:column column})))
-
-(defn source-info
-  "Returns the source-info from an env"
-  [env]
-  (select-keys env #{:file :line :column}))
 
 (defn const-val
   "Returns the value of a constant node (either :quote or :const)"
