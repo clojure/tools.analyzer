@@ -246,10 +246,7 @@
     (let [mform (macroexpand-1 form env)]
       (if (= form mform)  ;; function/special-form invocation
         (parse mform env)
-        (analyze (if (obj? mform)
-                   (vary-meta mform merge (meta form))
-                   mform)
-                 env)))))
+        (analyze mform env)))))
 
 (defmethod -parse 'do
   [[_ & exprs :as form] env]
