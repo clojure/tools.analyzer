@@ -135,8 +135,9 @@
   [x env]
   (merge
    (source-info env)
-   (when-let [file (and (not= *file* "NO_SOURCE_FILE")
-                        *file*)]
+   (when-let [file (or (-> x meta :file)
+                       (and (not= *file* "NO_SOURCE_FILE")
+                            *file*))]
      {:file file})
    (when-let [line (get-line x env)]
      {:line line})
