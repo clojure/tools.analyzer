@@ -99,6 +99,9 @@ namespace.
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/cycling">cycling</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/into!">into!</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.ast/nodes">nodes</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
@@ -464,7 +467,7 @@ else returns form.</pre>
 Datomic's Datalog.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L88" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L96" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -477,7 +480,7 @@ The children expressions are kept in order and flattened so that the returning
 vector contains only nodes and not vectors of nodes.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L32" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L37" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -490,7 +493,7 @@ The returned vector returns the childrens in the order as they appear in the
 :children field of the AST, and may be either a node or a vector of nodes.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L24" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L24" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -502,7 +505,18 @@ The returned vector returns the childrens in the order as they appear in the
 applied to the AST until applying it another time will have no effect</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L12" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L12" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.ast/into!">into!</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (into! to from)
+</pre>
+    <pre id="var-docstr">Like into, but for transients</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L32" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -513,7 +527,7 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L82" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L90" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -525,7 +539,7 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Shorthand for (walk ast identity f reversed?)</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L75" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L83" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -536,7 +550,7 @@ applied to the AST until applying it another time will have no effect</pre>
     <pre id="var-docstr">Shorthand for (walk ast f identity)</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L70" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L78" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -551,7 +565,7 @@ children nodes and then applies `fix` to the update children.
 An example of a useful `fix` function is `rseq`.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L40" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L46" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -565,7 +579,7 @@ If reversed? is not-nil, pre and post will be applied starting from the last
 children of the AST node to the first one.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/ast.clj#L59" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1dc38b140a4089b531ae6f5b1254150a6e93d1aa/src/main/clojure/clojure/tools/analyzer/ast.clj#L67" id="var-source">Source</a>
   </div>
 </div>
 <br />
