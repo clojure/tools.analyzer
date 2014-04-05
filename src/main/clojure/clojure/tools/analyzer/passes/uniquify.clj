@@ -13,13 +13,11 @@
 (def ^:dynamic *locals-frame*)   ;; holds the id for the locals in the current frame
 
 (defn normalize [name]
-  (if-let [idx (@*locals-frame* name)]
-    (symbol (str name "__#" idx))
-    name))
+  (or (@*locals-frame* name) name))
 
 (defn uniquify [name]
   (swap! *locals-counter* #(update-in % [name] (fnil inc -1)))
-  (swap! *locals-frame* #(assoc-in % [name] (@*locals-counter* name))))
+  (swap! *locals-frame* #(assoc-in % [name] (symbol (str name "__#" (@*locals-counter* name))))))
 
 (defmulti -uniquify-locals :op)
 
