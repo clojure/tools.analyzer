@@ -29,13 +29,19 @@
   (when children
     (mapv ast children)))
 
+(defn into!
+  "Like into, but for transients"
+  [to from]
+  (reduce conj! to from))
+
 (defn children
   "Return a vector of the children expression of the AST node, if it has any.
    The children expressions are kept in order and flattened so that the returning
    vector contains only nodes and not vectors of nodes."
   [ast]
-  (reduce (fn [acc c] ((if (vector? c) into conj) acc c))
-          [] (children* ast)))
+  (persistent!
+   (reduce (fn [acc c] ((if (vector? c) into! conj!) acc c))
+           (transient []) (children* ast))))
 
 (defn update-children
   "Applies `f` to the nodes in the AST nodes children.
@@ -45,11 +51,13 @@
   ([ast f] (update-children ast f identity))
   ([ast f fix]
      (if-let [c (children* ast)]
-       (reduce (fn [ast [k v]]
-                 (assoc ast k (if (vector? v)
-                                (fix (mapv f (fix v)))
-                                (f v))))
-               ast (mapv list (fix (:children ast)) (fix c)))
+       (persistent!
+        (reduce (fn [ast [k v]]
+                  (assoc! ast k (if (vector? v)
+                                  (fix (mapv f (fix v)))
+                                  (f v))))
+                (transient ast)
+                (mapv list (fix (:children ast)) (fix c))))
        ast)))
 
 (defn rseqv [v]
