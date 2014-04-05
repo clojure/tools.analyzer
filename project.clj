@@ -6,4 +6,4 @@
   :source-paths ["src/main/clojure"]
   :test-paths ["src/test/clojure"]
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [com.datomic/datomic-free "0.9.4384" :scope "provided"]])
+                 [com.datomic/datomic-free "0.9.4699" :scope "provided"]])
