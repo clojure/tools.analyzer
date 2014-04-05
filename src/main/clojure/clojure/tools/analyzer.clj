@@ -332,7 +332,7 @@
 (defn valid-binding-symbol? [s]
   (and (symbol? s)
        (not (namespace s))
-       (not (.contains (str s) "."))))
+       (not (.contains (name s) "."))))
 
 (defmethod -parse 'try
   [[_ & body :as form] env]
