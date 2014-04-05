@@ -100,10 +100,10 @@
   (when (symbol? sym)
     (let [sym-ns (when-let [ns (namespace sym)]
                    (symbol ns))
-          name (if sym-ns (-> sym name symbol) sym)
           full-ns (resolve-ns sym-ns env)]
       (when (or (not sym-ns) full-ns)
-        (-> (@namespaces (or full-ns ns)) :mappings (get name))))))
+        (let [name (if sym-ns (-> sym name symbol) sym)]
+          (-> (@namespaces (or full-ns ns)) :mappings (get name)))))))
 
 (defn arglist-for-arity
   "Takes a fn node and an argc and returns the matching arglist"
