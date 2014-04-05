@@ -98,9 +98,9 @@
   "Resolves the var mapped by the given sym in the env"
   [sym {:keys [ns namespaces] :as env}]
   (when (symbol? sym)
-    (let [name (-> sym name symbol)
-          sym-ns (when-let [ns (namespace sym)]
+    (let [sym-ns (when-let [ns (namespace sym)]
                    (symbol ns))
+          name (if sym-ns (-> sym name symbol) sym)
           full-ns (resolve-ns sym-ns env)]
       (when (or (not sym-ns) full-ns)
         (-> (@namespaces (or full-ns ns)) :mappings (get name))))))
