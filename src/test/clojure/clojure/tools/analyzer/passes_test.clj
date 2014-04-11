@@ -32,7 +32,7 @@
                                         (swap! a conj el))
                                ast) :reversed))
                      @a)))
-    (is (= [[{:a 1} {:a 2}] [{:a 3}]] (children* ast)))
+    (is (= [[{:a 1} {:a 2}] [{:a 3}]] (mapv second (children* ast))))
     (is (= [{:a 1} {:a 2} {:a 3}] (children ast)))))
 
 (deftest add-binding-atom-test

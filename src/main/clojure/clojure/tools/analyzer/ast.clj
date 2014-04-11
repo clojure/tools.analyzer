@@ -22,12 +22,14 @@
             (recur fns ast* (assoc res f ast*))))))))
 
 (defn children*
-  "Return a vector of the children expression of the AST node, if it has any.
+  "Return a vector of vectors of the children node key and the children expression
+   of the AST node, if it has any.
    The returned vector returns the childrens in the order as they appear in the
-   :children field of the AST, and may be either a node or a vector of nodes."
+   :children field of the AST, and the children expressions may be either a node
+   or a vector of nodes."
   [{:keys [children] :as ast}]
   (when children
-    (mapv ast children)))
+    (mapv #(find ast %) children)))
 
 (defn into!
   "Like into, but for transients"
@@ -40,29 +42,44 @@
    vector contains only nodes and not vectors of nodes."
   [ast]
   (persistent!
-   (reduce (fn [acc c] ((if (vector? c) into! conj!) acc c))
+   (reduce (fn [acc [_ c]] ((if (vector? c) into! conj!) acc c))
            (transient []) (children* ast))))
+
+(defn rseqv [v]
+  "Same as (comp vec rseq)"
+  (vec (rseq v)))
+
+(defmulti -update-children   (fn [ast f] (:op ast)))
+(defmulti -update-children-r (fn [ast f] (:op ast)))
+
+(defmethod -update-children :default
+  [ast f]
+  (persistent!
+   (reduce (fn [ast [k v]]
+             (assoc! ast k (if (vector? v) (mapv f v) (f v))))
+           (transient ast)
+           (children* ast))))
+
+(defmethod -update-children-r :default
+  [ast f]
+  (persistent!
+   (reduce (fn [ast [k v]]
+             (assoc! ast k (if (vector? v) (rseqv (mapv f (rseq v))) (f v))))
+           (transient ast)
+           (rseq (children* ast)))))
 
 (defn update-children
   "Applies `f` to the nodes in the AST nodes children.
    Optionally applies `fix` to the children before applying `f` to the
    children nodes and then applies `fix` to the update children.
    An example of a useful `fix` function is `rseq`."
-  ([ast f] (update-children ast f identity))
-  ([ast f fix]
-     (if-let [c (children* ast)]
-       (persistent!
-        (reduce (fn [ast [k v]]
-                  (assoc! ast k (if (vector? v)
-                                  (fix (mapv f (fix v)))
-                                  (f v))))
-                (transient ast)
-                (mapv list (fix (:children ast)) (fix c))))
+  ([ast f] (update-children ast f false))
+  ([ast f reversed?]
+     (if (:children ast)
+       (if reversed?
+         (-update-children-r ast f)
+         (-update-children   ast f))
        ast)))
-
-(defn rseqv [v]
-  "Same as (comp vec rseq)"
-  (vec (rseq v)))
 
 (defn walk
   "Walk the ast applying pre when entering the nodes, and post when exiting.
@@ -71,9 +88,8 @@
   ([ast pre post]
      (walk ast pre post false))
   ([ast pre post reversed?]
-     (let [fix (if reversed? rseqv identity)
-           walk #(walk % pre post reversed?)]
-       (post (update-children (pre ast) walk fix)))))
+     (let [walk #(walk % pre post reversed?)]
+       (post (update-children (pre ast) walk reversed?)))))
 
 (defn prewalk
   "Shorthand for (walk ast f identity)"
