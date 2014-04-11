@@ -43,26 +43,39 @@
    (reduce (fn [acc c] ((if (vector? c) into! conj!) acc c))
            (transient []) (children* ast))))
 
-(defn update-children
-  "Applies `f` to the nodes in the AST nodes children.
-   Optionally applies `fix` to the children before applying `f` to the
-   children nodes and then applies `fix` to the update children.
-   An example of a useful `fix` function is `rseq`."
-  ([ast f] (update-children ast f identity))
-  ([ast f fix]
-     (if-let [c (children* ast)]
-       (persistent!
-        (reduce (fn [ast [k v]]
-                  (assoc! ast k (if (vector? v)
-                                  (fix (mapv f (fix v)))
-                                  (f v))))
-                (transient ast)
-                (mapv list (fix (:children ast)) (fix c))))
-       ast)))
-
 (defn rseqv [v]
   "Same as (comp vec rseq)"
   (vec (rseq v)))
+
+(defn build-update-f [{:keys [children] :as ast'}]
+  (let [f (gensym)
+        ast (gensym)]
+    [(eval `(fn [~ast ~f]
+              (-> ~ast
+                ~@(for [c children]
+                    (if (vector? (c ast'))
+                      `(assoc-in [~c] (mapv ~f (~c ~ast)))
+                      `(update-in [~c] ~f))))))
+     (eval `(fn [~ast ~f]
+              (-> ~ast
+                ~@(for [c (rseq children)]
+                    (if (vector? (c ast'))
+                      `(assoc-in [~c] (rseqv (mapv ~f (rseq (~c ~ast)))))
+                      `(update-in [~c] ~f))))))]))
+
+(let [cache (atom {})]
+  (defn update-children
+    "Applies `f` to the nodes in the AST nodes children.
+   If reversed? is true, "
+    ([ast f] (update-children ast f false))
+    ([{:keys [children op] :as ast} f reversed?]
+       (if children
+         (if-let [update-f (get-in @cache [op children (boolean reversed?)])]
+           (update-f ast f)
+           (let [[update-f update-f-reversed] (build-update-f ast)]
+             (swap! cache assoc-in [op children] {false update-f true update-f-reversed})
+             ((if reversed? update-f-reversed update-f) ast f)))
+         ast))))
 
 (defn walk
   "Walk the ast applying pre when entering the nodes, and post when exiting.
@@ -71,9 +84,8 @@
   ([ast pre post]
      (walk ast pre post false))
   ([ast pre post reversed?]
-     (let [fix (if reversed? rseqv identity)
-           walk #(walk % pre post reversed?)]
-       (post (update-children (pre ast) walk fix)))))
+     (let [walk #(walk % pre post reversed?)]
+       (post (update-children (pre ast) walk reversed?)))))
 
 (defn prewalk
   "Shorthand for (walk ast f identity)"
