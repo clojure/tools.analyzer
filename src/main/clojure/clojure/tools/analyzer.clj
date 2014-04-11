@@ -449,7 +449,7 @@
       {:op       :letfn
        :env      env
        :form     form
-       :bindings (into [] (vals binds)) ;; order is irrelevant
+       :bindings (vec (vals binds)) ;; order is irrelevant
        :body     body
        :children [:bindings :body]})))
 
@@ -545,7 +545,7 @@
                            (-source-info form env)
                            (-source-info params env)))))
   (let [variadic? (boolean (some '#{&} params))
-        params-names (if variadic? (into [] (remove '#{&} params)) params)
+        params-names (if variadic? (vec (remove '#{&} params)) params)
         env (dissoc env :local)
         arity (count params-names)
         params-expr (mapv (fn [name id]

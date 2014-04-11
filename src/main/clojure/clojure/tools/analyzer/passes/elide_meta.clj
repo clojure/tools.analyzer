@@ -22,8 +22,8 @@
                      (:keys meta) (:vals meta))]
       (assoc meta
         :form new-meta
-        :keys (into [] (keep first meta-map))
-        :vals (into [] (keep second meta-map))))))
+        :keys (vec (keep first meta-map))
+        :vals (vec (keep second meta-map))))))
 
 (defn -elide-meta
   [{:keys [op meta expr env] :as ast}]

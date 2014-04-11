@@ -47,7 +47,7 @@
 
 (defn rseqv [v]
   "Same as (comp vec rseq)"
-  (into [] (rseq v)))
+  (vec (rseq v)))
 
 (defmulti -update-children   (fn [ast f] (:op ast)))
 (defmulti -update-children-r (fn [ast f] (:op ast)))
