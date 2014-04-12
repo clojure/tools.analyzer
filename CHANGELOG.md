@@ -5,7 +5,7 @@ Changelog
   * Performance improvements on the uniquify pass
   * BREAKING API CHANGE: ast/children* now returns a vector of [key node] rather than
     a vector of nodes
-  * Performance improvement on api/update-children
+  * Performance improvement on ast/update-children
 * Release 0.1.0-beta10 on 1 Apr
   * Don't discard macroexpanded form meta, merge it with &form meta
   * Improvements on source-info handling
