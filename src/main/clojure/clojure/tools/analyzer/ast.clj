@@ -94,14 +94,16 @@
 (defn prewalk
   "Shorthand for (walk ast f identity)"
   [ast f]
-  (walk ast f identity))
+  (let [walk #(prewalk % f)]
+    (update-children (f ast) walk)))
 
 (defn postwalk
   "Shorthand for (walk ast identity f reversed?)"
   ([ast f]
-     (walk ast identity f false))
+     (postwalk ast f false))
   ([ast f reversed?]
-     (walk ast identity f reversed?)))
+     (let [walk #(postwalk % f reversed?)]
+       (f (update-children ast walk reversed?)))))
 
 (defn nodes
   "Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order."
