@@ -1,6 +1,6 @@
 Changelog
 ========================================
-* Release 0.1.0-beta11 on ???
+* Release 0.1.0-beta11 on 18 Apr 2014
   * Reduced the number of calls to `symbol`, leading to some performance improvements
   * Performance improvements on the uniquify pass
   * BREAKING API CHANGE: ast/children* now returns a vector of [key node] rather than
