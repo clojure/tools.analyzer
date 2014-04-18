@@ -6,6 +6,7 @@ Changelog
   * BREAKING API CHANGE: ast/children* now returns a vector of [key node] rather than
     a vector of nodes
   * Performance improvement on ast/update-children
+  * Added options set to emit-form
 * Release 0.1.0-beta10 on 1 Apr 2014
   * Don't discard macroexpanded form meta, merge it with &form meta
   * Improvements on source-info handling
