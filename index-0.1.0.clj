@@ -67,12 +67,6 @@
    :name "clojure.tools.analyzer.passes.trim",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/066fc592c4af3ebdedc3cff26dc84451931d4857/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.uniquify-api.html",
-   :name "clojure.tools.analyzer.passes.uniquify",
-   :doc nil}
-  {:source-url
    "https://github.com/clojure/tools.analyzer/blob/49b163e2c56a84897a784b35db211549471f3c19/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.warn-earmuff-api.html",
@@ -604,20 +598,6 @@
    :doc
    "Trims the AST from duplicate :do nodes or useless :let nodes.\nWARNING: Still experimental, possibly useful metadata-stored info\n         might get lost",
    :name "trim"}
-  {:arglists ([ast]),
-   :name "uniquify-locals",
-   :namespace "clojure.tools.analyzer.passes.uniquify",
-   :source-url
-   "https://github.com/clojure/tools.analyzer/blob/066fc592c4af3ebdedc3cff26dc84451931d4857/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L75",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/066fc592c4af3ebdedc3cff26dc84451931d4857/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.uniquify/uniquify-locals",
-   :doc
-   "Walks the AST performing alpha-conversion on the :name field\nof :local/:binding nodes, invalidates :local map in :env field",
-   :var-type "function",
-   :line 75,
-   :file "src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj"}
   {:arglists ([ast]),
    :name "warn-earmuff",
    :namespace "clojure.tools.analyzer.passes.warn-earmuff",
