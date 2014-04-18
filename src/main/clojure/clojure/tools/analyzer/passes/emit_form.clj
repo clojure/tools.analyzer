@@ -13,8 +13,8 @@
 (defn ^:dynamic -emit-form*
   "Extension point for custom emit-form implementations, should be rebound
    to a multimethod with custom emit-form :ops."
-  [{:keys [form] :as ast} hygienic?]
-  (let [expr (-emit-form ast hygienic?)]
+  [{:keys [form] :as ast} ops]
+  (let [expr (-emit-form ast ops)]
     (if-let [m (and (instance? clojure.lang.IObj expr)
                     (meta form))]
       (with-meta expr (merge (meta expr) m))
@@ -22,162 +22,162 @@
 
 (defn emit-form
   "Return the form represented by the given AST"
-  [ast]
-  (-emit-form* ast false))
+  ([ast] (emit-form ast #{}))
+  ([ast ops] (-emit-form* ast ops)))
 
 (defn emit-hygienic-form
   "Return an hygienic form represented by the given AST"
   [ast]
-  (-emit-form* ast true))
+  (-emit-form* ast #{:hygienic}))
 
 (defmethod -emit-form :maybe-class
-  [{:keys [class]} hygienic?]
+  [{:keys [class]} ops]
   class)
 
 (defmethod -emit-form :maybe-host-form
-  [{:keys [class field]} hygienic?]
+  [{:keys [class field]} ops]
   (symbol (name class) (name field)))
 
 (defmethod -emit-form :host-call
-  [{:keys [target method args]} hygienic?]
-  (list '. (-emit-form* target hygienic?)
-        (list* method (mapv #(-emit-form* % hygienic?) args))))
+  [{:keys [target method args]} ops]
+  (list '. (-emit-form* target ops)
+        (list* method (mapv #(-emit-form* % ops) args))))
 
 (defmethod -emit-form :host-field
-  [{:keys [target field]} hygienic?]
+  [{:keys [target field]} ops]
   (list (symbol (str ".-" (name field)))
-        (-emit-form* target hygienic?)))
+        (-emit-form* target ops)))
 
 (defmethod -emit-form :host-interop
-  [{:keys [target m-or-f]} hygienic?]
-  (list '. (-emit-form* target hygienic?) m-or-f))
+  [{:keys [target m-or-f]} ops]
+  (list '. (-emit-form* target ops) m-or-f))
 
 (defmethod -emit-form :local
-  [{:keys [name form]} hygienic?]
-  (if hygienic? (with-meta name (meta form)) form))
+  [{:keys [name form]} ops]
+  (if (:hygienic ops) (with-meta name (meta form)) form))
 
 (defmethod -emit-form :binding
-  [{:keys [name form]} hygienic?]
-  (if hygienic? (with-meta name (meta form)) form))
+  [{:keys [name form]} ops]
+  (if (:hygienic ops) (with-meta name (meta form)) form))
 
 (defmethod -emit-form :var
-  [{:keys [form]} hygienic?]
+  [{:keys [form]} ops]
   form)
 
-(defn emit-bindings [bindings hygienic?]
+(defn emit-bindings [bindings ops]
   (mapcat (fn [{:keys [name form init]}]
-            [(if hygienic? name form) (-emit-form* init hygienic?)])
+            [(if (:hygienic ops) name form) (-emit-form* init ops)])
           bindings))
 
 (defmethod -emit-form :letfn
-  [{:keys [bindings body]} hygienic?]
-  `(letfn* [~@(emit-bindings bindings hygienic?)]
-           ~(-emit-form* body hygienic?)))
+  [{:keys [bindings body]} ops]
+  `(letfn* [~@(emit-bindings bindings ops)]
+           ~(-emit-form* body ops)))
 
 (defmethod -emit-form :let
-  [{:keys [bindings body]} hygienic?]
-  `(let* [~@(emit-bindings bindings hygienic?)]
-           ~(-emit-form* body hygienic?)))
+  [{:keys [bindings body]} ops]
+  `(let* [~@(emit-bindings bindings ops)]
+           ~(-emit-form* body ops)))
 
 (defmethod -emit-form :loop
-  [{:keys [bindings body]} hygienic?]
-  `(loop* [~@(emit-bindings bindings hygienic?)]
-           ~(-emit-form* body hygienic?)))
+  [{:keys [bindings body]} ops]
+  `(loop* [~@(emit-bindings bindings ops)]
+           ~(-emit-form* body ops)))
 
 (defmethod -emit-form :const
   [{:keys [form]} _]
   form)
 
 (defmethod -emit-form :quote
-  [{:keys [expr]} hygienic?]
-  (list 'quote (-emit-form* expr hygienic?)))
+  [{:keys [expr]} ops]
+  (list 'quote (-emit-form* expr ops)))
 
 (defmethod -emit-form :vector
-  [{:keys [items]} hygienic?]
-  (mapv #(-emit-form* % hygienic?) items))
+  [{:keys [items]} ops]
+  (mapv #(-emit-form* % ops) items))
 
 (defmethod -emit-form :set
-  [{:keys [items]} hygienic?]
-  (set (mapv #(-emit-form* % hygienic?) items)))
+  [{:keys [items]} ops]
+  (set (mapv #(-emit-form* % ops) items)))
 
 (defmethod -emit-form :map
-  [{:keys [keys vals]} hygienic?]
-  (apply hash-map (interleave (mapv #(-emit-form* % hygienic?) keys)
-                              (mapv #(-emit-form* % hygienic?) vals))))
+  [{:keys [keys vals]} ops]
+  (apply hash-map (interleave (mapv #(-emit-form* % ops) keys)
+                              (mapv #(-emit-form* % ops) vals))))
 
 (defmethod -emit-form :with-meta
-  [{:keys [expr meta]} hygienic?]
-  (with-meta (-emit-form* expr hygienic?)
-    (-emit-form* meta hygienic?)))
+  [{:keys [expr meta]} ops]
+  (with-meta (-emit-form* expr ops)
+    (-emit-form* meta ops)))
 
 (defmethod -emit-form :do
-  [{:keys [ret statements body?]} hygienic?]
+  [{:keys [ret statements body?]} ops]
   (if (and body? (empty? statements))
-    (-emit-form* ret hygienic?)
-    `(do ~@(mapv #(-emit-form* % hygienic?) statements)
-         ~(-emit-form* ret hygienic?))))
+    (-emit-form* ret ops)
+    `(do ~@(mapv #(-emit-form* % ops) statements)
+         ~(-emit-form* ret ops))))
 
 (defmethod -emit-form :if
-  [{:keys [test then else]} hygienic?]
-  `(if ~(-emit-form* test hygienic?)
-     ~(-emit-form* then hygienic?)
+  [{:keys [test then else]} ops]
+  `(if ~(-emit-form* test ops)
+     ~(-emit-form* then ops)
      ~@(when-not (nil? (:form else))
-         [(-emit-form* else hygienic?)])))
+         [(-emit-form* else ops)])))
 
 (defmethod -emit-form :new
-  [{:keys [class args]} hygienic?]
-  `(new ~class ~@(mapv #(-emit-form* % hygienic?) args)))
+  [{:keys [class args]} ops]
+  `(new ~class ~@(mapv #(-emit-form* % ops) args)))
 
 (defmethod -emit-form :set!
-  [{:keys [target val]} hygienic?]
-  `(set! ~(-emit-form* target hygienic?) ~(-emit-form* val hygienic?)))
+  [{:keys [target val]} ops]
+  `(set! ~(-emit-form* target ops) ~(-emit-form* val ops)))
 
 (defmethod -emit-form :recur
-  [{:keys [exprs]} hygienic?]
-  `(recur ~@(mapv #(-emit-form* % hygienic?) exprs)))
+  [{:keys [exprs]} ops]
+  `(recur ~@(mapv #(-emit-form* % ops) exprs)))
 
 (defmethod -emit-form :fn-method
-  [{:keys [variadic? params body form]} hygienic?]
-  (let [params-form (mapv #(-emit-form* % hygienic?) params)]
+  [{:keys [variadic? params body form]} ops]
+  (let [params-form (mapv #(-emit-form* % ops) params)]
     `(~(with-meta
          (if variadic? (into (pop params-form)
                              (conj '[&] (peek params-form)))
              params-form)
          (meta (first form)))
-      ~(-emit-form* body hygienic?))))
+      ~(-emit-form* body ops))))
 
 (defmethod -emit-form :fn
-  [{:keys [local methods]} hygienic?]
-  `(fn* ~@(when local [(-emit-form* local hygienic?)])
-        ~@(mapv #(-emit-form* % hygienic?) methods)))
+  [{:keys [local methods]} ops]
+  `(fn* ~@(when local [(-emit-form* local ops)])
+        ~@(mapv #(-emit-form* % ops) methods)))
 
 (defmethod -emit-form :def
-  [{:keys [name doc init]} hygienic?]
+  [{:keys [name doc init]} ops]
   (let [name (if-let [arglists (:arglists (meta name))]
                (with-meta name (assoc (meta name) :arglists (list 'quote arglists)))
                name)]
-    `(def ~name ~@(when doc [doc]) ~@(when init [(-emit-form* init hygienic?)]))))
+    `(def ~name ~@(when doc [doc]) ~@(when init [(-emit-form* init ops)]))))
 
 (defmethod -emit-form :invoke
-  [{:keys [fn args meta]} hygienic?]
-  (let [expr `(~(-emit-form* fn hygienic?)
-               ~@(mapv #(-emit-form* % hygienic?) args))]
+  [{:keys [fn args meta]} ops]
+  (let [expr `(~(-emit-form* fn ops)
+               ~@(mapv #(-emit-form* % ops) args))]
     (if meta
       (with-meta expr meta)
       expr)))
 
 (defmethod -emit-form :try
-  [{:keys [body catches finally]} hygienic?]
-  `(try ~(-emit-form* body hygienic?)
-        ~@(mapv #(-emit-form* % hygienic?) catches)
+  [{:keys [body catches finally]} ops]
+  `(try ~(-emit-form* body ops)
+        ~@(mapv #(-emit-form* % ops) catches)
         ~@(when finally
-            [`(finally ~(-emit-form* finally hygienic?))])))
+            [`(finally ~(-emit-form* finally ops))])))
 
 (defmethod -emit-form :catch
-  [{:keys [class local body]} hygienic?]
-  `(catch ~class ~(-emit-form* local hygienic?)
-     ~(-emit-form* body hygienic?)))
+  [{:keys [class local body]} ops]
+  `(catch ~class ~(-emit-form* local ops)
+     ~(-emit-form* body ops)))
 
 (defmethod -emit-form :throw
-  [{:keys [exception]} hygienic?]
-  `(throw ~(-emit-form* exception hygienic?)))
+  [{:keys [exception]} ops]
+  `(throw ~(-emit-form* exception ops)))
