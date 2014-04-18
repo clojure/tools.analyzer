@@ -43,7 +43,7 @@
    :name "clojure.tools.analyzer.passes.elide-meta",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/a9dfb2b39249f999f3a38b1bbe98abe89fdfff3a/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
+   "https://github.com/clojure/tools.analyzer/blob/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.emit-form-api.html",
    :name "clojure.tools.analyzer.passes.emit-form",
@@ -521,10 +521,10 @@
    :name "-emit-form*",
    :namespace "clojure.tools.analyzer.passes.emit-form",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/a9dfb2b39249f999f3a38b1bbe98abe89fdfff3a/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L13",
+   "https://github.com/clojure/tools.analyzer/blob/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L13",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/a9dfb2b39249f999f3a38b1bbe98abe89fdfff3a/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.emit-form/-emit-form*",
    :doc
@@ -537,12 +537,13 @@
    :name "emit-form",
    :namespace "clojure.tools.analyzer.passes.emit-form",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/a9dfb2b39249f999f3a38b1bbe98abe89fdfff3a/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L23",
+   "https://github.com/clojure/tools.analyzer/blob/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L23",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/a9dfb2b39249f999f3a38b1bbe98abe89fdfff3a/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.emit-form/emit-form",
-   :doc "Return the form represented by the given AST",
+   :doc
+   "Return the form represented by the given AST.\nOps is a set of options, valid options are:\n * :hygienic",
    :var-type "function",
    :line 23,
    :file
@@ -551,14 +552,14 @@
    :name "emit-hygienic-form",
    :namespace "clojure.tools.analyzer.passes.emit-form",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/a9dfb2b39249f999f3a38b1bbe98abe89fdfff3a/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L28",
+   "https://github.com/clojure/tools.analyzer/blob/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L30",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/a9dfb2b39249f999f3a38b1bbe98abe89fdfff3a/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.emit-form/emit-hygienic-form",
    :doc "Return an hygienic form represented by the given AST",
    :var-type "function",
-   :line 28,
+   :line 30,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj"}
   {:arglists ([ast]),
