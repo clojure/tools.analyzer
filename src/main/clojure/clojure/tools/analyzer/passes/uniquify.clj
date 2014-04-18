@@ -13,7 +13,8 @@
 (def ^:dynamic *locals-frame*)   ;; holds the id for the locals in the current frame
 
 (defn normalize [name]
-  (or (@*locals-frame* name) name))
+  (or (@*locals-frame* name)
+      ((uniquify name) name)))
 
 (defn uniquify [name]
   (swap! *locals-counter* #(update-in % [name] (fnil inc -1)))
