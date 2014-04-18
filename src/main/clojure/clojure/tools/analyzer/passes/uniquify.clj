@@ -12,13 +12,13 @@
 (def ^:dynamic *locals-counter*) ;; global counter, map sym -> count
 (def ^:dynamic *locals-frame*)   ;; holds the id for the locals in the current frame
 
-(defn normalize [name]
-  (or (@*locals-frame* name)
-      ((uniquify name) name)))
-
 (defn uniquify [name]
   (swap! *locals-counter* #(update-in % [name] (fnil inc -1)))
   (swap! *locals-frame* #(assoc-in % [name] (symbol (str name "__#" (@*locals-counter* name))))))
+
+(defn normalize [name]
+  (or (@*locals-frame* name)
+      ((uniquify name) name)))
 
 (defmulti -uniquify-locals :op)
 
