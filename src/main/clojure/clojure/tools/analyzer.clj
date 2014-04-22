@@ -29,6 +29,28 @@
   (fn [[op & rest] env] op)
   :default :invoke)
 
+(defn analyze-form
+  "Like analyze, but does not mark the form with :top-level true"
+  [form env]
+  (let [form (if (seq? form)
+               (or (seq form) ()) ;; force evaluation for analysis
+               form)]
+    (cond
+
+     (symbol? form)          (-analyze :symbol form env)
+
+     (type? form)            (-analyze :const  form env :type)
+     (record? form)          (-analyze :const  form env :record) ;; since recors are maps too, record? *needs*
+     ;; to be before map?
+     (and (seq? form)
+          (not (empty? form))) (-analyze :seq    form env) ;; handles function/macro/special-form invocations
+
+     (vector? form)          (-analyze :vector form env)
+     (map? form)             (-analyze :map    form env)
+     (set? form)             (-analyze :set    form env)
+
+     :else                   (-analyze :const  form env))))
+
 (defn analyze
   "Given a form to analyze and an environment, a map containing:
    * :locals     a map from binding symbol to AST of the binding value
@@ -55,29 +77,13 @@
    * :children a vector of the keys of the AST node mapping to the sub-nodes,
                ordered, when that makes sense
 
-   It is considered a node either the top-level map or a node that can be
-   reached via :children; if a node contains a node-like map that is not reachable
-   by :children, there's no guarantee that such a map will contain the guaranteed keys."
+   It is considered a node either the top-level node (marked with :top-level true)
+   or a node that can be reached via :children; if a node contains a node-like
+   map that is not reachable by :children, there's no guarantee that such a map
+   will contain the guaranteed keys."
 
   [form env]
-  (let [form (if (seq? form)
-               (or (seq form) ()) ;; force evaluation for analysis
-               form)]
-    (cond
-
-     (symbol? form)          (-analyze :symbol form env)
-
-     (type? form)            (-analyze :const  form env :type)
-     (record? form)          (-analyze :const  form env :record) ;; since recors are maps too, record? *needs*
-                                                                 ;; to be before map?
-     (and (seq? form)
-          (not (empty? form))) (-analyze :seq    form env)         ;; handles function/macro/special-form invocations
-
-     (vector? form)          (-analyze :vector form env)
-     (map? form)             (-analyze :map    form env)
-     (set? form)             (-analyze :set    form env)
-
-     :else                   (-analyze :const  form env))))
+  (assoc (analyze-form form env) :top-level true))
 
 (defn empty-env
   "Returns an empty env"
@@ -93,7 +99,7 @@
 (defn analyze-in-env
   "Takes an env map and returns a function that analyzes a form in that env"
   [env]
-  (fn [form] (analyze form env)))
+  (fn [form] (analyze-form form env)))
 
 (def ^{:dynamic  true
        :arglists '([form env])
@@ -126,7 +132,7 @@
       {:op       :with-meta
        :env      env
        :form     form
-       :meta     (analyze meta (ctx env :expr))
+       :meta     (analyze-form meta (ctx env :expr))
        :expr     (assoc-in expr [:env :context] :expr)
        :children [:meta :expr]}
       expr)))
@@ -231,9 +237,9 @@
              {:env  env
               :form mform})
       ;; should this preserve the original form?
-      (analyze (if (obj? mform)
-                 (with-meta mform (meta sym))
-                 mform)
+      (analyze-form (if (obj? mform)
+                      (with-meta mform (meta sym))
+                      mform)
                env))))
 
 (defmethod -analyze :seq
@@ -246,7 +252,7 @@
     (let [mform (macroexpand-1 form env)]
       (if (= form mform)  ;; function/special-form invocation
         (parse mform env)
-        (analyze mform env)))))
+        (analyze-form mform env)))))
 
 (defmethod -parse 'do
   [[_ & exprs :as form] env]
@@ -256,7 +262,7 @@
                              (recur (conj statements e) exprs)
                              [statements e]))
         statements (mapv (analyze-in-env statements-env) statements)
-        ret (analyze ret env)]
+        ret (analyze-form ret env)]
     {:op         :do
      :env        env
      :form       form
@@ -270,9 +276,9 @@
     (throw (ex-info (str "Wrong number of args to if, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
-  (let [test-expr (analyze test (ctx env :expr))
-        then-expr (analyze then env)
-        else-expr (analyze else env)]
+  (let [test-expr (analyze-form test (ctx env :expr))
+        then-expr (analyze-form then env)
+        else-expr (analyze-form else env)]
     {:op       :if
      :form     form
      :env      env
@@ -316,8 +322,8 @@
     (throw (ex-info (str "Wrong number of args to set!, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
-  (let [target (analyze target (ctx env :expr))
-        val (analyze val (ctx env :expr))]
+  (let [target (analyze-form target (ctx env :expr))
+        val (analyze-form val (ctx env :expr))]
     {:op       :set!
      :env      env
      :form     form
@@ -398,7 +404,7 @@
   {:op        :throw
    :env       env
    :form      form
-   :exception (analyze throw (ctx env :expr))
+   :exception (analyze-form throw (ctx env :expr))
    :children  [:exception]})
 
 (defn validate-bindings
@@ -440,7 +446,7 @@
           binds (reduce-kv (fn [binds name bind]
                              (assoc binds name
                                     (merge bind
-                                           {:init     (analyze (bindings name)
+                                           {:init     (analyze-form (bindings name)
                                                                (ctx e :expr))
                                             :children [:init]})))
                            {} binds)
@@ -466,7 +472,7 @@
                           (merge {:form form
                                   :sym  name}
                                  (-source-info form env))))
-          (let [init-expr (analyze init env)
+          (let [init-expr (analyze-form init env)
                 bind-expr {:op       :binding
                            :env      env
                            :name     name
@@ -682,10 +688,10 @@
                     (when arglists
                       {:arglists (list 'quote arglists)}))
 
-        meta-expr (when meta (analyze meta (ctx env :expr))) ;; meta on def sym will be evaluated
+        meta-expr (when meta (analyze-form meta (ctx env :expr))) ;; meta on def sym will be evaluated
 
         args (when-let [[_ init] (find args :init)]
-               (merge args {:init (analyze init (ctx env :expr))}))
+               (merge args {:init (analyze-form init (ctx env :expr))}))
         children `[~@(when meta [:meta])
                    ~@(when (:init args) [:init])]]
 
@@ -710,7 +716,7 @@
                                  (= \- (first (name m-or-f))))
                           [(-> m-or-f name (subs 1) symbol) true]
                           [(if args (cons m-or-f args) m-or-f) false])
-        target-expr (analyze target (ctx env :expr))
+        target-expr (analyze-form target (ctx env :expr))
         call? (and (not field?) (seq? m-or-f))]
 
     (when (and call? (not (symbol? (first m-or-f))))
@@ -741,7 +747,7 @@
 (defmethod -parse :invoke
   [[f & args :as form] env]
   (let [e (ctx env :expr)
-        fn-expr (analyze f e)
+        fn-expr (analyze-form f e)
         args-expr (mapv (analyze-in-env e) args)
         m (meta form)]
     (merge {:op   :invoke
