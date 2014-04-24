@@ -1,5 +1,10 @@
 Changelog
 ========================================
+* Release 0.1.0-beta12 on 25 Apr 2014
+  * Annotated top-level nodes with :top-level true
+  * Moved rseqv and into! to the c.t.a.utils namespace
+  * Don't uniquify "constructed" locals
+  * Preserve :locals in :env, uniquify locals :name in :env :locals
 * Release 0.1.0-beta11 on 18 Apr 2014
   * Reduced the number of calls to `symbol`, leading to some performance improvements
   * Performance improvements on the uniquify pass
