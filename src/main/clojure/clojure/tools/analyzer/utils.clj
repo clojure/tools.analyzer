@@ -26,6 +26,26 @@
   [env ctx]
   (assoc env :context ctx))
 
+(defn dissoc-env
+  "Dissocs :env from the ast"
+  [ast]
+  (dissoc ast :env))
+
+(defn update-vals
+  "Applies f to all the vals in the map"
+  [m f]
+  (reduce-kv (fn [m k v] (assoc m k (f v))) {} m))
+
+(defn update-keys
+  "Applies f to all the keys in the map"
+  [m f]
+  (reduce-kv (fn [m k v] (assoc m (f k) v)) {} m))
+
+(defn update-kv
+  "Applies f to all the keys and vals in the map"
+  [m f]
+  (reduce-kv (fn [m k v] (assoc m (f k) (f v))) {} m))
+
 (defn record?
   "Returns true if x is a record"
   [x]

@@ -392,7 +392,7 @@
      :local       local
      :env         env
      :form        form
-     :body        (analyze-body body (assoc-in env [:locals ename] local))
+     :body        (analyze-body body (assoc-in env [:locals ename] (dissoc-env local)))
      :children    [:local :body]}))
 
 (defmethod -parse 'throw
@@ -450,7 +450,7 @@
                                                                (ctx e :expr))
                                             :children [:init]})))
                            {} binds)
-          e (update-in env [:locals] merge binds)
+          e (update-in env [:locals] merge (update-vals binds dissoc-env))
           body (analyze-body body e)]
       {:op       :letfn
        :env      env
@@ -481,7 +481,7 @@
                            :local    (if loop? :loop :let)
                            :children [:init]}]
             (recur bindings
-                   (assoc-in env [:locals name] bind-expr)
+                   (assoc-in env [:locals name] (dissoc-env bind-expr))
                    (conj binds bind-expr))))
         (let [body-env (assoc env :context (if loop? :return context))
               body (analyze-body body (merge body-env
@@ -569,7 +569,7 @@
                       arity)
         loop-id (gensym "loop_")
         body-env (into (update-in env [:locals]
-                                  merge (zipmap params-names params-expr))
+                                  merge (zipmap params-names (map dissoc-env params-expr)))
                        {:context     :return
                         :loop-id     loop-id
                         :loop-locals (count params-expr)})
@@ -612,7 +612,7 @@
                    :form  n
                    :local :fn
                    :name  n}
-        e (if n (assoc (assoc-in env [:locals n] name-expr) :local name-expr) env)
+        e (if n (assoc (assoc-in env [:locals n] (dissoc-env name-expr)) :local name-expr) env)
         once? (-> op meta :once boolean)
         menv (assoc (dissoc e :no-recur :in-try) :once once?)
         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
