@@ -7,7 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.ast
-  "Utilities for AST walking/updating")
+  "Utilities for AST walking/updating"
+  (:require [clojure.tools.analyzer.utils :refer [into! rseqv]]))
 
 (defn cycling
   "Combine the given passes in a single pass that will be repeatedly
@@ -31,11 +32,6 @@
   (when children
     (mapv #(find ast %) children)))
 
-(defn into!
-  "Like into, but for transients"
-  [to from]
-  (reduce conj! to from))
-
 (defn children
   "Return a vector of the children expression of the AST node, if it has any.
    The children expressions are kept in order and flattened so that the returning
@@ -44,10 +40,6 @@
   (persistent!
    (reduce (fn [acc [_ c]] ((if (vector? c) into! conj!) acc c))
            (transient []) (children* ast))))
-
-(defn rseqv [v]
-  "Same as (comp vec rseq)"
-  (vec (rseq v)))
 
 (defmulti -update-children   (fn [ast f] (:op ast)))
 (defmulti -update-children-r (fn [ast f] (:op ast)))

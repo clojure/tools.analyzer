@@ -12,6 +12,15 @@
                          IReference Var)
            java.util.regex.Pattern))
 
+(defn into!
+  "Like into, but for transients"
+  [to from]
+  (reduce conj! to from))
+
+(defn rseqv [v]
+  "Same as (comp vec rseq)"
+  (vec (rseq v)))
+
 (defn ctx
   "Returns a copy of the passed environment with :context set to ctx"
   [env ctx]
