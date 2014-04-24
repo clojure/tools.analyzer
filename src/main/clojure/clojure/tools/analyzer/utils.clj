@@ -34,17 +34,17 @@
 (defn update-vals
   "Applies f to all the vals in the map"
   [m f]
-  (reduce-kv (fn [m k v] (assoc m k (f v))) {} m))
+  (reduce-kv (fn [m k v] (assoc m k (f v))) {} (or m {})))
 
 (defn update-keys
   "Applies f to all the keys in the map"
   [m f]
-  (reduce-kv (fn [m k v] (assoc m (f k) v)) {} m))
+  (reduce-kv (fn [m k v] (assoc m (f k) v)) {} (or m {})))
 
 (defn update-kv
   "Applies f to all the keys and vals in the map"
   [m f]
-  (reduce-kv (fn [m k v] (assoc m (f k) (f v))) {} m))
+  (reduce-kv (fn [m k v] (assoc m (f k) (f v))) {} (or m {})))
 
 (defn record?
   "Returns true if x is a record"
