@@ -7,7 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.uniquify
-  (:require [clojure.tools.analyzer.ast :refer [update-children children]]))
+  (:require [clojure.tools.analyzer.ast :refer [update-children children]])
+  (:require [clojure.tools.analyzer.utils :refer [update-vals]]))
 
 (def ^:dynamic *locals-counter*) ;; global counter, map sym -> count
 (def ^:dynamic *locals-frame*)   ;; holds the id for the locals in the current frame
@@ -21,8 +22,13 @@
 
 (defmulti -uniquify-locals :op)
 
+(defn uniquify-locals-around
+  [ast]
+  (-uniquify-locals (update-in ast [:env :locals]
+                               update-vals #(update-in % [:name] normalize))))
+
 (defn uniquify-locals* [ast]
-  (update-children ast -uniquify-locals))
+  (update-children ast uniquify-locals-around))
 
 (defmethod -uniquify-locals :local
   [ast]
@@ -34,7 +40,7 @@
 (defn uniquify-binding
   [b]
   (let [i (binding [*locals-frame* (atom @*locals-frame*)] ;; inits need to be uniquified before the local
-            (-uniquify-locals (:init b)))                  ;; to avoid potential shadowings
+            (uniquify-locals-around (:init b)))                  ;; to avoid potential shadowings
         name (:name b)]
     (uniquify name)
     (let [name (normalize name)]
@@ -46,7 +52,7 @@
   [ast]
   (doseq [{:keys [name]} (:bindings ast)] ;; take into account that letfn
     (uniquify name))                      ;; accepts parallel bindings
-  (update-children ast -uniquify-locals))
+  (uniquify-locals* ast))
 
 (defmethod -uniquify-locals :binding
   [{:keys [name local] :as ast}]
@@ -57,7 +63,7 @@
     :letfn
     (-> ast
       (assoc :name (normalize name))
-      (update-children -uniquify-locals))
+      uniquify-locals*)
 
     :field
     ast
@@ -78,4 +84,4 @@
   [ast]
   (binding [*locals-counter* (atom {})
             *locals-frame*   (atom {})]
-     (-uniquify-locals ast)))
+    (uniquify-locals-around ast)))

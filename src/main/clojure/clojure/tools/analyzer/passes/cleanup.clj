@@ -11,8 +11,6 @@
 (defn cleanup [ast]
   (-> ast
     (update-in [:env] dissoc
-               :loop-local
                :loop-locals-casts
-               :namespaces
-               :locals)
+               :namespaces)
     (dissoc :atom)))
