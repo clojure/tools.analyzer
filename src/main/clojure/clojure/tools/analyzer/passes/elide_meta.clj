@@ -15,19 +15,32 @@
 
 (defn replace-meta [meta new-meta]
   (if (= :const (:op meta))
-    (assoc meta :form new-meta)
+    (assoc meta
+      ;:form new-meta
+      :val  new-meta)
     (let [meta-map (mapv (fn [k v]
                        (when-not (elides (:form k))
                          [k v]))
                      (:keys meta) (:vals meta))]
       (assoc meta
-        :form new-meta
+        ;:form new-meta
         :keys (vec (keep first meta-map))
         :vals (vec (keep second meta-map))))))
 
 (defn -elide-meta
   [{:keys [op meta expr env] :as ast}]
   (case op
+    :const
+    (let [new-meta (apply dissoc (:form meta) elides)]
+      (if (or (not meta)
+              (= new-meta (:form meta)))
+        ast
+        (if (not (empty? new-meta))
+          (assoc-in ast [:meta :val] new-meta)
+          (-> ast
+            (update-in [:val] with-meta nil)
+            ;(update-in [:form] with-meta nil)
+            (dissoc :children :meta)))))
     :with-meta
     (let [new-meta (apply dissoc (:form meta) elides)]
       (if (not (empty? new-meta))
