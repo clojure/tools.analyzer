@@ -1,6 +1,6 @@
 Changelog
 ========================================
-* Release 0.1.0-beta12 on 11 Mar 2014
+* Release 0.1.0-beta13 on 11 Mar 2014
   * Fix elide-meta pass
 * Release 0.1.0-beta12 on 25 Apr 2014
   * Annotated top-level nodes with :top-level true
