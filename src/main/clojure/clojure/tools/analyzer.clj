@@ -29,27 +29,55 @@
   (fn [[op & rest] env] op)
   :default :invoke)
 
-(defn analyze-form
+(defmulti -analyze-form (fn [form _] (class form)))
+
+(def ^:dynamic analyze-form
   "Like analyze, but does not mark the form with :top-level true"
+  -analyze-form)
+
+(defmethod -analyze-form clojure.lang.Symbol
   [form env]
-  (let [form (if (seq? form)
-               (or (seq form) ()) ;; force evaluation for analysis
-               form)]
-    (cond
+  (-analyze :symbol form env))
 
-     (symbol? form)          (-analyze :symbol form env)
+(defmethod -analyze-form clojure.lang.IPersistentVector
+  [form env]
+  (-analyze :vector form env))
 
-     (type? form)            (-analyze :const  form env :type)
-     (record? form)          (-analyze :const  form env :record) ;; since recors are maps too, record? *needs*
-     ;; to be before map?
-     (and (seq? form)
-          (not (empty? form))) (-analyze :seq    form env) ;; handles function/macro/special-form invocations
+(defmethod -analyze-form clojure.lang.IPersistentMap
+  [form env]
+  (-analyze :map form env))
 
-     (vector? form)          (-analyze :vector form env)
-     (map? form)             (-analyze :map    form env)
-     (set? form)             (-analyze :set    form env)
+(defmethod -analyze-form clojure.lang.IPersistentSet
+  [form env]
+  (-analyze :set form env))
 
-     :else                   (-analyze :const  form env))))
+(defmethod -analyze-form clojure.lang.ISeq
+  [form env]
+  (if-let [form (seq form)]
+    (-analyze :seq form env)
+    (-analyze :const form env)))
+
+(defmethod -analyze-form clojure.lang.IType
+  [form env]
+  (-analyze :const form env :type))
+
+(prefer-method -analyze-form clojure.lang.IType clojure.lang.IPersistentMap)
+(prefer-method -analyze-form clojure.lang.IType clojure.lang.IPersistentVector)
+(prefer-method -analyze-form clojure.lang.IType clojure.lang.IPersistentSet)
+(prefer-method -analyze-form clojure.lang.IType clojure.lang.ISeq)
+
+(defmethod -analyze-form clojure.lang.IRecord
+  [form env]
+  (-analyze :const form env :record))
+
+(prefer-method -analyze-form clojure.lang.IRecord clojure.lang.IPersistentMap)
+(prefer-method -analyze-form clojure.lang.IRecord clojure.lang.IPersistentVector)
+(prefer-method -analyze-form clojure.lang.IRecord clojure.lang.IPersistentSet)
+(prefer-method -analyze-form clojure.lang.IRecord clojure.lang.ISeq)
+
+(defmethod -analyze-form :default
+  [form env]
+  (-analyze :const form env))
 
 (defn analyze
   "Given a form to analyze and an environment, a map containing:
