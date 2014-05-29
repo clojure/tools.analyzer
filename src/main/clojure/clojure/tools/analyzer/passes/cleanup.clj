@@ -13,4 +13,5 @@
     (update-in [:env] dissoc
                :loop-locals-casts
                :namespaces)
+    (update-in [:env :locals] #(reduce-kv (fn [m k l] (assoc m k (dissoc l :env :init))) {} %))
     (dissoc :atom)))
