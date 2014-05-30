@@ -1,5 +1,9 @@
 Changelog
 ========================================
+* Release 0.1.0-beta14 on ???
+  * Open analyze-form dispatch
+  * Fixed collec-closed-overs for letfn*
+  * Make cleanup work on :env :locals
 * Release 0.1.0-beta13 on 11 Mar 2014
   * Fix elide-meta pass
 * Release 0.1.0-beta12 on 25 Apr 2014
