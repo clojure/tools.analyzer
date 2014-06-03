@@ -20,7 +20,8 @@
 
    See clojure.tools.analyzer.core-test for an example on how to setup the analyzer."
   (:refer-clojure :exclude [macroexpand-1 macroexpand var? record?])
-  (:require [clojure.tools.analyzer.utils :refer :all]))
+  (:require [clojure.tools.analyzer.utils :refer :all])
+  (:require [clojure.tools.analyzer.env :as env]))
 
 (defmulti -analyze (fn [op form env & _] op))
 (defmulti -parse
@@ -87,12 +88,7 @@
     ** :statement  the return value of the form is not needed
     ** :expr       everything else
    * :ns         a symbol representing the current namespace of the form to be
-                 analyzed, must be present in the :namespaces map
-   * :namespaces an atom containing a map from namespace symbol to namespace map,
-                 the namespace map contains the following keys:
-    ** :mappings   a map of mappings of the namespace, symbol to var/class
-    ** :aliases    a map of the aliases of the namespace, symbol to symbol
-    ** :ns         a symbol representing the namespace
+                 analyzed
 
    returns an AST for that form.
 
@@ -118,11 +114,7 @@
   []
   {:context    :expr
    :locals     {}
-   :ns         'user
-   :namespaces (atom
-                {'user {:mappings {}
-                        :aliases  {}
-                        :ns       'user}})})
+   :ns         'user})
 
 (defn analyze-in-env
   "Takes an env map and returns a function that analyzes a form in that env"
@@ -677,7 +669,7 @@
            {:children `[~@(when n [:local]) :methods]})))
 
 (defmethod -parse 'def
-  [[_ sym & expr :as form] {:keys [ns namespaces] :as env}]
+  [[_ sym & expr :as form] {:keys [ns] :as env}]
   (when (not (symbol? sym))
     (throw (ex-info (str "First argument to def must be a symbol, had: " (class sym))
                     (merge {:form form}
@@ -710,7 +702,7 @@
                      (-source-info form env)))
 
         var (create-var sym env) ;; interned var will have quoted arglists, replaced on evaluation
-        _ (swap! namespaces assoc-in [ns :mappings sym] var)
+        _ (swap! env/*env* assoc-in [:namespaces ns :mappings sym] var)
 
         meta (merge (meta sym)
                     (when arglists

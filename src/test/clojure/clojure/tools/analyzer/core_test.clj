@@ -1,6 +1,7 @@
 (ns clojure.tools.analyzer.core-test
   (:refer-clojure :exclude [macroexpand-1])
   (:require [clojure.tools.analyzer :as ana]
+            [clojure.tools.analyzer.env :refer [with-env]]
             [clojure.test :refer [deftest is]]
             [clojure.tools.analyzer.utils :refer [resolve-var]]))
 
@@ -39,16 +40,15 @@
 
 (def e {:context    :expr
         :locals     {}
-        :ns         'user
-        :namespaces (atom
-                     {'user         {:mappings (into (ns-map 'clojure.core)
-                                                     {'foo #'foo})
-                                     :aliases  {}
-                                     :ns       'user}
-                      'clojure.core {:mappings (ns-map 'clojure.core)
-                                     :aliases {}
-                                     :ns      'clojure.core}})})
+        :ns         'user})
 
+(def e1 (atom {:namespaces {'user         {:mappings (into (ns-map 'clojure.core)
+                                                           {'foo #'foo})
+                                           :aliases  {}
+                                           :ns       'user}
+                            'clojure.core {:mappings (ns-map 'clojure.core)
+                                           :aliases {}
+                                           :ns      'clojure.core}}}))
 (defmacro ast [form]
   `(binding [ana/macroexpand-1 macroexpand-1
              ana/create-var    ~(fn [sym env]
@@ -56,10 +56,12 @@
                                     (reset-meta! (meta sym))))
              ana/parse         ana/-parse
              ana/var?          ~var?]
-     (ana/analyze '~form e)))
+     (with-env e1
+       (ana/analyze '~form e))))
 
 (defmacro mexpand [form]
-  `(macroexpand-1 '~form e))
+  `(with-env e1
+     (macroexpand-1 '~form e)))
 
 (deftest analyzer-test
 
@@ -160,7 +162,7 @@
     (is (= 'a (-> d-ast :name)))
     (is (= '{c d} (-> d-ast :var meta (dissoc :line :column :file))))
     (is (= (ns-resolve 'user 'a)
-           (-> d-ast :env :namespaces deref (get 'user) :mappings (get 'a)))))
+           (-> e1 deref :namespaces (get 'user) :mappings (get 'a)))))
 
   (let [hc-ast (ast (.foo bar baz))]
     (is (= :host-call (-> hc-ast :op)))
