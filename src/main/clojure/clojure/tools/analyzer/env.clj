@@ -18,7 +18,7 @@
                (and (instance? clojure.lang.Atom env#)
                     (map? @env#)) env#
                :default (throw (IllegalArgumentException.
-                                (str "Environment must be a map or atom containing a map, not "
+                                (str "global env must be a map or atom containing a map, not "
                                      (class env#)))))]
      (binding [*env* env#] ~@body)))
 
@@ -34,3 +34,8 @@
        (finally
          (if (nil? val#)
            (pop-thread-bindings))))))
+
+(defn deref-env []
+  (if *env*
+    @*env*
+    (throw (ex-info "global env not bound"))))

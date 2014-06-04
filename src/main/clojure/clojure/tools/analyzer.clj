@@ -702,6 +702,7 @@
                      (-source-info form env)))
 
         var (create-var sym env) ;; interned var will have quoted arglists, replaced on evaluation
+        _ (env/deref-env) ;; make sure *env* is bound
         _ (swap! env/*env* assoc-in [:namespaces ns :mappings sym] var)
 
         meta (merge (meta sym)

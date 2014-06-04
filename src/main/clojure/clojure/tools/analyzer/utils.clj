@@ -121,7 +121,7 @@
   "Resolves the ns mapped by the given sym in the env"
   [ns-sym {:keys [ns]}]
   (when ns-sym
-    (let [namespaces (-> env/*env* deref :namespaces)]
+    (let [namespaces (:namespaces (env/deref-env))]
       (or (get-in namespaces [ns :aliases ns-sym])
           (:ns (namespaces ns-sym))))))
 
@@ -134,7 +134,7 @@
           full-ns (resolve-ns sym-ns env)]
       (when (or (not sym-ns) full-ns)
         (let [name (if sym-ns (-> sym name symbol) sym)]
-          (-> env/*env* deref :namespaces (get (or full-ns ns)) :mappings (get name)))))))
+          (-> (env/deref-env) :namespaces (get (or full-ns ns)) :mappings (get name)))))))
 
 (defn arglist-for-arity
   "Takes a fn node and an argc and returns the matching arglist"
