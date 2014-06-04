@@ -25,15 +25,10 @@
 ;; if *env* is not bound, bind it to env
 (defmacro ensure
   [env & body]
-  `(let [val# *env*
-         env# ~env]
-     (if (nil? val#)
-       (push-thread-bindings {#'*env* env#}))
-     (try
-       ~@body
-       (finally
-         (if (nil? val#)
-           (pop-thread-bindings))))))
+  `(if *env*
+     ~@body
+     (with-env ~env
+       ~@body)))
 
 (defn deref-env []
   (if *env*
