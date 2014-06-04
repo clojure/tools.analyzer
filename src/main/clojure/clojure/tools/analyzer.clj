@@ -18,6 +18,8 @@
    * create-var
    * var?
 
+   Setting up the global env is also required, see clojure.tools.analyzer.env
+
    See clojure.tools.analyzer.core-test for an example on how to setup the analyzer."
   (:refer-clojure :exclude [macroexpand-1 macroexpand var? record?])
   (:require [clojure.tools.analyzer.utils :refer :all])

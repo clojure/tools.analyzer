@@ -9,9 +9,18 @@
 (ns clojure.tools.analyzer.env
   (:refer-clojure :exclude [ensure]))
 
-(def ^:dynamic *env* nil)
+(def ^:dynamic *env*
+  "Global env atom
+   Required options:
+    * :namespaces an atom containing a map from namespace symbol to namespace map,
+      the namespace map contains at least the following keys:
+     ** :mappings a map of mappings of the namespace, symbol to var/class
+     ** :aliases a map of the aliases of the namespace, symbol to symbol
+     ** :ns a symbol representing the namespace"
+  nil)
 
 (defmacro with-env
+  "Binds the global env to env, then executes the body"
   [env & body]
   `(let [env# ~env
          env# (cond
@@ -25,13 +34,17 @@
 
 ;; if *env* is not bound, bind it to env
 (defmacro ensure
+  "If *env* is not bound it binds it to env before executing the body"
   [env & body]
   `(if *env*
      (do ~@body)
      (with-env ~env
        ~@body)))
 
-(defn deref-env []
+(defn deref-env
+  "Returns the value of the current global env if bound, otherwise
+   throws an exception."
+  []
   (if *env*
     @*env*
-    (throw (ex-info "global env not bound"))))
+    (throw (Exception. "global env not bound"))))
