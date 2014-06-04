@@ -27,7 +27,7 @@
 (defmacro ensure
   [env & body]
   `(if *env*
-     ~@body
+     (do ~@body)
      (with-env ~env
        ~@body)))
 
