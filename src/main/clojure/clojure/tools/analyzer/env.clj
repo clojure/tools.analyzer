@@ -6,7 +6,8 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.env)
+(ns clojure.tools.analyzer.env
+  (:refer-clojure :exclude [ensure]))
 
 (def ^:dynamic *env* nil)
 
