@@ -1,8 +1,10 @@
 Changelog
 ========================================
-* Release 0.1.0-beta14 on ???
+* Release 0.2.0 on ???
+  * BREAKING API CHANGE: Add global-env interface, move :namespaces from env to the global env
+  * Preserve original forms under :raw-forms in case of macroexpansion
   * Open analyze-form dispatch
-  * Fixed collec-closed-overs for letfn*
+  * Fixed collect-closed-overs for letfn*
   * Make cleanup work on :env :locals
 * Release 0.1.0-beta13 on 11 Mar 2014
   * Fix elide-meta pass
