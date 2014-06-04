@@ -272,9 +272,10 @@
                       (merge {:form form}
                              (-source-info form env)))))
     (let [mform (macroexpand-1 form env)]
-      (if (= form mform)  ;; function/special-form invocation
+      (if (= form mform) ;; function/special-form invocation
         (parse mform env)
-        (analyze-form mform env)))))
+        (-> (analyze-form mform env)
+          (update-in [:raw-forms] (fnil conj ()) form)))))) ;; TODO: should passes propagate this?
 
 (defmethod -parse 'do
   [[_ & exprs :as form] env]
