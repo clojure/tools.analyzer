@@ -2,9 +2,12 @@
 
 An analyzer for Clojure code, written in Clojure and producing AST in EDN.
 
-Timothy Baldridge gave a talk on tools.analyzer at Clojure/West in
-March 2014.  Video
+Timothy Baldridge gave a talk on tools.analyzer[.jvm] at Clojure/West in
+March 2014. Video
 [here](https://www.youtube.com/watch?v=KhRQmT22SSg&list=PLZdCLR02grLp__wRg5OTavVj4wefg69hM&index=11).
+
+Note that this library is not to be used directly, instead platform specific extensions should be used.
+Currently the following platform specific extensions exist: [tools.analyzer.jvm](https://github.com/clojure/tools.analyzer.jvm), [tools.analyzer.js](https://github.com/clojure/tools.analyzer.js)
 
 ## SPONSORSHIP
 
@@ -43,6 +46,9 @@ Latest stable release: 0.1.0-beta13
   <version>0.1.0-beta13</version>
 </dependency>
 ```
+
+[Changelog](CHANGELOG.md)
+========================================
 
 Developer Information
 ========================================
