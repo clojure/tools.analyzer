@@ -1,6 +1,6 @@
 Changelog
 ========================================
-* Release 0.2.0 on ???
+* Release 0.2.0 on 05 Jun 2014
   * BREAKING API CHANGE: Add global-env interface, move :namespaces from env to the global env
   * Preserve original forms under :raw-forms in case of macroexpansion
   * Open analyze-form dispatch
