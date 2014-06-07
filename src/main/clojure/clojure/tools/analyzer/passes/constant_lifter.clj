@@ -18,7 +18,7 @@
 (defmethod constant-lift :vector
   [{:keys [items form env] :as ast}]
   (if (and (every? :literal? items)
-           (not (meta form)))
+           (empty? (meta form)))
     (assoc (-analyze :const (mapv const-val items) env :vector)
       :form form)
     ast))
@@ -27,7 +27,7 @@
   [{:keys [keys vals form env] :as ast}]
   (if (and (every? :literal? keys)
            (every? :literal? vals)
-           (not (meta form)))
+           (empty? (meta form)))
     (let [c (into (empty form)
                   (zipmap (mapv const-val keys)
                           (mapv const-val vals)))
@@ -41,7 +41,7 @@
 (defmethod constant-lift :set
   [{:keys [items form env] :as ast}]
   (if (and (every? :literal? items)
-           (not (meta form)))
+           (empty? (meta form)))
     (assoc (-analyze :const (into (empty form)
                                   (set (mapv const-val items))) env :set)
       :form form)
