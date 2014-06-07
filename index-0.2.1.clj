@@ -37,13 +37,13 @@
    :name "clojure.tools.analyzer.passes.collect",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/81c7de46608f651eefc885cfdcf05aa7be323e7d/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   "https://github.com/clojure/tools.analyzer/blob/f2ba6794aa99e6b8d8d54c0e4398b491837d4d89/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.constant-lifter-api.html",
    :name "clojure.tools.analyzer.passes.constant-lifter",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/03b13e8c821528ac5f424237ed7b2833fb97d754/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/blob/135bf1a959204ee5a987b32e25d1670e27079df4/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.elide-meta-api.html",
    :name "clojure.tools.analyzer.passes.elide-meta",
@@ -538,9 +538,9 @@
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/81c7de46608f651eefc885cfdcf05aa7be323e7d/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   "https://github.com/clojure/tools.analyzer/raw/f2ba6794aa99e6b8d8d54c0e4398b491837d4d89/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/81c7de46608f651eefc885cfdcf05aa7be323e7d/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L13",
+   "https://github.com/clojure/tools.analyzer/blob/f2ba6794aa99e6b8d8d54c0e4398b491837d4d89/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L13",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.constant-lifter/constant-lift",
    :namespace "clojure.tools.analyzer.passes.constant-lifter",
@@ -553,24 +553,24 @@
    :name "elide-meta",
    :namespace "clojure.tools.analyzer.passes.elide-meta",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/03b13e8c821528ac5f424237ed7b2833fb97d754/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L60",
+   "https://github.com/clojure/tools.analyzer/blob/135bf1a959204ee5a987b32e25d1670e27079df4/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L62",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/03b13e8c821528ac5f424237ed7b2833fb97d754/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/raw/135bf1a959204ee5a987b32e25d1670e27079df4/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.elide-meta/elide-meta",
    :doc
    "If elides is not empty and the AST node contains metadata,\ndissoc all the keys in elides from the metadata.",
    :var-type "function",
-   :line 60,
+   :line 62,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj"}
   {:name "elides",
    :namespace "clojure.tools.analyzer.passes.elide-meta",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/03b13e8c821528ac5f424237ed7b2833fb97d754/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L11",
+   "https://github.com/clojure/tools.analyzer/blob/135bf1a959204ee5a987b32e25d1670e27079df4/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L11",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/03b13e8c821528ac5f424237ed7b2833fb97d754/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/raw/135bf1a959204ee5a987b32e25d1670e27079df4/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.elide-meta/elides",
    :doc
