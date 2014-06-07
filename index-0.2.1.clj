@@ -37,7 +37,7 @@
    :name "clojure.tools.analyzer.passes.collect",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/f2ba6794aa99e6b8d8d54c0e4398b491837d4d89/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   "https://github.com/clojure/tools.analyzer/blob/3267abcfe8aa00cceff7cdf989376a65fd5b4c27/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.constant-lifter-api.html",
    :name "clojure.tools.analyzer.passes.constant-lifter",
@@ -538,13 +538,13 @@
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f2ba6794aa99e6b8d8d54c0e4398b491837d4d89/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   "https://github.com/clojure/tools.analyzer/raw/3267abcfe8aa00cceff7cdf989376a65fd5b4c27/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f2ba6794aa99e6b8d8d54c0e4398b491837d4d89/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L13",
+   "https://github.com/clojure/tools.analyzer/blob/3267abcfe8aa00cceff7cdf989376a65fd5b4c27/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L12",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.constant-lifter/constant-lift",
    :namespace "clojure.tools.analyzer.passes.constant-lifter",
-   :line 13,
+   :line 12,
    :var-type "multimethod",
    :doc
    "If the node represents a collection with no metadata, and every item of that\ncollection is a literal, transform the node to an equivalent :const node.",
