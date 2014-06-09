@@ -1,7 +1,9 @@
 (ns clojure.tools.analyzer.core-test
   (:refer-clojure :exclude [macroexpand-1])
   (:require [clojure.tools.analyzer :as ana]
+            [clojure.tools.analyzer.ast :refer [postwalk]]
             [clojure.tools.analyzer.env :refer [with-env]]
+            [clojure.tools.analyzer.passes.elide-meta :refer [elides elide-meta]]
             [clojure.test :refer [deftest is]]
             [clojure.tools.analyzer.utils :refer [resolve-var]]))
 
@@ -55,9 +57,10 @@
                                   (doto (intern (:ns env) sym)
                                     (reset-meta! (meta sym))))
              ana/parse         ana/-parse
-             ana/var?          ~var?]
+             ana/var?          ~var?
+             elides            #{:line :column :file}]
      (with-env e1
-       (ana/analyze '~form e))))
+       (postwalk (ana/analyze '~form e) elide-meta))))
 
 (defmacro mexpand [form]
   `(with-env e1
@@ -154,7 +157,7 @@
     (is (= :return (-> l-ast :body :env :context))))
 
   (let [f-ast (ast (fn a ([y & x] [x y]) ([] a) ([z] z)))]
-    (is (= 1 (-> f-ast :max-fixed-arity)))
+    (is (= 1 (-> f-ast :max-fixed-arity)) (:meta f-ast))
     (is (:variadic? f-ast))
     (is (= true (-> f-ast :methods first :variadic?))))
 
