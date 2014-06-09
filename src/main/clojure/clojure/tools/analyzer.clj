@@ -627,49 +627,50 @@
 
 (defmethod -parse 'fn*
   [[op & args :as form] env]
-  (let [[n meths] (if (symbol? (first args))
-                    [(first args) (next args)]
-                    [nil (seq args)])
-        name-expr {:op    :binding
-                   :env   env
-                   :form  n
-                   :local :fn
-                   :name  n}
-        e (if n (assoc (assoc-in env [:locals n] (dissoc-env name-expr)) :local name-expr) env)
-        once? (-> op meta :once boolean)
-        menv (assoc (dissoc e :no-recur :in-try) :once once?)
-        meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
-        methods-exprs (mapv #(analyze-fn-method % menv) meths)
-        variadic (seq (filter :variadic? methods-exprs))
-        variadic? (boolean variadic)
-        fixed-arities (seq (map :fixed-arity (remove :variadic? methods-exprs)))
-        max-fixed-arity (when fixed-arities (apply max fixed-arities))]
-    (when (>= (count variadic) 2)
-      (throw (ex-info "Can't have more than 1 variadic overload"
-                      (merge {:variadics (mapv :form variadic)
-                              :form      form}
-                             (-source-info form env)))))
-    (when (not= (seq (distinct fixed-arities)) fixed-arities)
-      (throw (ex-info "Can't have 2 or more overloads with the same arity"
-                      (merge {:form form}
-                             (-source-info form env)))))
-    (when (and variadic?
-               (not-every? #(<= (:fixed-arity %)
-                          (:fixed-arity (first variadic)))
-                      (remove :variadic? methods-exprs)))
-      (throw (ex-info "Can't have fixed arity overload with more params than variadic overload"
-                      (merge {:form form}
-                             (-source-info form env)))))
-    (merge {:op              :fn
-            :env             env
-            :form            form
-            :variadic?       variadic?
-            :max-fixed-arity max-fixed-arity
-            :methods         methods-exprs
-            :once            once?}
-           (when n
-             {:local name-expr})
-           {:children `[~@(when n [:local]) :methods]})))
+  (wrapping-meta
+   (let [[n meths] (if (symbol? (first args))
+                     [(first args) (next args)]
+                     [nil (seq args)])
+         name-expr {:op    :binding
+                    :env   env
+                    :form  n
+                    :local :fn
+                    :name  n}
+         e (if n (assoc (assoc-in env [:locals n] (dissoc-env name-expr)) :local name-expr) env)
+         once? (-> op meta :once boolean)
+         menv (assoc (dissoc e :no-recur :in-try) :once once?)
+         meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
+         methods-exprs (mapv #(analyze-fn-method % menv) meths)
+         variadic (seq (filter :variadic? methods-exprs))
+         variadic? (boolean variadic)
+         fixed-arities (seq (map :fixed-arity (remove :variadic? methods-exprs)))
+         max-fixed-arity (when fixed-arities (apply max fixed-arities))]
+     (when (>= (count variadic) 2)
+       (throw (ex-info "Can't have more than 1 variadic overload"
+                       (merge {:variadics (mapv :form variadic)
+                               :form      form}
+                              (-source-info form env)))))
+     (when (not= (seq (distinct fixed-arities)) fixed-arities)
+       (throw (ex-info "Can't have 2 or more overloads with the same arity"
+                       (merge {:form form}
+                              (-source-info form env)))))
+     (when (and variadic?
+                (not-every? #(<= (:fixed-arity %)
+                           (:fixed-arity (first variadic)))
+                       (remove :variadic? methods-exprs)))
+       (throw (ex-info "Can't have fixed arity overload with more params than variadic overload"
+                       (merge {:form form}
+                              (-source-info form env)))))
+     (merge {:op              :fn
+             :env             env
+             :form            form
+             :variadic?       variadic?
+             :max-fixed-arity max-fixed-arity
+             :methods         methods-exprs
+             :once            once?}
+            (when n
+              {:local name-expr})
+            {:children `[~@(when n [:local]) :methods]}))))
 
 (defmethod -parse 'def
   [[_ sym & expr :as form] {:keys [ns] :as env}]
