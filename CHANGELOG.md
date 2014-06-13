@@ -1,5 +1,8 @@
 Changelog
 ========================================
+* Release 0.2.2 on 13 Jun 2014
+  * :fn node can be wrapped by :with-meta
+  * Remove :meta from :def :children when elide-meta removes it
 * Release 0.2.1 on 08 Jun 2014
   * Made constant-lift preserve the original AST fields
   * Made elide-meta discard all meta on form if metadata becomes nil
