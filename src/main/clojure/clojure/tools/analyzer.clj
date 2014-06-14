@@ -258,11 +258,11 @@
                     :class mform})))
              {:env  env
               :form mform})
-      ;; should this preserve the original form?
-      (analyze-form (if (obj? mform)
-                      (with-meta mform (meta sym))
-                      mform)
-               env))))
+      (-> (if (obj? mform)
+           (with-meta mform (meta sym))
+           mform)
+        (analyze-form env)
+        (update-in [:raw-forms] (fnil conj ()) sym)))))
 
 (defmethod -analyze :seq
   [_ form env]
