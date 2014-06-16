@@ -1,5 +1,8 @@
 Changelog
 ========================================
+* Release 0.2.3 on 16 Jun 2014
+  * Preserve :raw-forms for macroexpanded symbols
+  * Add :end-line :end-column info to source-info (only when directly available)
 * Release 0.2.2 on 13 Jun 2014
   * :fn node can be wrapped by :with-meta
   * Remove :meta from :def :children when elide-meta removes it
