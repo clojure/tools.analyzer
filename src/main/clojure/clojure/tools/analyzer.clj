@@ -289,7 +289,7 @@
 
 (defmethod -parse 'do
   [[_ & exprs :as form] env]
-  (let [statements-env (ctx env :statement)
+  (let [statements-env (ctx env :ctx/statement)
         [statements ret] (loop [statements [] [e & exprs] exprs]
                            (if (seq exprs)
                              (recur (conj statements e) exprs)
@@ -397,7 +397,7 @@
             cenv (ctx env :ctx/expr)
             cblocks (mapv #(parse % cenv) cblocks)
             fblock (when-not (empty? fblock)
-                     (analyze-body (rest fblock) (ctx env :statement)))]
+                     (analyze-body (rest fblock) (ctx env :ctx/statement)))]
         (merge {:op      :try
                 :env     env
                 :form    form
@@ -516,7 +516,7 @@
             (recur bindings
                    (assoc-in env [:locals name] (dissoc-env bind-expr))
                    (conj binds bind-expr))))
-        (let [body-env (assoc env :context (if loop? :return context))
+        (let [body-env (assoc env :context (if loop? :ctx/return context))
               body (analyze-body body (merge body-env
                                              (when loop?
                                                {:loop-id     loop-id
@@ -547,7 +547,7 @@
                          :as env}]
   (when-let [error-msg
              (cond
-              (not (= :return context))
+              (not (= :ctx/return context))
               "Can only recur from tail position"
 
               no-recur
@@ -603,7 +603,7 @@
         loop-id (gensym "loop_")
         body-env (into (update-in env [:locals]
                                   merge (zipmap params-names (map dissoc-env params-expr)))
-                       {:context     :return
+                       {:context     :ctx/return
                         :loop-id     loop-id
                         :loop-locals (count params-expr)})
         body (analyze-body body body-env)]
