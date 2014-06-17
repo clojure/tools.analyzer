@@ -25,6 +25,14 @@
   (:require [clojure.tools.analyzer.utils :refer :all])
   (:require [clojure.tools.analyzer.env :as env]))
 
+;; Expression hierarchy
+;; :ctx/return
+;; :ctx/statement
+;; :ctx/expr
+
+(derive :ctx.invoke/param :ctx/expr)
+(derive :ctx.invoke/target :ctx/expr)
+
 (defmulti -analyze (fn [op form env & _] op))
 (defmulti -parse
   "Takes a form and an env map and dispatches on the head of the form, that is
@@ -85,10 +93,12 @@
 (defn analyze
   "Given a form to analyze and an environment, a map containing:
    * :locals     a map from binding symbol to AST of the binding value
-   * :context    a keyword describing the form's context, one of:
-    ** :return     the form is in return position
-    ** :statement  the return value of the form is not needed
-    ** :expr       everything else
+   * :context a keyword describing the form's context from the :ctx/* hierarchy.
+    ** :ctx/return the form is in return position
+    ** :ctx/statement the return value of the form is not needed
+    ** :ctx/expr the form is an expression who's value is used
+    ** :ctx.invoke/target the form is an expression which is invoked
+    ** :ctx.invoke/param the form is an expression used as an invoke parameter
    * :ns         a symbol representing the current namespace of the form to be
                  analyzed
 
@@ -114,7 +124,7 @@
 (defn empty-env
   "Returns an empty env"
   []
-  {:context    :expr
+  {:context    :ctx/expr
    :locals     {}
    :ns         'user})
 
@@ -154,8 +164,8 @@
       {:op       :with-meta
        :env      env
        :form     form
-       :meta     (analyze-form meta (ctx env :expr))
-       :expr     (assoc-in expr [:env :context] :expr)
+       :meta     (analyze-form meta (ctx env :ctx/expr))
+       :expr     (assoc-in expr [:env :context] :ctx/expr)
        :children [:meta :expr]}
       expr)))
 
@@ -172,13 +182,13 @@
       :form     form}
      (when (and (obj? form)
                 (seq m))
-       {:meta     (-analyze :const m (ctx env :expr) :map) ;; metadata on a constant literal will not be evaluated at
+       {:meta     (-analyze :const m (ctx env :ctx/expr) :map) ;; metadata on a constant literal will not be evaluated at
                                                            ;; runtime, this is also true for metadata on quoted collection literals
         :children [:meta]}))))
 
 (defmethod -analyze :vector
   [_ form env]
-  (let [items-env (ctx env :expr)
+  (let [items-env (ctx env :ctx/expr)
         items (mapv (analyze-in-env items-env) form)]
     (wrapping-meta
      {:op       :vector
@@ -189,7 +199,7 @@
 
 (defmethod -analyze :map
   [_ form env]
-  (let [kv-env (ctx env :expr)
+  (let [kv-env (ctx env :ctx/expr)
         [keys vals] (reduce-kv (fn [[keys vals] k v]
                                  [(conj keys k) (conj vals v)])
                                [[] []] form)
@@ -205,7 +215,7 @@
 
 (defmethod -analyze :set
   [_ form env]
-  (let [items-env (ctx env :expr)
+  (let [items-env (ctx env :ext/expr)
         items (mapv (analyze-in-env items-env) form)]
     (wrapping-meta
      {:op       :set
@@ -299,7 +309,7 @@
     (throw (ex-info (str "Wrong number of args to if, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
-  (let [test-expr (analyze-form test (ctx env :expr))
+  (let [test-expr (analyze-form test (ctx env :ctx/expr))
         then-expr (analyze-form then env)
         else-expr (analyze-form else env)]
     {:op       :if
@@ -316,7 +326,7 @@
     (throw (ex-info (str "Wrong number of args to new, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
-  (let [args-env (ctx env :expr)
+  (let [args-env (ctx env :ctx/expr)
         args (mapv (analyze-in-env args-env) args)]
     {:op          :new
      :env         env
@@ -345,8 +355,8 @@
     (throw (ex-info (str "Wrong number of args to set!, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
-  (let [target (analyze-form target (ctx env :expr))
-        val (analyze-form val (ctx env :expr))]
+  (let [target (analyze-form target (ctx env :ctx/expr))
+        val (analyze-form val (ctx env :ctx/expr))]
     {:op       :set!
      :env      env
      :form     form
@@ -384,7 +394,7 @@
              (empty? fblocks))
       (assoc (analyze-body body env) :form form) ;; discard the useless try
       (let [body (analyze-body body (assoc env :no-recur true :in-try true)) ;; cannot recur across try
-            cenv (ctx env :expr)
+            cenv (ctx env :ctx/expr)
             cblocks (mapv #(parse % cenv) cblocks)
             fblock (when-not (empty? fblock)
                      (analyze-body (rest fblock) (ctx env :statement)))]
@@ -427,7 +437,7 @@
   {:op        :throw
    :env       env
    :form      form
-   :exception (analyze-form throw (ctx env :expr))
+   :exception (analyze-form throw (ctx env :ctx/expr))
    :children  [:exception]})
 
 (defn validate-bindings
@@ -470,7 +480,7 @@
                              (assoc binds name
                                     (merge bind
                                            {:init     (analyze-form (bindings name)
-                                                               (ctx e :expr))
+                                                               (ctx e :ctx/expr))
                                             :children [:init]})))
                            {} binds)
           e (update-in env [:locals] merge (update-vals binds dissoc-env))
@@ -487,7 +497,7 @@
   (validate-bindings form env)
   (let [loop? (= 'loop* op)]
     (loop [bindings bindings
-           env (ctx env :expr)
+           env (ctx env :ctx/expr)
            binds []]
       (if-let [[name init & bindings] (seq bindings)]
         (if (not (valid-binding-symbol? name))
@@ -551,7 +561,7 @@
                             :form  form}
                            (-source-info form env)))))
 
-  (let [exprs (mapv (analyze-in-env (ctx env :expr)) exprs)]
+  (let [exprs (mapv (analyze-in-env (ctx env :ctx/expr)) exprs)]
     {:op          :recur
      :env         env
      :form        form
@@ -713,10 +723,10 @@
                     (when arglists
                       {:arglists (list 'quote arglists)}))
 
-        meta-expr (when meta (analyze-form meta (ctx env :expr))) ;; meta on def sym will be evaluated
+        meta-expr (when meta (analyze-form meta (ctx env :ctx/expr))) ;; meta on def sym will be evaluated
 
         args (when-let [[_ init] (find args :init)]
-               (merge args {:init (analyze-form init (ctx env :expr))}))
+               (merge args {:init (analyze-form init (ctx env :ctx/expr))}))
         children `[~@(when meta [:meta])
                    ~@(when (:init args) [:init])]]
 
@@ -741,7 +751,7 @@
                                  (= \- (first (name m-or-f))))
                           [(-> m-or-f name (subs 1) symbol) true]
                           [(if args (cons m-or-f args) m-or-f) false])
-        target-expr (analyze-form target (ctx env :expr))
+        target-expr (analyze-form target (ctx env :ctx/expr))
         call? (and (not field?) (seq? m-or-f))]
 
     (when (and call? (not (symbol? (first m-or-f))))
@@ -756,7 +766,7 @@
             call?
             {:op       :host-call
              :method   (symbol (name (first m-or-f)))
-             :args     (mapv (analyze-in-env (ctx env :expr)) (next m-or-f))
+             :args     (mapv (analyze-in-env (ctx env :ctx/expr)) (next m-or-f))
              :children [:target :args]}
 
             field?
@@ -771,9 +781,8 @@
 
 (defmethod -parse :invoke
   [[f & args :as form] env]
-  (let [e (ctx env :expr)
-        fn-expr (analyze-form f e)
-        args-expr (mapv (analyze-in-env e) args)
+  (let [fn-expr (analyze-form f (ctx env :ctx.invoke/target))
+        args-expr (mapv (analyze-in-env (ctx env :ctx.invoke/param)) args)
         m (meta form)]
     (merge {:op   :invoke
             :form form
