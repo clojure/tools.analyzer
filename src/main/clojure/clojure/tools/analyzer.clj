@@ -215,7 +215,7 @@
 
 (defmethod -analyze :set
   [_ form env]
-  (let [items-env (ctx env :ext/expr)
+  (let [items-env (ctx env :ctx/expr)
         items (mapv (analyze-in-env items-env) form)]
     (wrapping-meta
      {:op       :set
