@@ -40,7 +40,7 @@
 
 (defmacro foo [] 1)
 
-(def e {:context    :expr
+(def e {:context    :ctx/expr
         :locals     {}
         :ns         'user})
 
@@ -121,7 +121,7 @@
   (let [do-ast (ast (do 1 2 3))]
     (is (= 3 (-> do-ast :ret :form)))
     (is (= [1 2] (->> do-ast :statements (mapv :form))))
-    (is (= :statement (-> do-ast :statements first :env :context))))
+    (is (= :ctx/statement (-> do-ast :statements first :env :context))))
 
   (let [if-ast (ast (if 1 2 3))]
     (is (= [1 2 3] (->> if-ast ((juxt :test :then :else)) (mapv :form)))))
@@ -154,7 +154,7 @@
 
   (let [l-ast (ast (loop [x 1] (recur 2)))]
     (is (= :loop (-> l-ast :bindings first :local)))
-    (is (= :return (-> l-ast :body :env :context))))
+    (is (= :ctx/return (-> l-ast :body :env :context))))
 
   (let [f-ast (ast (fn a ([y & x] [x y]) ([] a) ([z] z)))]
     (is (= 1 (-> f-ast :max-fixed-arity)) (:meta f-ast))
