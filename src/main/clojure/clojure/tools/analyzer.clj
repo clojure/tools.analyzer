@@ -257,13 +257,9 @@
                   :var         var}
                  (if-let [maybe-class (namespace sym)] ;; e.g. js/foo.bar or Long/MAX_VALUE
                    (let [maybe-class (symbol maybe-class)]
-                     (if-not (resolve-ns maybe-class env) ;; namespaces shadow classes
-                       {:op    :maybe-host-form
-                        :class maybe-class
-                        :field (symbol (name sym))}
-                       (throw (ex-info (str "Could not resolve var: " sym)
-                                       (merge {:var mform}
-                                              (-source-info sym env))))))
+                     {:op    :maybe-host-form
+                      :class maybe-class
+                      :field (symbol (name sym))})
                    {:op    :maybe-class ;; e.g. java.lang.Integer or Long
                     :class mform})))
              {:env  env
