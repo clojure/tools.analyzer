@@ -79,7 +79,7 @@
    :name "clojure.tools.analyzer.passes.uniquify",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/49b163e2c56a84897a784b35db211549471f3c19/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
+   "https://github.com/clojure/tools.analyzer/blob/4b10b1f30a1445b6468b61defc6a4d1508884d07/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.warn-earmuff-api.html",
    :name "clojure.tools.analyzer.passes.warn-earmuff",
@@ -685,9 +685,9 @@
    :name "warn-earmuff",
    :namespace "clojure.tools.analyzer.passes.warn-earmuff",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/49b163e2c56a84897a784b35db211549471f3c19/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj#L12",
+   "https://github.com/clojure/tools.analyzer/blob/4b10b1f30a1445b6468b61defc6a4d1508884d07/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj#L12",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/49b163e2c56a84897a784b35db211549471f3c19/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
+   "https://github.com/clojure/tools.analyzer/raw/4b10b1f30a1445b6468b61defc6a4d1508884d07/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.warn-earmuff/warn-earmuff",
    :doc
