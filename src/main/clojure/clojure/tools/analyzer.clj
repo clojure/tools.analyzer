@@ -93,12 +93,13 @@
 (defn analyze
   "Given a form to analyze and an environment, a map containing:
    * :locals     a map from binding symbol to AST of the binding value
-   * :context a keyword describing the form's context from the :ctx/* hierarchy.
-    ** :ctx/return the form is in return position
+   * :context    a keyword describing the form's context from the :ctx/* hierarchy.
+    ** :ctx/return    the form is in return position
     ** :ctx/statement the return value of the form is not needed
-    ** :ctx/expr the form is an expression who's value is used
-    ** :ctx.invoke/target the form is an expression which is invoked
-    ** :ctx.invoke/param the form is an expression used as an invoke parameter
+    ** :ctx/expr      the form is an expression, it's value is used
+    Derived from :ctx/expr
+    ** :ctx.invoke/target  the form is an expression that is invoked as a function
+    ** :ctx.invoke/param   the form is an expression used as parameter in a function call
    * :ns         a symbol representing the current namespace of the form to be
                  analyzed
 
