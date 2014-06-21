@@ -1,5 +1,9 @@
 Changelog
 ========================================
+* Release 0.3.0 on 21 Jun 2014
+  * BREAKING API CHANGE: :context is now either :ctx/statement, :ctx/return, :ctx/expr or a keyword derived from one of those
+  * elide-meta: elides can be any IFn, not only a set
+  * analyze :symbol will not throw when a Var is not found
 * Release 0.2.3 on 16 Jun 2014
   * Preserve :raw-forms for macroexpanded symbols
   * Add :end-line :end-column info to source-info (only when directly available)
