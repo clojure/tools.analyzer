@@ -651,7 +651,8 @@
          variadic (seq (filter :variadic? methods-exprs))
          variadic? (boolean variadic)
          fixed-arities (seq (map :fixed-arity (remove :variadic? methods-exprs)))
-         max-fixed-arity (when fixed-arities (apply max fixed-arities))]
+         max-fixed-arity (when fixed-arities (apply max fixed-arities))
+         form (vary-meta form #(apply dissoc % #{:line :column :end-line :end-column :file :source}))]
      (when (>= (count variadic) 2)
        (throw (ex-info "Can't have more than 1 variadic overload"
                        (merge {:variadics (mapv :form variadic)
