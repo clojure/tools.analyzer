@@ -58,7 +58,7 @@
                                     (reset-meta! (meta sym))))
              ana/parse         ana/-parse
              ana/var?          ~var?
-             elides            #{:line :column :file}]
+             elides            {:all #{:line :column :file}}]
      (with-env e1
        (postwalk (ana/analyze '~form e) elide-meta))))
 
