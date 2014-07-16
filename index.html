@@ -920,27 +920,27 @@ Defaults to {:all (set (:elide-meta *compiler-options*))}</pre>
     <hr />
     <h2 id="clojure.tools.analyzer.passes.emit-form/-emit-form*">-emit-form*</h2>
     <span id="var-type">dynamic function</span><br />
-    <pre id="var-usage">Usage: (-emit-form* {:keys [form], :as ast} ops)
+    <pre id="var-usage">Usage: (-emit-form* {:keys [form], :as ast} opts)
 </pre>
     <pre id="var-docstr">Extension point for custom emit-form implementations, should be rebound
-to a multimethod with custom emit-form :ops.</pre>
+to a multimethod with custom emit-form :opts.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L13" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/bd89d9cbc8d0fad2a3d9ad01fc3ed37e316de2c4/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L13" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
     <h2 id="clojure.tools.analyzer.passes.emit-form/emit-form">emit-form</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (emit-form ast)
-       (emit-form ast ops)
+       (emit-form ast opts)
 </pre>
     <pre id="var-docstr">Return the form represented by the given AST.
-Ops is a set of options, valid options are:
+Opts is a set of options, valid options are:
  * :hygienic</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L23" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/bd89d9cbc8d0fad2a3d9ad01fc3ed37e316de2c4/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L23" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -951,7 +951,7 @@ Ops is a set of options, valid options are:
     <pre id="var-docstr">Return an hygienic form represented by the given AST</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/d9c7891ae16fb8b3cff37e63e8845ac49e3ee8e9/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L30" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/bd89d9cbc8d0fad2a3d9ad01fc3ed37e316de2c4/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L30" id="var-source">Source</a>
   </div>
 </div>
 <br />
