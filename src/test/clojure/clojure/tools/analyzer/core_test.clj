@@ -127,7 +127,7 @@
     (is (= [1 2 3] (->> if-ast ((juxt :test :then :else)) (mapv :form)))))
 
   (let [new-ast (ast (foo. 1 2))]
-    (is (= 'foo (:class new-ast)))
+    (is (= 'foo (-> new-ast :class :form)))
     (is (= [1 2] (->> new-ast :args (mapv :form)))))
 
   (let [q-ast (:expr (ast '^{a b} [c d]))]
@@ -144,7 +144,8 @@
   (let [t-ast (ast (try 0 (catch E1 e e) (catch E2 e 2) (finally 3)))]
     (is (= 0 (-> t-ast :body :ret :form)))
     (is (= 2 (-> t-ast :catches second :body :ret :form)))
-    (is (= 'E1 (-> t-ast :catches first :class)))
+    (is (= :maybe-class (-> t-ast :catches first :class :op)))
+    (is (= 'E1 (-> t-ast :catches first :class :class)))
     (is (= 'e (-> t-ast :catches first :local :name)))
     (is (= 3 (-> t-ast :finally :ret :form))))
 

@@ -328,9 +328,9 @@
     {:op          :new
      :env         env
      :form        form
-     :class       class
+     :class       (analyze-form class (assoc env :locals {})) ;; avoid shadowing
      :args        args
-     :children    [:args]}))
+     :children    [:class :args]}))
 
 (defmethod -parse 'quote
   [[_ expr :as form] env]
@@ -418,12 +418,12 @@
                :local :catch
                :tag   etype}]
     {:op          :catch
-     :class       etype
+     :class       (analyze-form etype (assoc env :locals {}))
      :local       local
      :env         env
      :form        form
      :body        (analyze-body body (assoc-in env [:locals ename] (dissoc-env local)))
-     :children    [:local :body]}))
+     :children    [:class :local :body]}))
 
 (defmethod -parse 'throw
   [[_ throw :as form] env]
