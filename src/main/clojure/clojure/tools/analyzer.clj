@@ -22,8 +22,8 @@
 
    See clojure.tools.analyzer.core-test for an example on how to setup the analyzer."
   (:refer-clojure :exclude [macroexpand-1 macroexpand var? record?])
-  (:require [clojure.tools.analyzer.utils :refer :all])
-  (:require [clojure.tools.analyzer.env :as env]))
+  (:require [clojure.tools.analyzer.utils :refer :all]
+            [clojure.tools.analyzer.env :as env]))
 
 ;; Expression hierarchy
 ;; :ctx/return

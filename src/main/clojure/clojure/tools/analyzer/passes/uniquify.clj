@@ -7,8 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.uniquify
-  (:require [clojure.tools.analyzer.ast :refer [update-children children]])
-  (:require [clojure.tools.analyzer.utils :refer [update-vals]]))
+  (:require [clojure.tools.analyzer.ast :refer [update-children children]]
+            [clojure.tools.analyzer.utils :refer [update-vals]]))
 
 (def ^:dynamic *locals-counter*) ;; global counter, map sym -> count
 (def ^:dynamic *locals-frame*)   ;; holds the id for the locals in the current frame
