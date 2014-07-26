@@ -1,5 +1,8 @@
 Changelog
 ========================================
+* Release 0.4.0 on 26 Jul 2014
+  * BREAKING CHANGE: The :class field for :new and :catch nodes are now children nodes rather than symbols
+  * More fine-grained elide-meta
 * Release 0.3.0 on 21 Jun 2014
   * BREAKING API CHANGE: :context is now either :ctx/statement, :ctx/return, :ctx/expr or a keyword derived from one of those
   * elide-meta: elides can be any IFn, not only a set
