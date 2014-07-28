@@ -767,14 +767,16 @@
              :children [:target :args]}
 
             field?
-            {:op       :host-field
-             :field    (symbol (name m-or-f))
-             :children [:target]}
+            {:op          :host-field
+             :assignable? true
+             :field       (symbol (name m-or-f))
+             :children    [:target]}
 
             :else
-            {:op       :host-interop ;; either field access or no-args method call
-             :m-or-f   (symbol (name m-or-f))
-             :children [:target]}))))
+            {:op          :host-interop ;; either field access or no-args method call
+             :assignable? true
+             :m-or-f      (symbol (name m-or-f))
+             :children    [:target]}))))
 
 (defmethod -parse :invoke
   [[f & args :as form] env]
