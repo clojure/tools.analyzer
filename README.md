@@ -52,32 +52,31 @@ The `children` function returns a vector of the children nodes of the current no
 clojure.tools.analyzer.jvm> (require '[clojure.tools.analyzer.ast :as ast])
 nil
 clojure.tools.analyzer.jvm> (ast/children (analyze '(do 1 (+ 1 2) :foo)))
-{:op :do
- :statements
- [{:op   :const,
-   :id   0,
-   :type :number,
-   :val  1,
-   :form 1,
-   ...}
-  {:op   :const,
-   :id   1,
-   :type :number,
-   :val  2,
-   :form 2,
-   ...}]
- :ret {:op   :const,
-       :id   3,
-       :type :keyword,
-       :val  :foo,
-       :form :foo,
-       ...},
- ...}
+[{:op   :const,
+  :id   0,
+  :type :number,
+  :val  1,
+  :form 1,
+  ...}
+ {:op   :const,
+  :id   1,
+  :type :number,
+  :val  2,
+  :form 2,
+  ...}
+ {:op   :const,
+  :id   3,
+  :type :keyword,
+  :val  :foo,
+  :form :foo,
+  ...}]
+```
+
 ```
 
 If we want to access a flattened view of all the nodes of an AST, we can use the `nodes` function:
 ```clojure
-clojure.tools.analyzer.jvm> (pprint (ast/nodes (analyze '[1 (+ 1 2)])))
+clojure.tools.analyzer.jvm> (ast/nodes (analyze '[1 (+ 1 2)]))
 ({:op        :vector,
   :top-level true,
   :items
