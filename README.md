@@ -6,8 +6,177 @@ Timothy Baldridge gave a talk on tools.analyzer[.jvm] at Clojure/West in
 March 2014. Video
 [here](https://www.youtube.com/watch?v=KhRQmT22SSg&list=PLZdCLR02grLp__wRg5OTavVj4wefg69hM&index=11).
 
-Note that this library is not to be used directly, instead platform specific extensions should be used.
+Note that the analyzer in this library should not to be used directly, instead platform specific extensions should be used.
 Currently the following platform specific extensions exist: [tools.analyzer.jvm](https://github.com/clojure/tools.analyzer.jvm), [tools.analyzer.js](https://github.com/clojure/tools.analyzer.js)
+
+* [Example Usage](#example-usage)
+* [Releases and Dependency Information](#releases-and-dependency-information)
+* [Changelog](#changelog)
+* [Developer Information](#developer-information)
+* [License](#license)
+
+## Example Usage
+`clojure.tools.analyzer/analyze` will not work out of the box, as it requires a number of entry-points to be set.
+Here's what could happen trying to use `clojure.tools.analyzer/analyze` directly:
+```clojure
+clojure.tools.analyzer> (analyze 'a {})
+Attempting to call unbound fn: #'clojure.tools.analyzer/macroexpand-1
+  [Thrown class java.lang.IllegalStateException]
+```
+
+At the moment there exist two official analyzers written on top of `tools.analyzer`: `tools.analyzer.jvm` for clojure on the JVM and `tools.analyzer.js` for clojurescript.
+We will use `tools.analyzer.jvm` for those examples.
+
+Here's a simplified version of how `clojure.tools.analyzer.jvm/analyze` is defined:
+```clojure
+(require '[clojure.tools.analyzer :as ana])
+(require '[clojure.tools.analyzer.env :as env])
+(defn analyze [form env]
+  (binding [ana/macroexpand-1 macroexpand-1
+            ana/create-var    create-var
+            ana/parse         parse
+            ana/var?          var?]
+       (env/ensure (global-env)
+         (run-passes (-analyze form env))))))
+```
+
+Here, `-analyze` is a multimethod that defaults to `ana/analyze` and defines analysis methods for the JVM specific special forms, `global-env` is a function that returns a global environment for the JVM analyzer and `run-passes` is a function that takes an AST and applies a number of passes to it.
+
+The `tools.analyzer.jvm` [README](https://github.com/clojure/tools.analyzer.jvm#changelog) contains more examples on how the `analyze` function works as well as a reference for all the nodes it can return.
+
+One of the most important features of `tools.analyzer` is the ability to walk generically through the AST nodes, this has been immensely useful to write most of the passes used by the various analyzers.
+The `tools.analyzer.ast` namespace provides a number of functions that implement various generic AST walking strategies.
+
+The `children` function returns a vector of the children nodes of the current node (the output has been elided and pretty-printed for clarity):
+```clojure
+clojure.tools.analyzer.jvm> (require '[clojure.tools.analyzer.ast :as ast])
+nil
+clojure.tools.analyzer.jvm> (ast/children (analyze '(do 1 (+ 1 2) :foo)))
+{:op :do
+ :statements
+ [{:op   :const,
+   :id   0,
+   :type :number,
+   :val  1,
+   :form 1,
+   ...}
+  {:op   :const,
+   :id   1,
+   :type :number,
+   :val  2,
+   :form 2,
+   ...}]
+ :ret {:op   :const,
+       :id   3,
+       :type :keyword,
+       :val  :foo,
+       :form :foo,
+       ...},
+ ...}
+```
+
+If we want to access a flattened view of all the nodes of an AST, we can use the `nodes` function:
+```clojure
+clojure.tools.analyzer.jvm> (pprint (ast/nodes (analyze '[1 (+ 1 2)])))
+({:op        :vector,
+  :top-level true,
+  :items
+  [{:op   :const,
+    :type :number,
+    :val  1,
+    ...}
+   {:op     :static-call,
+    :class  clojure.lang.Numbers,
+    :method add,
+    :form   (. clojure.lang.Numbers (add 1 2)),
+    :args   [{:op  :const,
+              :val 1,
+              ...}
+             {:op  :const,
+              :val 2,
+              ...}],
+   ...}]
+  :form [1 (+ 1 2)],
+  ...}
+ {:op   :const,
+  :type :number,
+  :val  1,
+  ...}
+ {:op    :static-call,
+  :class  clojure.lang.Numbers,
+  :method add,
+  :form   (. clojure.lang.Numbers (add 1 2)),
+  :args [{:op  :const,
+          :val 1,
+          ...}
+         {:op  :const,
+          :val 2,
+          ...}],
+  ...}
+  ..)
+```
+
+The `update-children` function takes an AST node and a function and replaces the children nodes of the given node with the result of applying the function to each children node.
+```clojure
+clojure.tools.analyzer.jvm> (ast/update-children (analyze '(do 1 (+ 1 2) :foo))
+                               #(assoc % :visited true))
+{:op :do
+ :statements
+ [{:op      :const,
+   :val     1,
+   :visited true,
+   ...}
+  {:op      :static-call,
+   :class   clojure.lang.Numbers,
+   :method  add,
+   :visited true,
+   :args   [{:op  :const
+             :val 1,
+             ...}
+            {:op  :const,
+             :val 2,
+             ...}],
+   ...}]
+ :ret
+ {:op      :const,
+  :val     :foo,
+  :visited true,
+  ...},
+ ...}
+```
+If it's desiderable to walk all the AST applying a function to all the nodes and the children nodes, one of `walk`, `prewalk` or `postwalk` should be used, read the docstrings of the three functions to understand the differences.
+Here's the previous example using `prewalk` instead of `update-children`:
+```clojure
+clojure.tools.analyzer.jvm> (ast/prewalk (analyze '(do 1 (+ 1 2) :foo))
+                               #(assoc % :visited true))
+{:op      :do
+ :visited true,
+ :statements
+ [{:op      :const,
+   :val     1,
+   :visited true,
+   ...}
+  {:op      :static-call,
+   :class   clojure.lang.Numbers,
+   :method  add,
+   :visited true,
+   :args   [{:op      :const
+             :val     1,
+             :visited true,
+             ...}
+            {:op     :const,
+             :val     2,
+             :visited true,
+             ...}],
+   ...}]
+ :ret
+ {:op      :const,
+  :val     :foo,
+  :visited true,
+  ...},
+ ...}
+```
+As you can see, this time all the nodes have been marked `:visited`.
 
 ## SPONSORSHIP
 
