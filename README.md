@@ -42,7 +42,7 @@ Here's a simplified version of how `clojure.tools.analyzer.jvm/analyze` is defin
 
 Here, `-analyze` is a multimethod that defaults to `ana/analyze` and defines analysis methods for the JVM specific special forms, `global-env` is a function that returns a global environment for the JVM analyzer and `run-passes` is a function that takes an AST and applies a number of passes to it.
 
-The `tools.analyzer.jvm` [README](https://github.com/clojure/tools.analyzer.jvm#changelog) contains more examples on how the `analyze` function works as well as a reference for all the nodes it can return.
+The `tools.analyzer.jvm` [README](https://github.com/clojure/tools.analyzer.jvm#example-usage) contains more examples on how the `analyze` function works as well as a reference for all the nodes it can return.
 
 One of the most important features of `tools.analyzer` is the ability to walk generically through the AST nodes, this has been immensely useful to write most of the passes used by the various analyzers.
 The `tools.analyzer.ast` namespace provides a number of functions that implement various generic AST walking strategies.
