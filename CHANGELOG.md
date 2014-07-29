@@ -1,5 +1,7 @@
 Changelog
 ========================================
+* Release 0.5.0 on 29 Jul 2014
+  * Made :host-field and :host-interop :assignable?
 * Release 0.4.0 on 26 Jul 2014
   * BREAKING CHANGE: The :class field for :new and :catch nodes are now children nodes rather than symbols
   * More fine-grained elide-meta
