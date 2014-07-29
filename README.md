@@ -72,8 +72,6 @@ clojure.tools.analyzer.jvm> (ast/children (analyze '(do 1 (+ 1 2) :foo)))
   ...}]
 ```
 
-```
-
 If we want to access a flattened view of all the nodes of an AST, we can use the `nodes` function:
 ```clojure
 clojure.tools.analyzer.jvm> (ast/nodes (analyze '[1 (+ 1 2)]))
