@@ -51,7 +51,7 @@ The `children` function returns a vector of the children nodes of the current no
 ```clojure
 clojure.tools.analyzer.jvm> (require '[clojure.tools.analyzer.ast :as ast])
 nil
-clojure.tools.analyzer.jvm> (ast/children (analyze '(do 1 (+ 1 2) :foo)))
+clojure.tools.analyzer.jvm> (ast/children (analyze '(do 1 2 :foo)))
 [{:op   :const,
   :id   0,
   :type :number,
