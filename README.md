@@ -10,6 +10,7 @@ Note that the analyzer in this library should not to be used directly, instead p
 Currently the following platform specific extensions exist: [tools.analyzer.jvm](https://github.com/clojure/tools.analyzer.jvm), [tools.analyzer.js](https://github.com/clojure/tools.analyzer.js)
 
 * [Example Usage](#example-usage)
+* [AST Quickref](#ast-quickref)
 * [Releases and Dependency Information](#releases-and-dependency-information)
 * [Changelog](#changelog)
 * [Developer Information](#developer-information)
@@ -174,6 +175,9 @@ clojure.tools.analyzer.jvm> (ast/prewalk (analyze '(do 1 (+ 1 2) :foo))
  ...}
 ```
 As you can see, this time all the nodes have been marked `:visited`.
+
+[AST Quickref](http://clojure.github.io/tools.analyzer/doc/quickref.html)
+========================================
 
 ## SPONSORSHIP
 
