@@ -32,6 +32,7 @@
           ^:children
           [:body "Synthetic :do AST node (with :body? `true`)  representing the body of the catch clause"]]}
   {:op   :const
+   :doc  "Node for a constant literal or a quoted collection literal"
    :keys [[:form "A constant literal or a quoted collection literal"]
           [:literal? "`true`"]
           [:type "one of :nil, :bool, :keyword, :symbol, :string, :number, :type, :record, :map, :vector, :set, :seq, :char, :regex, :class, :var, or :unknown"]
