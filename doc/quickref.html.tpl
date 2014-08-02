@@ -79,8 +79,8 @@
   }
   nav {
     background: #f5f5f5;
-    font-size: 17px;
-    line-height: 14px;
+    font-size: 11px;
+    line-height: 17px;
     padding: 0.5rem 1rem;
     position: fixed;
     width: 160px;
