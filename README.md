@@ -1,6 +1,6 @@
 # tools.analyzer
 
-An analyzer for Clojure code, written in Clojure and producing AST in EDN.
+An analyzer for host agnostic Clojure code, written in Clojure and producing AST in EDN.
 
 Timothy Baldridge gave a talk on tools.analyzer[.jvm] at Clojure/West in
 March 2014. Video
