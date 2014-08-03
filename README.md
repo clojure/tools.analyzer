@@ -6,8 +6,8 @@ Timothy Baldridge gave a talk on tools.analyzer[.jvm] at Clojure/West in
 March 2014. Video
 [here](https://www.youtube.com/watch?v=KhRQmT22SSg&list=PLZdCLR02grLp__wRg5OTavVj4wefg69hM&index=11).
 
-Note that the analyzer in this library should not to be used directly, instead platform specific extensions should be used.
-Currently the following platform specific extensions exist: [tools.analyzer.jvm](https://github.com/clojure/tools.analyzer.jvm), [tools.analyzer.js](https://github.com/clojure/tools.analyzer.js)
+Note that the analyzer in this library should not to be used directly as it lacks any knowledge about host-specific special forms and it should only be considered as a building platform for host-specific analyzers.
+Currently the following platform specific analyzers written on top of tools.analyzer exist: [tools.analyzer.jvm](https://github.com/clojure/tools.analyzer.jvm), [tools.analyzer.js](https://github.com/clojure/tools.analyzer.js)
 
 * [Example Usage](#example-usage)
 * [AST Quickref](#ast-quickref)
