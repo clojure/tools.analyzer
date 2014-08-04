@@ -219,9 +219,9 @@
           ^:children
           [:items "A vector of AST nodes representing the items of the vector"]]}
   {:op   :with-meta
-   :doc  "Node for a non quoted collection literal or fn/reify expression with attached metadata"
-   :keys [[:form "Non quoted collection literal or fn/reify expression with attached metadata"]
+   :doc  "Node for a non quoted collection literal or a fn expression with attached metadata"
+   :keys [[:form "Non quoted collection literal or fn expression with attached metadata"]
           ^:children
           [:meta "An AST node representing the metadata of expression. The node will be either a :map node or a :const node with :type :map"]
           ^:children
-          [:expr "The expression this metadata is attached to, :op is one of :vector, :map, :set, :fn or :reify"]]}]}
+          [:expr "The expression this metadata is attached to, :op is one of :vector, :map, :set or :fn"]]}]}
