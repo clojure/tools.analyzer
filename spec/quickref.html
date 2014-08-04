@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>tools.analyzer AST Quickref</title>
+  <style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: "Lucida Grande", "Trebuchet MS", "Bitstream Vera Sans", Verdana, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+    margin: 40px 80px;
+  }
+  main {
+    margin-left: 240px;
+    width: 680px;
+  }
+  dl {
+  display: flex;
+  flex-flow: row wrap;
+
+  }
+  dt:nth-of-type(odd), dd:nth-of-type(odd) {
+    background: #f5f5f5;
+  }
+  dt {
+    padding: 2px 0; width: 120px;
+    color:#191970;
+  }
+  dd { padding: 2px 0; width: 560px;}
+  .wide-keys dt { width: 160px; }
+  .wide-keys dd { width: 520px; }
+  code, dt { font-family: "Menlo"; }
+  code { color: rgb(160,40,160); }
+  .page-title {
+    font-size: 32px;
+    border-bottom: none;
+    margin-bottom: 2.75rem;
+  }
+  h1 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.75em;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    margin-bottom: 0.2rem;
+    position: relative;
+    padding-left: 20px;
+    margin-left: -20px;
+  }
+  h4 {
+    margin-bottom: 1rem;
+  }
+
+  h2 a {
+    color: #aaa;
+    font-size: 16px;
+    font-weight: normal;
+    margin-left: -20px;
+    position: absolute;
+    text-decoration: none;
+    vertical-align: middle;
+    visibility: hidden;
+  }
+  h2:hover a {
+    visibility: visible;
+  }
+  p {
+    margin-bottom: 1rem;
+  }
+  section {
+    /*border-bottom: 1px solid #ccc;*/
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  }
+  nav {
+    background: #f5f5f5;
+    font-size: 11px;
+    line-height: 17px;
+    padding: 0.5rem 1rem;
+    position: fixed;
+    width: 160px;
+  }
+  nav ul {
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+  nav ul:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <nav>
+    <strong>Nodes reference</strong>
+    <ul>
+      <li><a href="#binding">binding</a></li>
+<li><a href="#catch">catch</a></li>
+<li><a href="#const">const</a></li>
+<li><a href="#def">def</a></li>
+<li><a href="#do">do</a></li>
+<li><a href="#fn">fn</a></li>
+<li><a href="#fn-method">fn-method</a></li>
+<li><a href="#host-call">host-call</a></li>
+<li><a href="#host-field">host-field</a></li>
+<li><a href="#host-interop">host-interop</a></li>
+<li><a href="#if">if</a></li>
+<li><a href="#invoke">invoke</a></li>
+<li><a href="#let">let</a></li>
+<li><a href="#letfn">letfn</a></li>
+<li><a href="#local">local</a></li>
+<li><a href="#loop">loop</a></li>
+<li><a href="#map">map</a></li>
+<li><a href="#maybe-class">maybe-class</a></li>
+<li><a href="#maybe-host-form">maybe-host-form</a></li>
+<li><a href="#new">new</a></li>
+<li><a href="#quote">quote</a></li>
+<li><a href="#recur">recur</a></li>
+<li><a href="#set">set</a></li>
+<li><a href="#set!">set!</a></li>
+<li><a href="#throw">throw</a></li>
+<li><a href="#try">try</a></li>
+<li><a href="#var">var</a></li>
+<li><a href="#vector">vector</a></li>
+<li><a href="#with-meta">with-meta</a></li>
+
+    </ul>
+  </nav>
+  <main>
+    <h1 class="page-title">tools.analyzer AST Quickref</h1>
+    <h1>Common AST fields</h1>
+    <section><dl><dt>:op</dt><dd>The node op</dd><dt>:form</dt><dd>The clojure form from which the node originated</dd><dt>:env</dt><dd>The environment map</dd><dt>:children</dt><dd><b>optional</b> A vector of keywords, representing the children nodes of this node, in order of evaluation</dd><dt>:raw-forms</dt><dd><b>optional</b> If this node's <code>:form</code> has been macroexpanded, a sequence of all the intermediate forms from the original form to the macroexpanded form</dd><dt>:top-level</dt><dd><b>optional</b> <code>true</code> if this is the root node</dd></dl></section>
+
+    <h1>Nodes reference</h1>
+    <section><h2><a href="#binding" name="binding">#</a>binding</h2><h4>Node for a binding symbol</h4><dl><dt> :op </dt> <dd> <code>:binding</code></dd><dt>:form</dt><dd>The binding symbol</dd><dt>:name</dt><dd>The binding symbol</dd><dt>:local</dt><dd>One of <code>:arg</code>, <code>:catch</code>, <code>:fn</code>, <code>:let</code>, <code>:letfn</code> or <code>:loop</code></dd><dt>:arg-id</dt><dd><b>optional</b> When <code>:local</code> is <code>:arg</code>, the parameter index</dd><dt>:variadic?</dt><dd><b>optional</b> When <code>:local</code> is <code>:arg</code>, a boolean indicating whether this parameter binds to a variable number of arguments</dd><dt>:init</dt><dd><b>optional</b> When <code>:local</code> is <code>:let</code>, <code>:letfn</code> or <code>:loop</code>, an AST node representing the bound value</dd><dt> :children </dt> <dd> <code>[]</code>, <code>[:init]</code></dd></dl></section>
+<section><h2><a href="#catch" name="catch">#</a>catch</h2><h4>Node for a catch expression</h4><dl><dt> :op </dt> <dd> <code>:catch</code></dd><dt>:form</dt><dd><code>(catch class local body*)</code></dd><dt>:class</dt><dd>A <code>:maybe-class</code> AST node representing the type of exception to catch</dd><dt>:local</dt><dd>The <code>:binding</code> AST node for the caught exception</dd><dt>:body</dt><dd>Synthetic <code>:do</code> AST node (with <code>:body?</code> <code>true</code>)  representing the body of the catch clause</dd><dt> :children </dt> <dd> <code>[:class :local :body]</code></dd></dl></section>
+<section><h2><a href="#const" name="const">#</a>const</h2><h4>Node for a constant literal or a quoted collection literal</h4><dl><dt> :op </dt> <dd> <code>:const</code></dd><dt>:form</dt><dd>A constant literal or a quoted collection literal</dd><dt>:literal?</dt><dd><code>true</code></dd><dt>:type</dt><dd>one of <code>:nil</code>, <code>:bool</code>, <code>:keyword</code>, <code>:symbol</code>, <code>:string</code>, <code>:number</code>, <code>:type</code>, <code>:record</code>, <code>:map</code>, <code>:vector</code>, <code>:set</code>, <code>:seq</code>, <code>:char</code>, <code>:regex</code>, <code>:class</code>, <code>:var</code>, or <code>:unknown</code></dd><dt>:val</dt><dd>The value of the constant node</dd><dt>:meta</dt><dd><b>optional</b> An AST node representing the metadata of the constant value, if present. The node will be either a <code>:map</code> node or a <code>:const</code> node with <code>:type</code> <code>:map</code></dd><dt> :children </dt> <dd> <code>[]</code>, <code>[:meta]</code></dd></dl></section>
+<section><h2><a href="#def" name="def">#</a>def</h2><h4>Node for a def special-form expression</h4><dl><dt> :op </dt> <dd> <code>:def</code></dd><dt>:form</dt><dd><code>(def name docstring? init?)</code></dd><dt>:name</dt><dd>The var symbol to define in the current namespace</dd><dt>:var</dt><dd>The var object created (or found, if it already existed) named by the symbol <code>:name</code> in the current namespace</dd><dt>:meta</dt><dd><b>optional</b> An AST node representing the metadata attached to <code>:name</code>, if present. The node will be either a <code>:map</code> node or a <code>:const</code> node with <code>:type</code> <code>:map</code></dd><dt>:init</dt><dd><b>optional</b> An AST node representing the initial value of the var</dd><dt>:doc</dt><dd><b>optional</b> The docstring for this var</dd><dt> :children </dt> <dd> <code>[]</code>, <code>[:init]</code>, <code>[:meta]</code>, <code>[:meta :init]</code></dd></dl></section>
+<section><h2><a href="#do" name="do">#</a>do</h2><h4>Node for a do special-form expression or for another special-form's body</h4><dl><dt> :op </dt> <dd> <code>:do</code></dd><dt>:form</dt><dd><code>(do statement* ret)</code></dd><dt>:statements</dt><dd>A vector of AST nodes representing all but the last expression in the do body</dd><dt>:ret</dt><dd>An AST node representing the last expression in the do body (the block's return value)</dd><dt>:body?</dt><dd><b>optional</b> <code>true</code> if this node is a synthetic body</dd><dt> :children </dt> <dd> <code>[:statements :ret]</code></dd></dl></section>
+<section><h2><a href="#fn" name="fn">#</a>fn</h2><h4>Node for a fn* special-form expression</h4><dl><dt> :op </dt> <dd> <code>:fn</code></dd><dt>:form</dt><dd><code>(fn* name? [arg*] body*)</code> or <code>(fn* name? method*)</code></dd><dt>:variadic?</dt><dd><code>true</code> if this function contains a variadic arity method</dd><dt>:max-fixed-arity</dt><dd>The number of arguments taken by the fixed-arity method taking the most arguments</dd><dt>:local</dt><dd><b>optional</b> A <code>:binding</code> AST node with <code>:local</code> <code>:fn</code> representing the function's local name, if one is supplied</dd><dt>:methods</dt><dd>A vector <code>:fn-method</code> AST nodes representing the fn method arities</dd><dt>:once</dt><dd><code>true</code> if the fn is marked as <code>^<code>:once</code> fn*</code>, meaning it will only be executed once and thus allowing for the clearing of closed-over locals</dd><dt> :children </dt> <dd> <code>[:methods]</code>, <code>[:local :methods]</code></dd></dl></section>
+<section><h2><a href="#fn-method" name="fn-method">#</a>fn-method</h2><h4>Node for an arity method in a fn* expression</h4><dl><dt> :op </dt> <dd> <code>:fn-method</code></dd><dt>:form</dt><dd><code>([arg*] body*)</code></dd><dt>:loop-id</dt><dd>Unique symbol identifying this method as a target for recursion</dd><dt>:variadic?</dt><dd><code>true</code> if this fn-method takes a variable number of arguments</dd><dt>:params</dt><dd>A vector of <code>:binding</code> AST nodes with <code>:local</code> <code>:arg</code> representing this fn-method args</dd><dt>:fixed-arity</dt><dd>The number of non-variadic args this fn-method takes</dd><dt>:body</dt><dd>Synthetic <code>:do</code> node (with <code>:body?</code> <code>true</code>) representing the body of this fn-method</dd><dt> :children </dt> <dd> <code>[:params :body]</code></dd></dl></section>
+<section><h2><a href="#host-call" name="host-call">#</a>host-call</h2><h4>Node for a host interop call</h4><dl><dt> :op </dt> <dd> <code>:host-call</code></dd><dt>:form</dt><dd><code>(.method target arg*)</code></dd><dt>:method</dt><dd>Symbol naming the method to call</dd><dt>:target</dt><dd>An AST node representing the target object</dd><dt>:args</dt><dd>A vector of AST nodes representing the args passed to the method call</dd><dt> :children </dt> <dd> <code>[:target :args]</code></dd></dl></section>
+<section><h2><a href="#host-field" name="host-field">#</a>host-field</h2><h4>Node for a host interop field access</h4><dl><dt> :op </dt> <dd> <code>:host-field</code></dd><dt>:form</dt><dd><code>(.-field target)</code></dd><dt>:field</dt><dd>Symbol naming the field to access</dd><dt>:target</dt><dd>An AST node representing the target object</dd><dt>:assignable?</dt><dd><code>true</code></dd><dt> :children </dt> <dd> <code>[:target]</code></dd></dl></section>
+<section><h2><a href="#host-interop" name="host-interop">#</a>host-interop</h2><h4>Node for a no-arg host interop call or for a host interop field access</h4><dl><dt> :op </dt> <dd> <code>:host-interop</code></dd><dt>:form</dt><dd><code>(. target m-or-f)</code></dd><dt>:target</dt><dd>An AST node representing the target object</dd><dt>:m-or-f</dt><dd>Symbol naming the no-arg method or field to access in the target</dd><dt>:assignable?</dt><dd><code>true</code></dd><dt> :children </dt> <dd> <code>[:target]</code></dd></dl></section>
+<section><h2><a href="#if" name="if">#</a>if</h2><h4>Node for an if special-form expression</h4><dl><dt> :op </dt> <dd> <code>:if</code></dd><dt>:form</dt><dd><code>(if test then else?)</code></dd><dt>:test</dt><dd>An AST node representing the test expression</dd><dt>:then</dt><dd>An AST node representing the expression's return value if <code>:test</code> evaluated to a truthy value</dd><dt>:else</dt><dd>An AST node representing the expression's return value if <code>:test</code> evaluated to a falsey value, if not supplied it will default to a <code>:const</code> node representing nil</dd><dt> :children </dt> <dd> <code>[:test :then :else]</code></dd></dl></section>
+<section><h2><a href="#invoke" name="invoke">#</a>invoke</h2><h4>Node for an invoke expression</h4><dl><dt> :op </dt> <dd> <code>:invoke</code></dd><dt>:form</dt><dd><code>(f arg*)</code></dd><dt>:fn</dt><dd>An AST node representing the function to invoke</dd><dt>:args</dt><dd>A vector of AST nodes representing the args to the function</dd><dt>:meta</dt><dd><b>optional</b> Map of metadata attached to the invoke <code>:form</code></dd><dt> :children </dt> <dd> <code>[:fn :args]</code></dd></dl></section>
+<section><h2><a href="#let" name="let">#</a>let</h2><h4>Node for a let* special-form expression</h4><dl><dt> :op </dt> <dd> <code>:let</code></dd><dt>:form</dt><dd><code>(let* [binding*] body*)</code></dd><dt>:bindings</dt><dd>A vector of <code>:binding</code> AST nodes with <code>:local</code> <code>:let</code></dd><dt>:body</dt><dd>Synthetic <code>:do</code> node (with <code>:body?</code> <code>true</code>) representing the body of the let expression</dd><dt> :children </dt> <dd> <code>[:bindings :body]</code></dd></dl></section>
+<section><h2><a href="#letfn" name="letfn">#</a>letfn</h2><h4>Node for a letfn* special-form expression</h4><dl><dt> :op </dt> <dd> <code>:letfn</code></dd><dt>:form</dt><dd><code>(letfn* [binding*] body*)</code></dd><dt>:bindings</dt><dd>A vector of <code>:binding</code> AST nodes with <code>:local</code> <code>:letfn</code></dd><dt>:body</dt><dd>Synthetic <code>:do</code> node (with <code>:body?</code> <code>true</code>) representing the body of the letfn expression</dd><dt> :children </dt> <dd> <code>[:bindings :body]</code></dd></dl></section>
+<section><h2><a href="#local" name="local">#</a>local</h2><h4>Node for a local symbol</h4><dl><dt> :op </dt> <dd> <code>:local</code></dd><dt>:form</dt><dd>The local symbol</dd><dt>:name</dt><dd>The local symbol</dd><dt>:local</dt><dd>One of <code>:arg</code>, <code>:catch</code>, <code>:fn</code>, <code>:let</code>, <code>:letfn</code> or <code>:loop</code></dd><dt>:arg-id</dt><dd><b>optional</b> When <code>:local</code> is <code>:arg</code>, the parameter index</dd><dt>:variadic?</dt><dd><b>optional</b> When <code>:local</code> is <code>:arg</code>, a boolean indicating whether this parameter binds to a variable number of arguments</dd></dl></section>
+<section><h2><a href="#loop" name="loop">#</a>loop</h2><h4>Node a loop* special-form expression</h4><dl><dt> :op </dt> <dd> <code>:loop</code></dd><dt>:form</dt><dd><code>(loop* [binding*] body*)</code></dd><dt>:bindings</dt><dd>A vector of <code>:binding</code> AST nodes with <code>:local</code> <code>:loop</code></dd><dt>:body</dt><dd>Synthetic <code>:do</code> node (with <code>:body?</code> <code>true</code>) representing the body of the loop expression</dd><dt>:loop-id</dt><dd>Unique symbol identifying this loop as a target for recursion</dd><dt> :children </dt> <dd> <code>[:bindings :body]</code></dd></dl></section>
+<section><h2><a href="#map" name="map">#</a>map</h2><h4>Node for a map literal</h4><dl><dt> :op </dt> <dd> <code>:map</code></dd><dt>:form</dt><dd><code>{[key val]*}</code></dd><dt>:keys</dt><dd>A vector of AST nodes representing the keys of the map</dd><dt>:vals</dt><dd>A vector of AST nodes representing the vals of the map</dd><dt> :children </dt> <dd> <code>[:keys :vals]</code></dd></dl></section>
+<section><h2><a href="#maybe-class" name="maybe-class">#</a>maybe-class</h2><h4>Node for a not-namespaced symbol that couldn't be resolved as a var</h4><dl><dt> :op </dt> <dd> <code>:maybe-class</code></dd><dt>:form</dt><dd>The not namespaced symbol</dd><dt>:class</dt><dd>The not namespaced symbol that might represent a class</dd></dl></section>
+<section><h2><a href="#maybe-host-form" name="maybe-host-form">#</a>maybe-host-form</h2><h4>Node for namespaced symbol that couldn't be resolved as a var</h4><dl><dt> :op </dt> <dd> <code>:maybe-host-form</code></dd><dt>:form</dt><dd>The namespaced symbol</dd><dt>:class</dt><dd>The namespace part of the symbol, as a symbol</dd><dt>:field</dt><dd>The name part of the symbol, as a symbol</dd></dl></section>
+<section><h2><a href="#new" name="new">#</a>new</h2><h4>Node for a new special-form expression</h4><dl><dt> :op </dt> <dd> <code>:new</code></dd><dt>:form</dt><dd><code>(new Class arg*)</code></dd><dt>:class</dt><dd>A <code>:maybe-class</code> AST node <code>:class</code> representing the Class to instantiate</dd><dt>:args</dt><dd>A vector of AST nodes representing the arguments passed to the Class constructor</dd><dt> :children </dt> <dd> <code>[:class :args]</code></dd></dl></section>
+<section><h2><a href="#quote" name="quote">#</a>quote</h2><h4>Node for a quote special-form expression</h4><dl><dt> :op </dt> <dd> <code>:quote</code></dd><dt>:form</dt><dd><code>(quote expr)</code></dd><dt>:expr</dt><dd>A <code>:const</code> AST node representing the quoted value</dd><dt>:literal?</dt><dd><code>true</code></dd><dt> :children </dt> <dd> <code>[:expr]</code></dd></dl></section>
+<section><h2><a href="#recur" name="recur">#</a>recur</h2><h4>Node for a recur special-form expression</h4><dl><dt> :op </dt> <dd> <code>:recur</code></dd><dt>:form</dt><dd><code>(recur expr*)</code></dd><dt>:exprs</dt><dd>A vector of AST nodes representing the new bound values for the loop binding on the next loop iteration</dd><dt> :children </dt> <dd> <code>[:exprs]</code></dd></dl></section>
+<section><h2><a href="#set" name="set">#</a>set</h2><h4>Node for a set literal</h4><dl><dt> :op </dt> <dd> <code>:set</code></dd><dt>:form</dt><dd><code>#{item*}</code></dd><dt>:items</dt><dd>A vector of AST nodes representing the items of the set</dd><dt> :children </dt> <dd> <code>[:items]</code></dd></dl></section>
+<section><h2><a href="#set!" name="set!">#</a>set!</h2><h4>Node for a set! special-form expression</h4><dl><dt> :op </dt> <dd> <code>:set!</code></dd><dt>:form</dt><dd><code>(set! target val)</code></dd><dt>:target</dt><dd>An AST node representing the target of the set! expression, must be <code>:assignable?</code></dd><dt>:val</dt><dd>An AST node representing the new value for the target</dd><dt> :children </dt> <dd> <code>[:target]</code></dd></dl></section>
+<section><h2><a href="#throw" name="throw">#</a>throw</h2><h4>Node for a throw special-form statement</h4><dl><dt> :op </dt> <dd> <code>:throw</code></dd><dt>:form</dt><dd><code>(throw exception)</code></dd><dt>:exception</dt><dd>An AST node representing the exception to throw</dd><dt> :children </dt> <dd> <code>[:exception]</code></dd></dl></section>
+<section><h2><a href="#try" name="try">#</a>try</h2><h4>Node for a try special-form expression</h4><dl><dt> :op </dt> <dd> <code>:try</code></dd><dt>:form</dt><dd><code>(try body* catch* finally?)</code></dd><dt>:catches</dt><dd>A vector of <code>:catch</code> AST nodes representing the catch clauses of this try expression</dd><dt>:finally</dt><dd><b>optional</b> Synthetic <code>:do</code> AST node (with <code>:body?</code> <code>true</code>) representing the final clause of this try expression</dd><dt> :children </dt> <dd> <code>[:catches]</code>, <code>[:catches :finally]</code></dd></dl></section>
+<section><h2><a href="#var" name="var">#</a>var</h2><h4>Node for a var symbol</h4><dl><dt> :op </dt> <dd> <code>:var</code></dd><dt>:form</dt><dd>A symbol naming the var</dd><dt>:var</dt><dd>The var object this symbol refers to</dd><dt>:assignable?</dt><dd><b>optional</b> <code>true</code> if the Var is <code>:dynamic</code></dd></dl></section>
+<section><h2><a href="#vector" name="vector">#</a>vector</h2><h4>Node for a vector literal with attached metadata and/or non literal elements</h4><dl><dt> :op </dt> <dd> <code>:vector</code></dd><dt>:form</dt><dd><code>[item*]</code></dd><dt>:items</dt><dd>A vector of AST nodes representing the items of the vector</dd><dt> :children </dt> <dd> <code>[:items]</code></dd></dl></section>
+<section><h2><a href="#with-meta" name="with-meta">#</a>with-meta</h2><h4>Node for a non quoted collection literal or a fn expression with attached metadata</h4><dl><dt> :op </dt> <dd> <code>:with-meta</code></dd><dt>:form</dt><dd>Non quoted collection literal or fn expression with attached metadata</dd><dt>:meta</dt><dd>An AST node representing the metadata of expression. The node will be either a <code>:map</code> node or a <code>:const</code> node with <code>:type</code> <code>:map</code></dd><dt>:expr</dt><dd>The expression this metadata is attached to, <code>:op</code> is one of <code>:vector</code>, <code>:map</code>, <code>:set</code> or <code>:fn</code></dd><dt> :children </dt> <dd> <code>[:meta :expr]</code></dd></dl></section>
+
+  </main>
+</body>
+</html>
