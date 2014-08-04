@@ -176,7 +176,7 @@ clojure.tools.analyzer.jvm> (ast/prewalk (analyze '(do 1 (+ 1 2) :foo))
 ```
 As you can see, this time all the nodes have been marked `:visited`.
 
-[AST Quickref](http://clojure.github.io/tools.analyzer/doc/quickref.html)
+[AST Quickref](http://clojure.github.io/tools.analyzer/spec/quickref.html)
 ========================================
 
 ## SPONSORSHIP
