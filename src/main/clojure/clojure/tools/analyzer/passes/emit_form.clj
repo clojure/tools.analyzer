@@ -128,7 +128,7 @@
 
 (defmethod -emit-form :new
   [{:keys [class args]} opts]
-  `(new ~(-emit-form* class opts) ~@(mapv #(-emit-form* % opts) args)))
+  `(new ~(-emit-form* (:val class) opts) ~@(mapv #(-emit-form* % opts) args)))
 
 (defmethod -emit-form :set!
   [{:keys [target val]} opts]
