@@ -1,5 +1,8 @@
 Changelog
 ========================================
+* Release 0.5.1 on ??
+  * Removed collect pass
+  * Moved collect-closed-overs pass to its own namespace
 * Release 0.5.0 on 29 Jul 2014
   * Made :host-field and :host-interop :assignable?
 * Release 0.4.0 on 26 Jul 2014
