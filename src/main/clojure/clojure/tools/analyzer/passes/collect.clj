@@ -60,12 +60,12 @@
 
 (defmethod -collect-callsite :keyword-invoke
   [ast]
-  (swap! *collects* #(update-in % [:keyword-callsites] conj (-> ast :fn :form)))
+  (swap! *collects* #(update-in % [:keyword-callsites] conj (-> ast :keyword :form)))
   ast)
 
 (defmethod -collect-callsite :protocol-invoke
   [ast]
-  (swap! *collects* #(update-in % [:protocol-callsites] conj (-> ast :fn :var)))
+  (swap! *collects* #(update-in % [:protocol-callsites] conj (-> ast :protocol-fn :var)))
   ast)
 
 (defn merge-collects [ast]
