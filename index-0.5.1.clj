@@ -31,10 +31,10 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/9246beabc027f79b0045b58d17b08ed100f612ec/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/blob/77708fe269ef4437da5842121061ab4b2aaba291/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
    :wiki-url
-   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-api.html",
-   :name "clojure.tools.analyzer.passes.collect",
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-closed-overs-api.html",
+   :name "clojure.tools.analyzer.passes.collect-closed-overs",
    :doc nil}
   {:source-url
    "https://github.com/clojure/tools.analyzer/blob/3267abcfe8aa00cceff7cdf989376a65fd5b4c27/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
@@ -507,34 +507,21 @@
    :line 26,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj"}
-  {:arglists ([{:keys [what top-level?], :as opts}]),
-   :name "collect",
-   :namespace "clojure.tools.analyzer.passes.collect",
-   :source-url
-   "https://github.com/clojure/tools.analyzer/blob/9246beabc027f79b0045b58d17b08ed100f612ec/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L153",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/9246beabc027f79b0045b58d17b08ed100f612ec/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect",
-   :doc
-   "Takes a map with:\n* :what        set of keywords describing what to collect, some of:\n  ** :constants     constant expressions\n  ** :closed-overs  closed over local bindings\n  ** :callsites     keyword and protocol callsites\n* :where       set of :op nodes where to attach collected info\n* :top-level?  if true attach collected info to the top-level node\n\nReturns a function that does the takes an AST and returns an AST with the\ncollected info.",
-   :var-type "function",
-   :line 153,
-   :file "src/main/clojure/clojure/tools/analyzer/passes/collect.clj"}
   {:arglists ([ast opts]),
    :name "collect-closed-overs",
-   :namespace "clojure.tools.analyzer.passes.collect",
+   :namespace "clojure.tools.analyzer.passes.collect-closed-overs",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/9246beabc027f79b0045b58d17b08ed100f612ec/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L135",
+   "https://github.com/clojure/tools.analyzer/blob/77708fe269ef4437da5842121061ab4b2aaba291/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L57",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/9246beabc027f79b0045b58d17b08ed100f612ec/src/main/clojure/clojure/tools/analyzer/passes/collect.clj",
+   "https://github.com/clojure/tools.analyzer/raw/77708fe269ef4437da5842121061ab4b2aaba291/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
    :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect/collect-closed-overs",
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect-closed-overs/collect-closed-overs",
    :doc
-   "Takes an AST and an opts map that takes the same options as collect,\nbut only collects closed-overs on the AST.",
+   "Attach closed-overs info to the AST, opts takes:\n* :where       set of :op nodes where to attach the closed-overs\n* :top-level?  if true attach closed-overs info to the top-level node",
    :var-type "function",
-   :line 135,
-   :file "src/main/clojure/clojure/tools/analyzer/passes/collect.clj"}
+   :line 57,
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj"}
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :raw-source-url

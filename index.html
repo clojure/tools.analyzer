@@ -157,12 +157,9 @@ namespace.
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
-    <a href="#clojure.tools.analyzer.passes.collect" style="margin-top: 3px;">clojure.tools.analyzer.passes.collect</a>
+    <a href="#clojure.tools.analyzer.passes.collect-closed-overs" style="margin-top: 3px;">clojure.tools.analyzer.passes.collect-closed-overs</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.collect/collect">collect</a>
-      
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.collect/collect-closed-overs">collect-closed-overs</a>
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.collect-closed-overs/collect-closed-overs">collect-closed-overs</a>
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
@@ -796,7 +793,7 @@ The atom is put in the :atom field of the node.</pre>
   </div>
 </div>
 <br />
-<h2 id="clojure.tools.analyzer.passes.collect">clojure.tools.analyzer.passes.collect</h2>
+<h2 id="clojure.tools.analyzer.passes.collect-closed-overs">clojure.tools.analyzer.passes.collect-closed-overs</h2>
 <pre id="namespace-docstr"></pre>
 
 
@@ -809,35 +806,16 @@ The atom is put in the :atom field of the node.</pre>
   <div id="var-entry">
     <br />
     <hr />
-    <h2 id="clojure.tools.analyzer.passes.collect/collect">collect</h2>
-    <span id="var-type">function</span><br />
-    <pre id="var-usage">Usage: (collect {:keys [what top-level?], :as opts})
-</pre>
-    <pre id="var-docstr">Takes a map with:
-* :what        set of keywords describing what to collect, some of:
-  ** :constants     constant expressions
-  ** :closed-overs  closed over local bindings
-  ** :callsites     keyword and protocol callsites
-* :where       set of :op nodes where to attach collected info
-* :top-level?  if true attach collected info to the top-level node
-
-Returns a function that does the takes an AST and returns an AST with the
-collected info.</pre>
-    
-    
-    <a href="https://github.com/clojure/tools.analyzer/blob/9246beabc027f79b0045b58d17b08ed100f612ec/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L153" id="var-source">Source</a>
-  </div><div id="var-entry">
-    <br />
-    <hr />
-    <h2 id="clojure.tools.analyzer.passes.collect/collect-closed-overs">collect-closed-overs</h2>
+    <h2 id="clojure.tools.analyzer.passes.collect-closed-overs/collect-closed-overs">collect-closed-overs</h2>
     <span id="var-type">function</span><br />
     <pre id="var-usage">Usage: (collect-closed-overs ast opts)
 </pre>
-    <pre id="var-docstr">Takes an AST and an opts map that takes the same options as collect,
-but only collects closed-overs on the AST.</pre>
+    <pre id="var-docstr">Attach closed-overs info to the AST, opts takes:
+* :where       set of :op nodes where to attach the closed-overs
+* :top-level?  if true attach closed-overs info to the top-level node</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/9246beabc027f79b0045b58d17b08ed100f612ec/src/main/clojure/clojure/tools/analyzer/passes/collect.clj#L135" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/77708fe269ef4437da5842121061ab4b2aaba291/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L57" id="var-source">Source</a>
   </div>
 </div>
 <br />
