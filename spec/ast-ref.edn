@@ -67,7 +67,7 @@
           ^:optional ^:children
           [:local "A :binding AST node with :local :fn representing the function's local name, if one is supplied"]
           ^:children
-          [:methods "A vector :fn-method AST nodes representing the fn method arities"]
+          [:methods "A vector of :fn-method AST nodes representing the fn method arities"]
           [:once "`true` if the fn is marked as `^:once fn*`, meaning it will only be executed once and thus allowing for the clearing of closed-over locals"]]}
   {:op   :fn-method
    :doc  "Node for an arity method in a fn* expression"
