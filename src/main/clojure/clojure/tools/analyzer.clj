@@ -544,7 +544,7 @@
                          :as env}]
   (when-let [error-msg
              (cond
-              (not (isa? :ctx/return context))
+              (not (isa? context :ctx/return))
               "Can only recur from tail position"
 
               no-recur
