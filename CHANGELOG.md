@@ -1,6 +1,6 @@
 Changelog
 ========================================
-* Release 0.5.1 on ??
+* Release 0.5.1 on 09 Aug 2014
   * Removed collect pass
   * Moved collect-closed-overs pass to its own namespace
 * Release 0.5.0 on 29 Jul 2014
