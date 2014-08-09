@@ -630,7 +630,7 @@
       :body        body
       :children    [:params :body]}
      (when local
-       {:local (dissoc local :env)}))))
+       {:local (dissoc-env local)}))))
 
 (defmethod -parse 'fn*
   [[op & args :as form] env]
