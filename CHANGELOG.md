@@ -1,5 +1,7 @@
 Changelog
 ========================================
+* Release 0.5.2 on 20 Aug 2014
+  * Compare contexts with isa? rather than =
 * Release 0.5.1 on 09 Aug 2014
   * Removed collect pass
   * Moved collect-closed-overs pass to its own namespace
