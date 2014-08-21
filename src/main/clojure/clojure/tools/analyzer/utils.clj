@@ -10,8 +10,7 @@
   (:refer-clojure :exclude [record?])
   (:require [clojure.tools.analyzer.env :as env])
   (:import (clojure.lang IRecord IType IObj
-                         IReference Var)
-           java.util.regex.Pattern))
+                         IReference Var)))
 
 (defn into!
   "Like into, but for transients"
@@ -64,10 +63,22 @@
   "Returns true if x implements IReference"
   [x]
   (instance? IReference x))
+
+(defmacro compile-if
+  [exp then & else]
+  (if (try (eval exp)
+           (catch Exception _ false))
+    `(do ~then)
+    `(do ~@else)))
+
 (defn regex?
   "Returns true if x is a regex"
   [x]
-  (instance? Pattern x))
+  (instance? (compile-if (Class/forName "java.util.regex.Pattern")
+               java.util.regex.Pattern
+               System.Text.RegularExpressions.Regex)
+             x))
+
 (defn boolean?
   "Returns true if x is a boolean"
   [x]
@@ -203,10 +214,3 @@
 
    :else
    form))
-
-(defmacro compile-if
-  [exp then & else]
-  (if (try (eval exp)
-           (catch Throwable _ false))
-    `(do ~then)
-    `(do ~@else)))
