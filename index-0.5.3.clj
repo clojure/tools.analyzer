@@ -19,7 +19,7 @@
    :name "clojure.tools.analyzer.ast.query",
    :doc "Utilities for querying tools.analyzer ASTs with Datomic"}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj",
+   "https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.env-api.html",
    :name "clojure.tools.analyzer.env",
@@ -440,10 +440,10 @@
   {:name "*env*",
    :namespace "clojure.tools.analyzer.env",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj#L12",
+   "https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L12",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj",
+   "https://github.com/clojure/tools.analyzer/raw/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.env/*env*",
    :doc
@@ -455,9 +455,9 @@
    :name "deref-env",
    :namespace "clojure.tools.analyzer.env",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj#L44",
+   "https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L44",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj",
+   "https://github.com/clojure/tools.analyzer/raw/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.env/deref-env",
    :doc
@@ -469,9 +469,9 @@
    :name "ensure",
    :namespace "clojure.tools.analyzer.env",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj#L36",
+   "https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L36",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj",
+   "https://github.com/clojure/tools.analyzer/raw/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.env/ensure",
    :doc
@@ -483,9 +483,9 @@
    :name "with-env",
    :namespace "clojure.tools.analyzer.env",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj#L22",
+   "https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L22",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/1faa4b35b5a1f03390ddbfb2ddf5513825e70d33/src/main/clojure/clojure/tools/analyzer/env.clj",
+   "https://github.com/clojure/tools.analyzer/raw/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.env/with-env",
    :doc "Binds the global env to env, then executes the body",
