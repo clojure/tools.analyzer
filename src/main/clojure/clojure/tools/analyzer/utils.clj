@@ -160,9 +160,9 @@
           last-arglist))))
 
 (defn source-info
-  "Returns the source-info from an env"
-  [env]
-  (select-keys env #{:file :line :column :end-line :end-column :source-span}))
+  "Returns the available source-info keys from a map"
+  [x]
+  (select-keys m #{:file :line :column :end-line :end-column :source-span}))
 
 (defn -source-info
   "Returns the source-info of x"
