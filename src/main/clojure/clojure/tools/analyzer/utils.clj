@@ -32,6 +32,17 @@
   [ast]
   (dissoc ast :env))
 
+(defn butlast+last
+  "Returns same value as (juxt butlast last), but slightly more
+   efficient since it only traverses the input sequence s once, not
+   twice."
+  [s]
+  (loop [butlast (transient [])
+         s s]
+    (if-let [xs (next s)]
+      (recur (conj! butlast (first s)) xs)
+      [(seq (persistent! butlast)) (first s)])))
+
 (defn update-vals
   "Applies f to all the vals in the map"
   [m f]
