@@ -159,48 +159,20 @@
                    (>= argc (- (count last-arglist) 2)))
           last-arglist))))
 
-(defn get-line
-  "Returns the line number of x"
-  [x env]
-  (-> x meta :line))
-
-(defn get-end-line
-  "Returns the end line number of x"
-  [x env]
-  (-> x meta :end-line))
-
-(defn get-col
-  "Returns the column number of x"
-  [x env]
-  (-> x meta :column))
-
-(defn get-end-column
-  "Returns the end column number of x"
-  [x env]
-  (-> x meta :end-column))
-
 (defn source-info
   "Returns the source-info from an env"
   [env]
-  (select-keys env #{:file :line :column}))
+  (select-keys env #{:file :line :column :end-line :end-column :source-span}))
 
 (defn -source-info
   "Returns the source-info of x"
   [x env]
   (merge
    (source-info env)
-   (when-let [file (or (-> x meta :file)
-                       (and (not= *file* "NO_SOURCE_FILE")
-                            *file*))]
+   (when-let [file (and (not= *file* "NO_SOURCE_FILE")
+                        *file*)]
      {:file file})
-   (when-let [line (get-line x env)]
-     {:line line})
-   (when-let [column (get-col x env)]
-     {:column column})
-   (when-let [end-line (get-end-line x env)]
-     {:end-line end-line})
-   (when-let [end-column (get-end-column x env)]
-     {:end-column end-column})))
+   (source-info (meta x))))
 
 (defn const-val
   "Returns the value of a constant node (either :quote or :const)"
