@@ -51,14 +51,17 @@
   "Returns true if x is a record"
   [x]
   (instance? IRecord x))
+
 (defn type?
   "Returns true if x is a type"
   [x]
   (instance? IType x))
+
 (defn obj?
   "Returns true if x implements IObj"
   [x]
   (instance? IObj x))
+
 (defn reference?
   "Returns true if x implements IReference"
   [x]
@@ -110,20 +113,24 @@
   "Returns true if the var is private"
   [var]
   (:private (meta var)))
+
 (defn macro?
   "Returns true if the var maps to a macro"
   [var]
   (:macro (meta var)))
+
 (defn constant?
   "Returns true if the var is a const"
   [var]
   (:const (meta var)))
+
 (defn dynamic?
   "Returns true if the var is dynamic"
   [var]
   (or (:dynamic (meta var))
       (when (var? var) ;; workaround needed since Clojure doesn't always propagate :dynamic
         (.isDynamic ^Var var))))
+
 (defn protocol-node?
   "Returns true if the var maps to a protocol function"
   [var]
