@@ -49,7 +49,7 @@
    :name "clojure.tools.analyzer.passes.trim",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.utils-api.html",
    :name "clojure.tools.analyzer.utils",
@@ -217,61 +217,61 @@
    :name "arglist-for-arity",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L151",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L158",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/arglist-for-arity",
    :doc "Takes a fn node and an argc and returns the matching arglist",
    :var-type "function",
-   :line 151,
+   :line 158,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([x]),
    :name "boolean?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L82",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L85",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/boolean?",
    :doc "Returns true if x is a boolean",
    :var-type "function",
-   :line 82,
+   :line 85,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([form]),
    :name "classify",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L87",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L90",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/classify",
    :doc "Returns a keyword describing the form type",
    :var-type "function",
-   :line 87,
+   :line 90,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([var]),
    :name "constant?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L117",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L122",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/constant?",
    :doc "Returns true if the var is a const",
    :var-type "function",
-   :line 117,
+   :line 122,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([env ctx]),
    :name "ctx",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L25",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L25",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/ctx",
    :doc
@@ -283,9 +283,9 @@
    :name "dissoc-env",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L30",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L30",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/dissoc-env",
    :doc "Dissocs :env from the ast",
@@ -296,22 +296,22 @@
    :name "dynamic?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L121",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L127",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/dynamic?",
    :doc "Returns true if the var is dynamic",
    :var-type "function",
-   :line 121,
+   :line 127,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([to from]),
    :name "into!",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L15",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L15",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/into!",
    :doc "Like into, but for transients",
@@ -322,61 +322,61 @@
    :name "macro?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L113",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L117",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/macro?",
    :doc "Returns true if the var maps to a macro",
    :var-type "function",
-   :line 113,
+   :line 117,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([x]),
    :name "obj?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L58",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L60",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/obj?",
    :doc "Returns true if x implements IObj",
    :var-type "function",
-   :line 58,
+   :line 60,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([var]),
    :name "private?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L109",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L112",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/private?",
    :doc "Returns true if the var is private",
    :var-type "function",
-   :line 109,
+   :line 112,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([var]),
    :name "protocol-node?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L127",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L134",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/protocol-node?",
    :doc "Returns true if the var maps to a protocol function",
    :var-type "function",
-   :line 127,
+   :line 134,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([x]),
    :name "record?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L50",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L50",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/record?",
    :doc "Returns true if x is a record",
@@ -387,61 +387,61 @@
    :name "reference?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L62",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L65",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/reference?",
    :doc "Returns true if x implements IReference",
    :var-type "function",
-   :line 62,
+   :line 65,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([x]),
    :name "regex?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L74",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L77",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/regex?",
    :doc "Returns true if x is a regex",
    :var-type "function",
-   :line 74,
+   :line 77,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([ns-sym {:keys [ns]}]),
    :name "resolve-ns",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L132",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L139",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/resolve-ns",
    :doc "Resolves the ns mapped by the given sym in the env",
    :var-type "function",
-   :line 132,
+   :line 139,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([sym {:keys [ns], :as env}]),
    :name "resolve-var",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L140",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L147",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/resolve-var",
    :doc "Resolves the var mapped by the given sym in the env",
    :var-type "function",
-   :line 140,
+   :line 147,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([v]),
    :name "rseqv",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L20",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L20",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/rseqv",
    :doc "Same as (comp vec rseq)",
@@ -452,22 +452,22 @@
    :name "type?",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L54",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L55",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/type?",
    :doc "Returns true if x is a type",
    :var-type "function",
-   :line 54,
+   :line 55,
    :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
   {:arglists ([m f]),
    :name "update-keys",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L40",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L40",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/update-keys",
    :doc "Applies f to all the keys in the map",
@@ -478,9 +478,9 @@
    :name "update-kv",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L45",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L45",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/update-kv",
    :doc "Applies f to all the keys and vals in the map",
@@ -491,9 +491,9 @@
    :name "update-vals",
    :namespace "clojure.tools.analyzer.utils",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj#L35",
+   "https://github.com/clojure/tools.analyzer/blob/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj#L35",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/f4a67bd9bff8ff774b59572f7868f4d2cec81e4d/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   "https://github.com/clojure/tools.analyzer/raw/d892d18328693e7330abe7e99526ca6b7aeee919/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/update-vals",
    :doc "Applies f to all the vals in the map",
