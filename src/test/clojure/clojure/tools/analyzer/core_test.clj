@@ -58,7 +58,7 @@
                                     (reset-meta! (meta sym))))
              ana/parse         ana/-parse
              ana/var?          ~var?
-             elides            {:all #{:line :column :file}}]
+             elides            {:all #{:line :column :file :source-span}}]
      (with-env e1
        (postwalk (ana/analyze '~form e) elide-meta))))
 
@@ -164,7 +164,7 @@
 
   (let [d-ast (ast (def ^{c d} a 1))]
     (is (= 'a (-> d-ast :name)))
-    (is (= '{c d} (-> d-ast :var meta (dissoc :line :column :file))))
+    (is (= '{c d} (-> d-ast :var meta (dissoc :line :column :file :source-span))))
     (is (= (ns-resolve 'user 'a)
            (-> e1 deref :namespaces (get 'user) :mappings (get 'a)))))
 
