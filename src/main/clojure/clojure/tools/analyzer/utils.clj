@@ -179,7 +179,7 @@
 
 (defn source-info
   "Returns the available source-info keys from a map"
-  [x]
+  [m]
   (select-keys m #{:file :line :column :end-line :end-column :source-span}))
 
 (defn -source-info
