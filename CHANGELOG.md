@@ -1,5 +1,8 @@
 Changelog
 ========================================
+* Release 0.5.3 on 31 Aug 2014
+  * Made the source clojure-clr compatible
+  * Added butlast+last to utils
 * Release 0.5.2 on 20 Aug 2014
   * Compare contexts with isa? rather than =
 * Release 0.5.1 on 09 Aug 2014
