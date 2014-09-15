@@ -31,7 +31,7 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/a0020c3d32b6b74a87d94ff4a535ee035cc879e9/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
+   "https://github.com/clojure/tools.analyzer/blob/198555619c3788d709095a94aaac013baf393f9f/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-closed-overs-api.html",
    :name "clojure.tools.analyzer.passes.collect-closed-overs",
@@ -505,9 +505,9 @@
    :name "collect-closed-overs",
    :namespace "clojure.tools.analyzer.passes.collect-closed-overs",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/a0020c3d32b6b74a87d94ff4a535ee035cc879e9/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L59",
+   "https://github.com/clojure/tools.analyzer/blob/198555619c3788d709095a94aaac013baf393f9f/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L59",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/a0020c3d32b6b74a87d94ff4a535ee035cc879e9/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
+   "https://github.com/clojure/tools.analyzer/raw/198555619c3788d709095a94aaac013baf393f9f/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect-closed-overs/collect-closed-overs",
    :doc
