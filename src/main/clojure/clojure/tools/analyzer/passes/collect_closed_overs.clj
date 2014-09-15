@@ -63,7 +63,7 @@
   {:pass-info {:walk :none :depends #{#'uniquify-locals}}}
   [ast]
   (let [passes-opts                   (:passes-opts (env/deref-env))
-        {:keys [top-level?] :as opts} {:where      (:collect-closed-overs/where passes-opts)
+        {:keys [top-level?] :as opts} {:where      (or (:collect-closed-overs/where passes-opts) #{})
                                        :top-level? (:collect-closed-overs/top-level? passes-opts)}]
     (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]
       (let [ast (collect-closed-overs* ast)]
