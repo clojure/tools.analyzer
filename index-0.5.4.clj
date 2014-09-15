@@ -25,12 +25,6 @@
    :name "clojure.tools.analyzer.env",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/bf01ba19e81d8c0898c65342987aea35eb96486c/src/main/clojure/clojure/tools/analyzer/passes.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes-api.html",
-   :name "clojure.tools.analyzer.passes",
-   :doc nil}
-  {:source-url
    "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.add-binding-atom-api.html",
@@ -492,20 +486,6 @@
    :var-type "macro",
    :line 22,
    :file "src/main/clojure/clojure/tools/analyzer/env.clj"}
-  {:arglists ([passes]),
-   :name "schedule",
-   :namespace "clojure.tools.analyzer.passes",
-   :source-url
-   "https://github.com/clojure/tools.analyzer/blob/bf01ba19e81d8c0898c65342987aea35eb96486c/src/main/clojure/clojure/tools/analyzer/passes.clj#L134",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/bf01ba19e81d8c0898c65342987aea35eb96486c/src/main/clojure/clojure/tools/analyzer/passes.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/schedule",
-   :doc
-   "Takes a set of Vars that represent tools.analyzer passes and returns a function\nthat takes an AST and applies all the passes and their dependencies to the AST,\ntrying to compose together as many passes as possible to reduce the number of\nfull tree traversals.\n\nEach pass must have a :pass-info element in its Var's metadata and it must point\nto a map with the following parameters:\n* :depends  a set of Vars, the passes this pass depends on\n* :walk     a keyword, one of:\n              - :none if the pass does its own tree walking and cannot be composed\n                      with other passes\n              - :post if the pass requires a postwalk and can be composed with other\n                      passes\n              - :pre  if the pass requires a prewalk and can be composed with other\n                      passes\n              - :any  if the pass can be composed with other passes in both a prewalk\n                      or a postwalk\n* :affects  a set of Vars, this pass must be the last in the same tree traversal that all\n            the specified passes must partecipate in.\n            This pass must take a function as argument and return the actual pass, the\n            argument represents the reified tree traversal which the pass can use to\n            control a recursive traversal",
-   :var-type "function",
-   :line 134,
-   :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([ast]),
    :name "add-binding-atom",
    :namespace "clojure.tools.analyzer.passes.add-binding-atom",

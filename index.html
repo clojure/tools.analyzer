@@ -151,12 +151,6 @@ namespace.
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
-    <a href="#clojure.tools.analyzer.passes" style="margin-top: 3px;">clojure.tools.analyzer.passes</a>
-    <div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/schedule">schedule</a>
-      
-    </div>
-  </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#clojure.tools.analyzer.passes.add-binding-atom" style="margin-top: 3px;">clojure.tools.analyzer.passes.add-binding-atom</a>
     <div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.add-binding-atom/add-binding-atom">add-binding-atom</a>
@@ -757,51 +751,6 @@ throws an exception.</pre>
     
     
     <a href="https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L22" id="var-source">Source</a>
-  </div>
-</div>
-<br />
-<h2 id="clojure.tools.analyzer.passes">clojure.tools.analyzer.passes</h2>
-<pre id="namespace-docstr"></pre>
-
-
-<br />
-
-
-<div id="var-section">
-  <p></p>
-  <h2>Public Variables and Functions</h2>
-  <div id="var-entry">
-    <br />
-    <hr />
-    <h2 id="clojure.tools.analyzer.passes/schedule">schedule</h2>
-    <span id="var-type">function</span><br />
-    <pre id="var-usage">Usage: (schedule passes)
-</pre>
-    <pre id="var-docstr">Takes a set of Vars that represent tools.analyzer passes and returns a function
-that takes an AST and applies all the passes and their dependencies to the AST,
-trying to compose together as many passes as possible to reduce the number of
-full tree traversals.
-
-Each pass must have a :pass-info element in its Var's metadata and it must point
-to a map with the following parameters:
-* :depends  a set of Vars, the passes this pass depends on
-* :walk     a keyword, one of:
-              - :none if the pass does its own tree walking and cannot be composed
-                      with other passes
-              - :post if the pass requires a postwalk and can be composed with other
-                      passes
-              - :pre  if the pass requires a prewalk and can be composed with other
-                      passes
-              - :any  if the pass can be composed with other passes in both a prewalk
-                      or a postwalk
-* :affects  a set of Vars, this pass must be the last in the same tree traversal that all
-            the specified passes must partecipate in.
-            This pass must take a function as argument and return the actual pass, the
-            argument represents the reified tree traversal which the pass can use to
-            control a recursive traversal</pre>
-    
-    
-    <a href="https://github.com/clojure/tools.analyzer/blob/bf01ba19e81d8c0898c65342987aea35eb96486c/src/main/clojure/clojure/tools/analyzer/passes.clj#L134" id="var-source">Source</a>
   </div>
 </div>
 <br />
