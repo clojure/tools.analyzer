@@ -132,6 +132,10 @@
           (collapse (schedule* () passes)))))
 
 (defn schedule
+  "Takes a set of Vars that represent tools.analyzer passes and returns a function
+   that takes an AST and applies all the passes and their dependencies to the AST,
+   trying to compose together as many passes as possible to reduce the number of
+   full tree traversals."
   [passes]
   {:pre [(set? passes)]}
   (let [info        (mapv (fn [p] (merge {:name p} (:pass-info (meta p)))) passes)
