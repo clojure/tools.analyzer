@@ -65,10 +65,10 @@
   (let [passes-opts                        (:passes-opts (env/deref-env))
         {:keys [what top-level?] :as opts} {:where      (:collect-closed-overs/where passes-opts)
                                             :top-level? (:collect-closed-overs/top-level? passes-opts)}]
-    (if ((:what opts) :closed-overs)
+    (if (what :closed-overs)
       (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]
         (let [ast (collect-closed-overs* ast)]
-          (if (:top-level? opts)
+          (if top-level?
             (assoc ast :closed-overs (:closed-overs @*collects*))
             ast)))
       ast)))
