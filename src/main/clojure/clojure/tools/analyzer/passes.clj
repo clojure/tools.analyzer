@@ -135,7 +135,25 @@
   "Takes a set of Vars that represent tools.analyzer passes and returns a function
    that takes an AST and applies all the passes and their dependencies to the AST,
    trying to compose together as many passes as possible to reduce the number of
-   full tree traversals."
+   full tree traversals.
+
+   Each pass must have a :pass-info element in its Var's metadata and it must point
+   to a map with the following parameters:
+   * :depends  a set of Vars, the passes this pass depends on
+   * :walk     a keyword, one of:
+                 - :none if the pass does its own tree walking and cannot be composed
+                         with other passes
+                 - :post if the pass requires a postwalk and can be composed with other
+                         passes
+                 - :pre  if the pass requires a prewalk and can be composed with other
+                         passes
+                 - :any  if the pass can be composed with other passes in both a prewalk
+                         or a postwalk
+   * :affects  a set of Vars, this pass must be the last in the same tree traversal that all
+               the specified passes must partecipate in.
+               This pass must take a function as argument and return the actual pass, the
+               argument represents the reified tree traversal which the pass can use to
+               control a recursive traversal"
   [passes]
   {:pre [(set? passes)]}
   (let [info        (mapv (fn [p] (merge {:name p} (:pass-info (meta p)))) passes)
