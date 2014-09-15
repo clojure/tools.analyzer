@@ -1,4 +1,5 @@
-(ns clojure.tools.analyzer.passes)
+(ns clojure.tools.analyzer.passes
+  (:require [clojure.tools.analyzer.ast :refer [prewalk postwalk]]))
 
 (defn has-deps? [pass]
   (seq (:dependencies pass)))
@@ -128,4 +129,18 @@
 
 (defn schedule
   [passes]
-  (schedule-passes passes))
+  (let [info       (mapv (comp :pass-info meta) passes)
+        passes-map (zipmap (mapv :name info) passes)
+        schedule   (schedule-passes info)]
+    (reduce (fn [f {:keys [passes walk loops]}]
+              (-> (case walk
+                   :none
+                   (passes-map (first passes))
+                   :pre
+                   (fn [ast]
+                     (prewalk ast (reduce comp (rseq (mapv passes-map passes)))))
+                   :post
+                   (fn [ast]
+                     (postwalk ast (reduce comp (rseq (mapv passes-map passes))))))
+                (comp f)))
+            identity schedule)))
