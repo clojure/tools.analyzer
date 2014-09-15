@@ -107,11 +107,13 @@
                                         (when-let [affects (first (filter :affects g))]
                                           (let [passes (set (mapv :name g))]
                                             (when (not-every? passes (:affects affects))
-                                              (throw (ex-info "looping pass doesn't encompass affected passes" affects))))
+                                              (throw (ex-info (str "looping pass doesn't encompass affected passes: " (:name affects))
+                                                              {:pass affects}))))
                                           {:loops true}))))))
       ret)))
 
-(defn schedule [passes]
+(defn schedule-passes
+  [passes]
   (let [passes (calculate-deps (indicize passes))
         dependencies (set (mapcat :dependencies (vals passes)))]
 
@@ -123,3 +125,7 @@
 
     (mapv #(select-keys % [:passes :walk :loops])
           (collapse (schedule* () passes)))))
+
+(defn schedule
+  [passes]
+  (schedule-passes passes))
