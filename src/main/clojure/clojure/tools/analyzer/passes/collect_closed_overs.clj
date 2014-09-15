@@ -8,6 +8,7 @@
 
 (ns clojure.tools.analyzer.passes.collect-closed-overs
   (:require [clojure.tools.analyzer.ast :refer [update-children]]
+            [clojure.tools.analyzer.env :as env]
             [clojure.tools.analyzer.passes.cleanup :refer [cleanup]]
             [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
 
@@ -60,11 +61,14 @@
    * :where       set of :op nodes where to attach the closed-overs
    * :top-level?  if true attach closed-overs info to the top-level node"
   {:pass-info {:walk :none :depends #{#'uniquify-locals}}}
-  [ast opts]
-  (if ((:what opts) :closed-overs)
-    (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]
-      (let [ast (collect-closed-overs* ast)]
-        (if (:top-level? opts)
-          (assoc ast :closed-overs (:closed-overs @*collects*))
-          ast)))
-    ast))
+  [ast]
+  (let [passes-opts                        (:passes-opts (env/deref-env))
+        {:keys [what top-level?] :as opts} {:where      (:collect-closed-overs/where passes-opts)
+                                            :top-level? (:collect-closed-overs/top-level? passes-opts)}]
+    (if ((:what opts) :closed-overs)
+      (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]
+        (let [ast (collect-closed-overs* ast)]
+          (if (:top-level? opts)
+            (assoc ast :closed-overs (:closed-overs @*collects*))
+            ast)))
+      ast)))
