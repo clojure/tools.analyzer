@@ -7,7 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.add-binding-atom
-  (:require [clojure.tools.analyzer.ast :refer [prewalk]]))
+  (:require [clojure.tools.analyzer.ast :refer [prewalk]]
+            [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
 
 (def ^:dynamic ^:private *bindings*)
 
@@ -28,6 +29,7 @@
    the same atom will be shared between all occurences of that local.
 
    The atom is put in the :atom field of the node."
+  {:pass-info {:walk :none :depends #{#'uniquify-locals}}}
   [ast]
   (binding [*bindings* (atom {})]
     (prewalk ast -add-binding-atom)))

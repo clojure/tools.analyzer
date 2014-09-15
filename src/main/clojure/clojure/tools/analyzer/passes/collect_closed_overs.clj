@@ -8,7 +8,8 @@
 
 (ns clojure.tools.analyzer.passes.collect-closed-overs
   (:require [clojure.tools.analyzer.ast :refer [update-children]]
-            [clojure.tools.analyzer.passes.cleanup :refer [cleanup]]))
+            [clojure.tools.analyzer.passes.cleanup :refer [cleanup]]
+            [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
 
 (def ^:private ^:dynamic *collects*)
 
@@ -58,6 +59,7 @@
   "Attach closed-overs info to the AST, opts takes:
    * :where       set of :op nodes where to attach the closed-overs
    * :top-level?  if true attach closed-overs info to the top-level node"
+  {:pass-info {:walk :none :depends #{#'uniquify-locals}}}
   [ast opts]
   (if ((:what opts) :closed-overs)
     (binding [*collects* (atom (merge opts {:closed-overs {} :locals #{}}))]

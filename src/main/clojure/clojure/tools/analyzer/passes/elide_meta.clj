@@ -6,7 +6,8 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.passes.elide-meta)
+(ns clojure.tools.analyzer.passes.elide-meta
+  (:require [clojure.tools.analyzer.passes.source-info :refer [source-info]]))
 
 (def ^:dynamic elides
   "A map of op keywords to predicate IFns.
@@ -79,6 +80,7 @@
 (defn elide-meta
   "If elides is not empty and the AST node contains metadata,
    dissoc all the keys in elides from the metadata."
+  {:pass-info {:walk :any :depends #{#'source-info}}}
   [ast]
   (if (some #(if (seq? %) (seq %) %) (vals elides))
     (-elide-meta ast)

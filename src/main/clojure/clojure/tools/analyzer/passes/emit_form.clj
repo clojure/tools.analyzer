@@ -6,7 +6,8 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns clojure.tools.analyzer.passes.emit-form)
+(ns clojure.tools.analyzer.passes.emit-form
+  (:require [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
 
 (defmulti -emit-form (fn [{:keys [op]} _] op))
 
@@ -24,11 +25,13 @@
   "Return the form represented by the given AST.
    Opts is a set of options, valid options are:
     * :hygienic"
+  {:pass-info {:walk :none :depends #{}}}
   ([ast] (emit-form ast #{}))
   ([ast opts] (-emit-form* ast opts)))
 
 (defn emit-hygienic-form
   "Return an hygienic form represented by the given AST"
+  {:pass-info {:walk :none :depends #{#'uniquify-locals}}}
   [ast]
   (-emit-form* ast #{:hygienic}))
 

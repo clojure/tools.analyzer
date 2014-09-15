@@ -129,18 +129,20 @@
 
 (defn schedule
   [passes]
-  (let [info       (mapv (comp :pass-info meta) passes)
-        passes-map (zipmap (mapv :name info) passes)
+  {:pre [(set? passes)]}
+  (let [info       (mapv (fn [p] (merge {:name p} (:pass-info (meta p)))) passes)
         schedule   (schedule-passes info)]
     (reduce (fn [f {:keys [passes walk loops]}]
-              (-> (case walk
-                   :none
-                   (passes-map (first passes))
-                   :pre
-                   (fn [ast]
-                     (prewalk ast (reduce comp (rseq (mapv passes-map passes)))))
-                   :post
-                   (fn [ast]
-                     (postwalk ast (reduce comp (rseq (mapv passes-map passes))))))
+              (-> (if (= walk :none)
+                   (first passes)
+                   (let [walk (if (= :pre walk) prewalk postwalk)
+                         passes (rseq passes)
+                         pfns (fn [analyze]
+                                 (if loops
+                                   (cons ((first passes) analyze)
+                                         (rest passes))
+                                   passes))]
+                     (fn analyze [ast]
+                       (walk ast (reduce comp (pfns analyze))))))
                 (comp f)))
             identity schedule)))
