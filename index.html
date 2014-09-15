@@ -202,12 +202,6 @@ namespace.
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
-    <a href="#clojure.tools.analyzer.passes.trim" style="margin-top: 3px;">clojure.tools.analyzer.passes.trim</a>
-    <div style="margin-left: 1em;" class="toc-entry">
-      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.trim/trim">trim</a>
-      
-    </div>
-  </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#clojure.tools.analyzer.passes.uniquify" style="margin-top: 3px;">clojure.tools.analyzer.passes.uniquify</a>
     <div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.uniquify/uniquify-locals">uniquify-locals</a>
@@ -780,7 +774,7 @@ the same atom will be shared between all occurences of that local.
 The atom is put in the :atom field of the node.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/49b163e2c56a84897a784b35db211549471f3c19/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L26" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L27" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -806,7 +800,7 @@ The atom is put in the :atom field of the node.</pre>
 * :top-level?  if true attach closed-overs info to the top-level node</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/77708fe269ef4437da5842121061ab4b2aaba291/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L57" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L58" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -830,7 +824,7 @@ The atom is put in the :atom field of the node.</pre>
 collection is a literal, transform the node to an equivalent :const node.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/3267abcfe8aa00cceff7cdf989376a65fd5b4c27/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L12" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L12" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -855,7 +849,7 @@ collection is a literal, transform the node to an equivalent :const node.</pre>
 dissoc all the keys in elides from the metadata.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/b4957158301682c10537738869a90f830705908f/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L79" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L80" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -870,7 +864,7 @@ metadata.
 Defaults to {:all (set (:elide-meta *compiler-options*))}</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/b4957158301682c10537738869a90f830705908f/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L11" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L12" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -895,7 +889,7 @@ Defaults to {:all (set (:elide-meta *compiler-options*))}</pre>
 to a multimethod with custom emit-form :opts.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/aaf32c60b016770c5cdb76e44721a8897caf75da/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L13" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L14" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -909,7 +903,7 @@ Opts is a set of options, valid options are:
  * :hygienic</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/aaf32c60b016770c5cdb76e44721a8897caf75da/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L23" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L24" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -920,7 +914,7 @@ Opts is a set of options, valid options are:
     <pre id="var-docstr">Return an hygienic form represented by the given AST</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/aaf32c60b016770c5cdb76e44721a8897caf75da/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L30" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L32" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -945,7 +939,7 @@ Opts is a set of options, valid options are:
 of the node vector.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj#L11" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj#L11" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -969,32 +963,7 @@ of the node vector.</pre>
     <pre id="var-docstr">Adds (when avaliable) :line, :column, :end-line, :end-column and :file info to the AST :env</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/47841ee516b1caccbf7dcfc10de17119a5b4593c/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj#L17" id="var-source">Source</a>
-  </div>
-</div>
-<br />
-<h2 id="clojure.tools.analyzer.passes.trim">clojure.tools.analyzer.passes.trim</h2>
-<pre id="namespace-docstr"></pre>
-
-
-<br />
-
-
-<div id="var-section">
-  <p></p>
-  <h2>Public Variables and Functions</h2>
-  <div id="var-entry">
-    <br />
-    <hr />
-    <h2 id="clojure.tools.analyzer.passes.trim/trim">trim</h2>
-    <span id="var-type">multimethod</span><br />
-    <pre id="var-usage">No usage documentation available</pre>
-    <pre id="var-docstr">Trims the AST from duplicate :do nodes or useless :let nodes.
-WARNING: Still experimental, possibly useful metadata-stored info
-         might get lost</pre>
-    
-    
-    <a href="https://github.com/clojure/tools.analyzer/blob/fba761428d27ce927c5d5237778dfd0162376c62/src/main/clojure/clojure/tools/analyzer/passes/trim.clj#L12" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj#L17" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -1019,7 +988,7 @@ WARNING: Still experimental, possibly useful metadata-stored info
 of :local/:binding nodes, invalidates :local map in :env field</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/5fb5fc755346a7f3c4f19f5edb0840008c55e6b7/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L81" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L81" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -1044,7 +1013,7 @@ of :local/:binding nodes, invalidates :local map in :env field</pre>
 var name contains earmuffs but the var is not marked dynamic</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/4b10b1f30a1445b6468b61defc6a4d1508884d07/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj#L12" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj#L12" id="var-source">Source</a>
   </div>
 </div>
 <br />
