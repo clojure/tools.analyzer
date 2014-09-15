@@ -57,7 +57,7 @@
       (-collect-closed-overs ast))))
 
 (defn collect-closed-overs
-  "Attach closed-overs info to the AST, opts takes:
+  "Attach closed-overs info to the AST as specified by the passes opts:
    * :where       set of :op nodes where to attach the closed-overs
    * :top-level?  if true attach closed-overs info to the top-level node"
   {:pass-info {:walk :none :depends #{#'uniquify-locals}}}
