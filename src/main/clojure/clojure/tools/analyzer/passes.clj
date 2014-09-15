@@ -39,16 +39,22 @@
 (defn group [state]
   (loop [w nil group [] [cur & rest :as state] state]
     (if (seq state)
-      (if w
-        (if (#{w :any} (:walk cur))
-          (recur w (conj group cur) rest)
-          [w group state])
-        (case (:walk cur)
-          :any
-          (recur nil (conj group cur) rest)
-          :none
-          [w group state]
-          (recur (:walk cur) (conj group cur) rest)))
+      (cond
+       (:affects (last group))
+       [w group state]
+
+       w
+       (if (#{w :any} (:walk cur))
+         (recur w (conj group cur) rest)
+         [w group state])
+
+       :else
+       (case (:walk cur)
+         :any
+         (recur nil (conj group cur) rest)
+         :none
+         [w group state]
+         (recur (:walk cur) (conj group cur) rest)))
       [w group state])))
 
 (defn reorder [state]
@@ -73,14 +79,18 @@
         state))
     state))
 
-;; todo: handle constrained loops
+(defn ffilter-walk [f c]
+  (first (filter (comp f :walk) c)))
+
 (defn schedule* [state passes]
   (let [state                     (reorder state)
-        [free & frs :as free-all] (filter (comp empty? :dependants) (vals passes))
-        [w _ _]                   (group state)]
+        f                         (filter (comp empty? :dependants val) passes)
+        [free & frs :as free-all] (vals f)
+        [w g _]                   (group state)]
     (if (seq passes)
-      (if-let [x (or (and w (first (filter (comp #{:any w} :walk) free-all)))
-                     (first (filter (comp #{:none} :walk) free-all)))]
+      (if-let [x (or (and w (or (ffilter-walk #{w} free-all)
+                                (ffilter-walk #{:any} free-all)))
+                     (ffilter-walk #{:none} free-all))]
         (recur (cons (assoc x :passes [(:name x)]) state)
                (remove-pass passes (:name x)))
         (recur (cons (assoc free :passes [(:name free)]) state)
