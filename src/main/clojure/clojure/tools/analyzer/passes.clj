@@ -153,24 +153,31 @@
                the specified passes must partecipate in.
                This pass must take a function as argument and return the actual pass, the
                argument represents the reified tree traversal which the pass can use to
-               control a recursive traversal"
-  [passes]
-  {:pre [(set? passes)]}
+               control a recursive traversal
+
+   An opts map might be provided, valid parameters:
+   * :debug?   if true, returns a vector of the scheduled passes rather than the concrete
+               function"
+  [passes & [opts]]
+  {:pre [(set? passes)
+         (every? var? passes)]}
   (let [info        (mapv (fn [p] (merge {:name p} (:pass-info (meta p)))) passes)
         passes+deps (into passes (mapcat :depends info))]
     (if (not= passes passes+deps)
       (recur passes+deps)
-      (reduce (fn [f {:keys [passes walk loops]}]
-                (-> (if (= walk :none)
-                     (first passes)
-                     (let [walk (if (= :pre walk) prewalk postwalk)
-                           passes (rseq passes)
-                           pfns (fn [analyze]
-                                  (if loops
-                                    (cons ((first passes) analyze)
-                                          (rest passes))
-                                    passes))]
-                       (fn analyze [ast]
-                         (walk ast (reduce comp (pfns analyze))))))
-                  (comp f)))
-              identity (schedule-passes info)))))
+      (if (:debug? opts)
+        (schedule-passes info)
+        (reduce (fn [f {:keys [passes walk loops]}]
+                  (-> (if (= walk :none)
+                       (first passes)
+                       (let [walk (if (= :pre walk) prewalk postwalk)
+                             passes (rseq passes)
+                             pfns (fn [analyze]
+                                    (if loops
+                                      (cons ((first passes) analyze)
+                                            (rest passes))
+                                      passes))]
+                         (fn analyze [ast]
+                           (walk ast (reduce comp (pfns analyze))))))
+                    (comp f)))
+                identity (schedule-passes info))))))
