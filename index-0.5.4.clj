@@ -31,7 +31,7 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
+   "https://github.com/clojure/tools.analyzer/blob/160984bc1dfdd536e455d220b6b93562256ba0f9/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-closed-overs-api.html",
    :name "clojure.tools.analyzer.passes.collect-closed-overs",
@@ -501,19 +501,19 @@
    :line 27,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj"}
-  {:arglists ([ast opts]),
+  {:arglists ([ast]),
    :name "collect-closed-overs",
    :namespace "clojure.tools.analyzer.passes.collect-closed-overs",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L58",
+   "https://github.com/clojure/tools.analyzer/blob/160984bc1dfdd536e455d220b6b93562256ba0f9/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L59",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
+   "https://github.com/clojure/tools.analyzer/raw/160984bc1dfdd536e455d220b6b93562256ba0f9/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect-closed-overs/collect-closed-overs",
    :doc
    "Attach closed-overs info to the AST, opts takes:\n* :where       set of :op nodes where to attach the closed-overs\n* :top-level?  if true attach closed-overs info to the top-level node",
    :var-type "function",
-   :line 58,
+   :line 59,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj"}
   {:file
