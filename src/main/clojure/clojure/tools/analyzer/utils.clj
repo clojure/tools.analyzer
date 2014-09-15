@@ -204,3 +204,7 @@
 
    :else
    form))
+
+(def mmerge
+  "Same as (fn [m1 m2] (merge-with merge m2 m1))"
+  #(merge-with merge %2 %1))
