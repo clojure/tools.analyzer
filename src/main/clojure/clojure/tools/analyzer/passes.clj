@@ -103,7 +103,12 @@
       (if (= :none (:walk cur))
         (recur rest (conj ret cur))
         (let [[w g state] (group state)]
-          (recur state (conj ret {:walk (or w :pre) :passes (mapv :name g)}))))
+          (recur state (conj ret (merge {:walk (or w :pre) :passes (mapv :name g)}
+                                        (when-let [affects (first (filter :affects g))]
+                                          (let [passes (set (mapv :name g))]
+                                            (when (not-every? passes (:affects affects))
+                                              (throw (ex-info "looping pass doesn't encompass affected passes" affects))))
+                                          {:loops true}))))))
       ret)))
 
 (defn schedule [passes]
@@ -116,5 +121,5 @@
     (when (every? has-deps? (vals passes))
       (throw (ex-info "Dependency cycle detected" passes)))
 
-    (mapv #(select-keys % [:passes :walk])
+    (mapv #(select-keys % [:passes :walk :loops])
           (collapse (schedule* () passes)))))
