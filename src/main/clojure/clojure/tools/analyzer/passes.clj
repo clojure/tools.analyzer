@@ -101,7 +101,8 @@
 (defn collapse [state]
   (loop [[cur & rest :as state] state ret []]
     (if (seq state)
-      (if (= :none (:walk cur))
+      (if (or (:compiler cur)
+              (= :none (:walk cur)))
         (recur rest (conj ret cur))
         (let [[w g state] (group state)]
           (recur state (conj ret (merge {:walk (or w :pre) :passes (mapv :name g)}
@@ -123,6 +124,9 @@
 
     (when (every? has-deps? (vals passes))
       (throw (ex-info "Dependency cycle detected" passes)))
+
+    (when (next (filter :compiler (vals passes)))
+      (throw (ex-info "Only one compiler pass allowed" passes)))
 
     (mapv #(select-keys % [:passes :walk :loops])
           (collapse (schedule* () passes)))))

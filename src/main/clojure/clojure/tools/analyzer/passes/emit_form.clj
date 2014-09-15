@@ -25,13 +25,13 @@
   "Return the form represented by the given AST.
    Opts is a set of options, valid options are:
     * :hygienic"
-  {:pass-info {:walk :none :depends #{}}}
+  {:pass-info {:walk :none :depends #{#'uniquify-locals} :compiler true}}
   ([ast] (emit-form ast #{}))
   ([ast opts] (-emit-form* ast opts)))
 
 (defn emit-hygienic-form
   "Return an hygienic form represented by the given AST"
-  {:pass-info {:walk :none :depends #{#'uniquify-locals}}}
+  {:pass-info {:walk :none :depends #{#'uniquify-locals} :compiler true}}
   [ast]
   (-emit-form* ast #{:hygienic}))
 
