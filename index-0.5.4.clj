@@ -25,6 +25,12 @@
    :name "clojure.tools.analyzer.env",
    :doc nil}
   {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/344ea2ac07c13f8a460715c0cf731af6633625c5/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes-api.html",
+   :name "clojure.tools.analyzer.passes",
+   :doc nil}
+  {:source-url
    "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.add-binding-atom-api.html",
@@ -486,6 +492,20 @@
    :var-type "macro",
    :line 22,
    :file "src/main/clojure/clojure/tools/analyzer/env.clj"}
+  {:arglists ([passes]),
+   :name "schedule",
+   :namespace "clojure.tools.analyzer.passes",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/344ea2ac07c13f8a460715c0cf731af6633625c5/src/main/clojure/clojure/tools/analyzer/passes.clj#L134",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/344ea2ac07c13f8a460715c0cf731af6633625c5/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/schedule",
+   :doc
+   "Takes a set of Vars that represent tools.analyzer passes and returns a function\nthat takes an AST and applies all the passes and their dependencies to the AST,\ntrying to compose together as many passes as possible to reduce the number of\nfull tree traversals.",
+   :var-type "function",
+   :line 134,
+   :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([ast]),
    :name "add-binding-atom",
    :namespace "clojure.tools.analyzer.passes.add-binding-atom",
