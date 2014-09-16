@@ -80,7 +80,7 @@
 (defn elide-meta
   "If elides is not empty and the AST node contains metadata,
    dissoc all the keys in elides from the metadata."
-  {:pass-info {:walk :any :depends #{#'source-info}}}
+  {:pass-info {:walk :any :depends #{} :after #{#'source-info}}}
   [ast]
   (if (some #(if (seq? %) (seq %) %) (vals elides))
     (-elide-meta ast)

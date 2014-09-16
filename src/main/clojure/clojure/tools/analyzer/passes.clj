@@ -27,8 +27,10 @@
             (assoc m k deps) deps)))
 
 (defn calculate-deps [passes]
-  (let [dependencies (reduce-kv (fn [deps pname {:keys [depends]}]
-                                  (calc-deps deps pname depends passes))
+  (let [dependencies (reduce-kv (fn [deps pname {:keys [depends after]}]
+                                  (calc-deps deps pname
+                                             (into depends (filter passes after)
+                                                   (mapv key (filter #(get (-> % val :before) pname) passes))) passes))
                                 {} passes)
         dependants   (reduce-kv (fn [m k v] (reduce (fn [m v] (update-in m [v] (fnil conj #{}) k))
                                                    (update-in m [k] (fnil into #{}) nil) v))
@@ -119,9 +121,6 @@
   (let [passes (calculate-deps (indicize passes))
         dependencies (set (mapcat :dependencies (vals passes)))]
 
-    (when (not-every? passes dependencies)
-      (throw (ex-info (str "Dependencies not found: " (seq (remove passes dependencies))) passes)))
-
     (when (every? has-deps? (vals passes))
       (throw (ex-info "Dependency cycle detected" passes)))
 
@@ -138,8 +137,10 @@
    full tree traversals.
 
    Each pass must have a :pass-info element in its Var's metadata and it must point
-   to a map with the following parameters:
-   * :depends  a set of Vars, the passes this pass depends on
+   to a map with the following parameters (:before, :after and :affects are optional):
+   * :after    a set of Vars, the passes that must be run before this pass
+   * :before   a set of Vars, the passes that must be run after this pass
+   * :depends  a set of Vars, the passes this pass depends on, implies :after
    * :walk     a keyword, one of:
                  - :none if the pass does its own tree walking and cannot be composed
                          with other passes
@@ -150,7 +151,7 @@
                  - :any  if the pass can be composed with other passes in both a prewalk
                          or a postwalk
    * :affects  a set of Vars, this pass must be the last in the same tree traversal that all
-               the specified passes must partecipate in.
+               the specified passes must partecipate in
                This pass must take a function as argument and return the actual pass, the
                argument represents the reified tree traversal which the pass can use to
                control a recursive traversal
