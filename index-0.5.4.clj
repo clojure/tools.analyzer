@@ -25,6 +25,12 @@
    :name "clojure.tools.analyzer.env",
    :doc nil}
   {:source-url
+   "https://github.com/clojure/tools.analyzer/blob/1b0960a15313e90833c19c4c2035abcf8c13218a/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes-api.html",
+   :name "clojure.tools.analyzer.passes",
+   :doc nil}
+  {:source-url
    "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.add-binding-atom-api.html",
@@ -43,7 +49,7 @@
    :name "clojure.tools.analyzer.passes.constant-lifter",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/blob/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.elide-meta-api.html",
    :name "clojure.tools.analyzer.passes.elide-meta",
@@ -486,6 +492,20 @@
    :var-type "macro",
    :line 22,
    :file "src/main/clojure/clojure/tools/analyzer/env.clj"}
+  {:arglists ([passes & [opts]]),
+   :name "schedule",
+   :namespace "clojure.tools.analyzer.passes",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/1b0960a15313e90833c19c4c2035abcf8c13218a/src/main/clojure/clojure/tools/analyzer/passes.clj#L133",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/1b0960a15313e90833c19c4c2035abcf8c13218a/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/schedule",
+   :doc
+   "Takes a set of Vars that represent tools.analyzer passes and returns a function\nthat takes an AST and applies all the passes and their dependencies to the AST,\ntrying to compose together as many passes as possible to reduce the number of\nfull tree traversals.\n\nEach pass must have a :pass-info element in its Var's metadata and it must point\nto a map with the following parameters (:before, :after and :affects are optional):\n* :after    a set of Vars, the passes that must be run before this pass\n* :before   a set of Vars, the passes that must be run after this pass\n* :depends  a set of Vars, the passes this pass depends on, implies :after\n* :walk     a keyword, one of:\n              - :none if the pass does its own tree walking and cannot be composed\n                      with other passes\n              - :post if the pass requires a postwalk and can be composed with other\n                      passes\n              - :pre  if the pass requires a prewalk and can be composed with other\n                      passes\n              - :any  if the pass can be composed with other passes in both a prewalk\n                      or a postwalk\n* :affects  a set of Vars, this pass must be the last in the same tree traversal that all\n            the specified passes must partecipate in\n            This pass must take a function as argument and return the actual pass, the\n            argument represents the reified tree traversal which the pass can use to\n            control a recursive traversal\n\nAn opts map might be provided, valid parameters:\n* :debug?   if true, returns a vector of the scheduled passes rather than the concrete\n            function",
+   :var-type "function",
+   :line 133,
+   :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([ast]),
    :name "add-binding-atom",
    :namespace "clojure.tools.analyzer.passes.add-binding-atom",
@@ -534,9 +554,9 @@
    :name "elide-meta",
    :namespace "clojure.tools.analyzer.passes.elide-meta",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L80",
+   "https://github.com/clojure/tools.analyzer/blob/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L80",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/raw/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.elide-meta/elide-meta",
    :doc
@@ -548,10 +568,10 @@
   {:name "elides",
    :namespace "clojure.tools.analyzer.passes.elide-meta",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L12",
+   "https://github.com/clojure/tools.analyzer/blob/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L12",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/raw/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.elide-meta/elides",
    :doc
