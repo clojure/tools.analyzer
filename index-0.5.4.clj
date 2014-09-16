@@ -31,7 +31,7 @@
    :name "clojure.tools.analyzer.passes",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   "https://github.com/clojure/tools.analyzer/blob/fbdf4427dc2ec1c8e0adb50b7989c0e94c21f9ce/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.add-binding-atom-api.html",
    :name "clojure.tools.analyzer.passes.add-binding-atom",
@@ -510,9 +510,9 @@
    :name "add-binding-atom",
    :namespace "clojure.tools.analyzer.passes.add-binding-atom",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L13",
+   "https://github.com/clojure/tools.analyzer/blob/fbdf4427dc2ec1c8e0adb50b7989c0e94c21f9ce/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L13",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   "https://github.com/clojure/tools.analyzer/raw/fbdf4427dc2ec1c8e0adb50b7989c0e94c21f9ce/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.add-binding-atom/add-binding-atom",
    :doc
