@@ -16,7 +16,7 @@
 
    The atom is put in the :atom field of the node."
   {:pass-info {:walk :pre :depends #{#'uniquify-locals} :state (fn [] (atom {}))}}
-  ([ast] (prewalk (partial add-binding-atom (atom {})) ast))
+  ([ast] (prewalk ast (partial add-binding-atom (atom {}))))
   ([state ast]
      (case (:op ast)
        :binding
