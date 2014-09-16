@@ -25,13 +25,13 @@
    :name "clojure.tools.analyzer.env",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/1b0960a15313e90833c19c4c2035abcf8c13218a/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/blob/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes-api.html",
    :name "clojure.tools.analyzer.passes",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   "https://github.com/clojure/tools.analyzer/blob/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.add-binding-atom-api.html",
    :name "clojure.tools.analyzer.passes.add-binding-atom",
@@ -496,9 +496,9 @@
    :name "schedule",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/1b0960a15313e90833c19c4c2035abcf8c13218a/src/main/clojure/clojure/tools/analyzer/passes.clj#L133",
+   "https://github.com/clojure/tools.analyzer/blob/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes.clj#L133",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/1b0960a15313e90833c19c4c2035abcf8c13218a/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/schedule",
    :doc
@@ -506,19 +506,19 @@
    :var-type "function",
    :line 133,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
-  {:arglists ([ast]),
+  {:arglists ([ast] [state ast]),
    :name "add-binding-atom",
    :namespace "clojure.tools.analyzer.passes.add-binding-atom",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L27",
+   "https://github.com/clojure/tools.analyzer/blob/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L13",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   "https://github.com/clojure/tools.analyzer/raw/a4872f70ea9455bb69991416bb648f53f3ca58eb/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.add-binding-atom/add-binding-atom",
    :doc
-   "Walks the AST and adds an atom-backed-map to every local binding,\nthe same atom will be shared between all occurences of that local.\n\nThe atom is put in the :atom field of the node.",
+   "Adds an atom-backed-map to every local binding,the same\natom will be shared between all occurences of that local.\n\nThe atom is put in the :atom field of the node.",
    :var-type "function",
-   :line 27,
+   :line 13,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj"}
   {:arglists ([ast]),
