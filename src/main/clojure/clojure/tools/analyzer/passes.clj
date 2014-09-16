@@ -165,7 +165,7 @@
   (let [info        (mapv (fn [p] (merge {:name p} (:pass-info (meta p)))) passes)
         passes+deps (into passes (mapcat :depends info))]
     (if (not= passes passes+deps)
-      (recur passes+deps)
+      (recur passes+deps [opts])
       (if (:debug? opts)
         (schedule-passes info)
         (reduce (fn [f {:keys [passes walk loops]}]
