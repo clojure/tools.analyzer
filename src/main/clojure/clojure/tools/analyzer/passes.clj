@@ -137,7 +137,8 @@
    full tree traversals.
 
    Each pass must have a :pass-info element in its Var's metadata and it must point
-   to a map with the following parameters (:before, :after and :affects are optional):
+   to a map with the following parameters (:before, :after, :affects and :state are
+   optional):
    * :after    a set of Vars, the passes that must be run before this pass
    * :before   a set of Vars, the passes that must be run after this pass
    * :depends  a set of Vars, the passes this pass depends on, implies :after
@@ -155,7 +156,10 @@
                This pass must take a function as argument and return the actual pass, the
                argument represents the reified tree traversal which the pass can use to
                control a recursive traversal
-
+   * :state    a no-arg function that should return the init value of an atom that will be
+               passed as the first argument to the pass (the pass will thus take the ast
+               as the second parameter), the atom will be the same for the whole tree traversal
+               and thus can be used to preserve state across the traversal
    An opts map might be provided, valid parameters:
    * :debug?   if true, returns a vector of the scheduled passes rather than the concrete
                function"
