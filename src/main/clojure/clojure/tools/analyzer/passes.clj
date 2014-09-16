@@ -118,7 +118,7 @@
 
 (defn schedule-passes
   [passes]
-  (let [passes (calculate-deps (indicize passes))
+  (let [passes (calculate-deps passes)
         dependencies (set (mapcat :dependencies (vals passes)))]
 
     (when (every? has-deps? (vals passes))
@@ -162,8 +162,8 @@
   [passes & [opts]]
   {:pre [(set? passes)
          (every? var? passes)]}
-  (let [info        (mapv (fn [p] (merge {:name p} (:pass-info (meta p)))) passes)
-        passes+deps (into passes (mapcat :depends info))]
+  (let [info        (indicize (mapv (fn [p] (merge {:name p} (:pass-info (meta p)))) passes))
+        passes+deps (into passes (mapcat :depends (vals info)))]
     (if (not= passes passes+deps)
       (recur passes+deps [opts])
       (if (:debug? opts)
@@ -173,12 +173,17 @@
                        (first passes)
                        (let [walk (if (= :pre walk) prewalk postwalk)
                              passes (rseq passes)
-                             pfns (fn [analyze]
-                                    (if loops
-                                      (cons ((first passes) analyze)
-                                            (rest passes))
-                                      passes))]
+                             pfns (fn [state analyze]
+                                    (let [passes (if loops
+                                                   (cons ((first passes) analyze)
+                                                         (rest passes))
+                                                   passes)]
+                                      (mapv (fn [p] (if (:state (info p))
+                                                     (partial p (state p))
+                                                     p)) passes)))
+                             with-state (filter (comp :state info) passes)]
                          (fn analyze [ast]
-                           (walk ast (reduce comp (pfns analyze))))))
+                           (let [state (zipmap with-state (mapv #((:state (info %))) with-state))]
+                             (walk ast (reduce comp (pfns state analyze)))))))
                     (comp f)))
                 identity (schedule-passes info))))))

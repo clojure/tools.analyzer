@@ -35,7 +35,8 @@
     (is (= [{:a 1} {:a 2} {:a 3}] (children ast)))))
 
 (deftest add-binding-atom-test
-  (let [the-ast (add-binding-atom (ast (let [a 1] a)))]
+  (let [the-ast (prewalk (ast (let [a 1] a))
+                         (partial add-binding-atom (atom {})))]
     (swap! (-> the-ast :bindings first :atom) assoc :a 1)
     (is (= 1 (-> the-ast :body :ret :atom deref :a)))))
 

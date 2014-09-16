@@ -10,26 +10,20 @@
   (:require [clojure.tools.analyzer.ast :refer [prewalk]]
             [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
 
-(def ^:dynamic ^:private *bindings*)
-
-(defn ^:private -add-binding-atom
-  [ast]
-  (case (:op ast)
-    :binding
-    (let [a (atom {})]
-      (swap! *bindings* assoc (:name ast) a)
-      (assoc ast :atom a))
-    :local
-    (assoc ast :atom (or (@*bindings* (:name ast))
-                         (atom {})))
-    ast))
-
 (defn add-binding-atom
-  "Walks the AST and adds an atom-backed-map to every local binding,
-   the same atom will be shared between all occurences of that local.
+  "Adds an atom-backed-map to every local binding,the same
+   atom will be shared between all occurences of that local.
 
    The atom is put in the :atom field of the node."
-  {:pass-info {:walk :none :depends #{#'uniquify-locals}}}
-  [ast]
-  (binding [*bindings* (atom {})]
-    (prewalk ast -add-binding-atom)))
+  {:pass-info {:walk :pre :depends #{#'uniquify-locals} :state (fn [] (atom {}))}}
+  ([ast] (prewalk (partial add-binding-atom (atom {})) ast))
+  ([state ast]
+     (case (:op ast)
+       :binding
+       (let [a (atom {})]
+         (swap! state assoc (:name ast) a)
+         (assoc ast :atom a))
+       :local
+       (assoc ast :atom (or (@state (:name ast))
+                            (atom {})))
+       ast)))
