@@ -91,7 +91,8 @@
         [free & frs :as free-all] (vals f)
         [w g _]                   (group state)]
     (if (seq passes)
-      (if-let [x (or (and w (or (ffilter-walk #{w} free-all)
+      (if-let [x (or (and w (or (first (filter :compiler free-all))
+                                (ffilter-walk #{w} free-all)
                                 (ffilter-walk #{:any} free-all)))
                      (ffilter-walk #{:none} free-all))]
         (recur (cons (assoc x :passes [(:name x)]) state)
@@ -103,8 +104,7 @@
 (defn collapse [state]
   (loop [[cur & rest :as state] state ret []]
     (if (seq state)
-      (if (or (:compiler cur)
-              (= :none (:walk cur)))
+      (if (= :none (:walk cur))
         (recur rest (conj ret cur))
         (let [[w g state] (group state)]
           (recur state (conj ret (merge {:walk (or w :pre) :passes (mapv :name g)}
