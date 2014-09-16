@@ -91,9 +91,9 @@
         [free & frs :as free-all] (vals f)
         [w g _]                   (group state)]
     (if (seq passes)
-      (if-let [x (or (and w (or (first (filter :compiler free-all))
-                                (ffilter-walk #{w} free-all)
-                                (ffilter-walk #{:any} free-all)))
+      (if-let [x (or (first (filter :compiler free-all))
+                     (and w (or (ffilter-walk #{w} free-all)
+                             (ffilter-walk #{:any} free-all)))
                      (ffilter-walk #{:none} free-all))]
         (recur (cons (assoc x :passes [(:name x)]) state)
                (remove-pass passes (:name x)))
