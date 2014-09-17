@@ -82,8 +82,10 @@
         state))
     state))
 
+(def ffilter (comp first filter))
+
 (defn ffilter-walk [f c]
-  (first (filter (comp f :walk) c)))
+  (ffilter (comp f :walk) c))
 
 (defn schedule* [state passes]
   (let [state                     (reorder state)
@@ -91,9 +93,10 @@
         [free & frs :as free-all] (vals f)
         [w g _]                   (group state)]
     (if (seq passes)
-      (if-let [x (or (first (filter :compiler free-all))
+      (if-let [x (or (ffilter :compiler free-all)
                      (and w (or (ffilter-walk #{w} free-all)
-                             (ffilter-walk #{:any} free-all)))
+                                (ffilter-walk #{:any} free-all)))
+                     (ffilter :affects free-all)
                      (ffilter-walk #{:none} free-all))]
         (recur (cons (assoc x :passes [(:name x)]) state)
                (remove-pass passes (:name x)))
