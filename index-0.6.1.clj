@@ -61,7 +61,7 @@
    :name "clojure.tools.analyzer.passes.emit-form",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj",
+   "https://github.com/clojure/tools.analyzer/blob/35086cdeb46b239f0d2e086db0813a408e9e4e02/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.index-vector-nodes-api.html",
    :name "clojure.tools.analyzer.passes.index-vector-nodes",
@@ -629,9 +629,9 @@
    :name "index-vector-nodes",
    :namespace "clojure.tools.analyzer.passes.index-vector-nodes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj#L11",
+   "https://github.com/clojure/tools.analyzer/blob/35086cdeb46b239f0d2e086db0813a408e9e4e02/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj#L11",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/967a4839b85bf42d4af76a89d4aa86cc5abca3f6/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/35086cdeb46b239f0d2e086db0813a408e9e4e02/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.index-vector-nodes/index-vector-nodes",
    :doc
