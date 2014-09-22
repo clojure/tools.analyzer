@@ -192,7 +192,7 @@
 (defn merge'
   "Like merge, but uses transients"
   [& mms]
-  (reduce into {} mms))
+  (persistent! (reduce conj! (transient {}) mms)))
 
 (defn source-info
   "Returns the available source-info keys from a map"
