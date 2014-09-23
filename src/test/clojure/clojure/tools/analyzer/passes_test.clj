@@ -3,12 +3,13 @@
   (:require [clojure.tools.analyzer.ast :refer :all]
             [clojure.test :refer [deftest is]]
             [clojure.set :as set]
-            [clojure.tools.analyzer.core-test :refer [ast e]]
+            [clojure.tools.analyzer.core-test :refer [ast e e1]]
             [clojure.tools.analyzer.passes.add-binding-atom :refer [add-binding-atom]]
             [clojure.tools.analyzer.passes.source-info :refer [source-info]]
             [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]
             [clojure.tools.analyzer.passes.constant-lifter :refer [constant-lift]]
-            [clojure.tools.analyzer.passes.emit-form :refer [emit-form emit-hygienic-form]]))
+            [clojure.tools.analyzer.passes.emit-form :refer [emit-form emit-hygienic-form]]
+            [clojure.tools.analyzer.env :refer [with-env]]))
 
 (deftest passes-utils-test
   (let [ast {:foo [{:a 1} {:a 2}] :bar [{:a 3}] :children [:foo :bar]}]
@@ -53,8 +54,9 @@
                   (postwalk constant-lift) :op))))
 
 (deftest uniquify-test
-  (let [the-ast (uniquify-locals (ast (let [x 1 y x x (let [x x] x)]
-                                        (fn [y] x))))]
+  (let [the-ast (with-env e1
+                  (uniquify-locals (ast (let [x 1 y x x (let [x x] x)]
+                                          (fn [y] x)))))]
     (is (= 'x__#2 (-> the-ast :body :ret :methods first :body :ret :name)))
     (is (= 'y__#1 (-> the-ast :body :ret :methods first :params first :name)))
     (is (apply not= (->> the-ast :bindings (mapv :name))))))
@@ -92,18 +94,20 @@
          (emit-form (ast (try (throw 1) (catch e t b) (finally 2)))))))
 
 (deftest emit-hygienic-form-test
-  (is (= '(let* [a__#0 1 a__#1 a__#0] a__#1)
-         (emit-hygienic-form (uniquify-locals (ast (let [a 1 a a] a))))))
-  (is (= '(let* [x__#0 1] (fn* ([x__#1] x__#1)))
-         (emit-hygienic-form (uniquify-locals (ast (let [x 1] (fn [x] x)))))))
-  (is (= '(fn* x__#0 ([x__#1] x__#1))
-         (emit-hygienic-form (uniquify-locals (ast (fn x [x] x)))))))
+  (with-env e1
+    (is (= '(let* [a__#0 1 a__#1 a__#0] a__#1)
+           (emit-hygienic-form (uniquify-locals (ast (let [a 1 a a] a))))))
+    (is (= '(let* [x__#0 1] (fn* ([x__#1] x__#1)))
+           (emit-hygienic-form (uniquify-locals (ast (let [x 1] (fn [x] x)))))))
+    (is (= '(fn* x__#0 ([x__#1] x__#1))
+           (emit-hygienic-form (uniquify-locals (ast (fn x [x] x))))))))
 
 (deftest deeply-nested-uniquify
   (is (= '(fn* ([x__#0 y__#0 z__#0]
                   (let* [foo__#0 (fn* ([y__#1 z__#1] [y__#1 z__#1]))]
                         (foo__#0 x__#0 y__#0))))
-         (emit-hygienic-form (uniquify-locals (ast (fn [x y z]
-                                                     (let [foo (fn [y z]
-                                                                 [y z])]
-                                                       (foo x y)))))))))
+         (with-env e1
+          (emit-hygienic-form (uniquify-locals (ast (fn [x y z]
+                                                      (let [foo (fn [y z]
+                                                                  [y z])]
+                                                        (foo x y))))))))))
