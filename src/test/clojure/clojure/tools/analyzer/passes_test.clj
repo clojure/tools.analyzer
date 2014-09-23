@@ -43,9 +43,9 @@
 
 (deftest source-info-test
   (is (= 1 (-> {:form ^{:line 1} [1]} source-info :env :line)))
-  (is (= 1 (-> {:form ^{:column 1} [1]} source-info :env :column)))
-  (is (= 1 (-> {:form ^{:end-line 1} [1]} source-info :env :end-line)))
-  (is (= 1 (-> {:form ^{:end-column 1} [1]} source-info :env :end-column))))
+  (is (= 1 (-> {:form ^{:column 1 :line 1} [1]} source-info :env :column)))
+  (is (= 1 (-> {:form ^{:end-line 1 :line 1} [1]} source-info :env :end-line)))
+  (is (= 1 (-> {:form ^{:end-column 1 :line 1} [1]} source-info :env :end-column))))
 
 (deftest constant-lift-test
   (is (= :const (-> (ast {:a {:b :c}}) (postwalk constant-lift) :op)))
