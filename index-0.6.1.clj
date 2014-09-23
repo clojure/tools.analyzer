@@ -67,7 +67,7 @@
    :name "clojure.tools.analyzer.passes.index-vector-nodes",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/b15c42d8a6bd24580b49b49bb4a6f64dcfb5f406/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj",
+   "https://github.com/clojure/tools.analyzer/blob/55563d7905e17b958c3e0094c9383bf87132c101/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.source-info-api.html",
    :name "clojure.tools.analyzer.passes.source-info",
@@ -644,9 +644,9 @@
    :name "source-info",
    :namespace "clojure.tools.analyzer.passes.source-info",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/b15c42d8a6bd24580b49b49bb4a6f64dcfb5f406/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj#L17",
+   "https://github.com/clojure/tools.analyzer/blob/55563d7905e17b958c3e0094c9383bf87132c101/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj#L17",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/b15c42d8a6bd24580b49b49bb4a6f64dcfb5f406/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj",
+   "https://github.com/clojure/tools.analyzer/raw/55563d7905e17b958c3e0094c9383bf87132c101/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.source-info/source-info",
    :doc
