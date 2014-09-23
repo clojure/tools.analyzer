@@ -191,8 +191,8 @@
 
 (defn merge'
   "Like merge, but uses transients"
-  [& mms]
-  (persistent! (reduce conj! (transient {}) mms)))
+  [m & mms]
+  (persistent! (reduce conj! (transient (or m {})) mms)))
 
 (defn source-info
   "Returns the available source-info keys from a map"
@@ -203,12 +203,10 @@
 (defn -source-info
   "Returns the source-info of x"
   [x env]
-  (merge'
-   (source-info env)
-   (when-let [file (and (not= *file* "NO_SOURCE_FILE")
-                        *file*)]
-     {:file file})
-   (source-info (meta x))))
+  (merge' (source-info (meta x))
+          (when-let [file (and (not= *file* "NO_SOURCE_FILE")
+                               *file*)]
+            {:file file})))
 
 (defn const-val
   "Returns the value of a constant node (either :quote or :const)"
