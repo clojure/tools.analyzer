@@ -122,30 +122,35 @@
 
 (defn private?
   "Returns true if the var is private"
-  [var]
-  (:private (meta var)))
+  ([var] (private? var nil))
+  ([var m]
+     (:private (or m (meta var)))))
 
 (defn macro?
   "Returns true if the var maps to a macro"
-  [var]
-  (:macro (meta var)))
+  ([var] (macro? var nil))
+  ([var m]
+     (:macro (or m (meta var)))))
 
 (defn constant?
   "Returns true if the var is a const"
-  [var]
-  (:const (meta var)))
+  ([var] (constant? var nil))
+  ([var m]
+     (:const (or m (meta var)))))
 
 (defn dynamic?
   "Returns true if the var is dynamic"
-  [var]
-  (or (:dynamic (meta var))
-      (when (var? var) ;; workaround needed since Clojure doesn't always propagate :dynamic
-        (.isDynamic ^Var var))))
+  ([var] (dynamic? var nil))
+  ([var m]
+     (or (:dynamic (or m (meta var)))
+         (when (var? var) ;; workaround needed since Clojure doesn't always propagate :dynamic
+           (.isDynamic ^Var var)))))
 
 (defn protocol-node?
   "Returns true if the var maps to a protocol function"
-  [var]
-  (boolean (:protocol (meta var)))) ;; conveniently this is true in both clojure and clojurescript
+  ([var] (protocol-node? var nil))
+  ([var m]
+     (boolean (:protocol (or m (meta var)))))) ;; conveniently this is true in both clojure and clojurescript
 
 (defn resolve-ns
   "Resolves the ns mapped by the given sym in the env"
