@@ -868,10 +868,13 @@ The atom is put in the :atom field of the node.</pre>
 </pre>
     <pre id="var-docstr">Attach closed-overs info to the AST as specified by the passes opts:
 * :where       set of :op nodes where to attach the closed-overs
-* :top-level?  if true attach closed-overs info to the top-level node</pre>
+* :top-level?  if true attach closed-overs info to the top-level node
+
+The info will be attached in the :closed-overs field of the AST node
+and will be a map of local name -&gt; binding AST node</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/bb22749ae7f21bd06a7153e90cfa44946455617c/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L59" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/b17311c9e2ef1700563665f8647e48c571f85011/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L59" id="var-source">Source</a>
   </div>
 </div>
 <br />

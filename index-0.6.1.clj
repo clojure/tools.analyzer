@@ -37,7 +37,7 @@
    :name "clojure.tools.analyzer.passes.add-binding-atom",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/bb22749ae7f21bd06a7153e90cfa44946455617c/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
+   "https://github.com/clojure/tools.analyzer/blob/b17311c9e2ef1700563665f8647e48c571f85011/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.collect-closed-overs-api.html",
    :name "clojure.tools.analyzer.passes.collect-closed-overs",
@@ -525,13 +525,13 @@
    :name "collect-closed-overs",
    :namespace "clojure.tools.analyzer.passes.collect-closed-overs",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/bb22749ae7f21bd06a7153e90cfa44946455617c/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L59",
+   "https://github.com/clojure/tools.analyzer/blob/b17311c9e2ef1700563665f8647e48c571f85011/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L59",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/bb22749ae7f21bd06a7153e90cfa44946455617c/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
+   "https://github.com/clojure/tools.analyzer/raw/b17311c9e2ef1700563665f8647e48c571f85011/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect-closed-overs/collect-closed-overs",
    :doc
-   "Attach closed-overs info to the AST as specified by the passes opts:\n* :where       set of :op nodes where to attach the closed-overs\n* :top-level?  if true attach closed-overs info to the top-level node",
+   "Attach closed-overs info to the AST as specified by the passes opts:\n* :where       set of :op nodes where to attach the closed-overs\n* :top-level?  if true attach closed-overs info to the top-level node\n\nThe info will be attached in the :closed-overs field of the AST node\nand will be a map of local name -> binding AST node",
    :var-type "function",
    :line 59,
    :file
