@@ -190,8 +190,7 @@
      (when (and (obj? form)
                 (seq m))
        {:meta     (analyze-const m (ctx env :ctx/expr) :map) ;; metadata on a constant literal will not be evaluated at
-        ;; runtime, this is also true for metadata on quoted collection literals
-        :children [:meta]}))))
+        :children [:meta]}))))                               ;; runtime, this is also true for metadata on quoted collection literals
 
 (defn analyze-vector
   [form env]
@@ -261,8 +260,7 @@
                  (let [m (meta var)]
                    {:op          :var
                     :assignable? (dynamic? var m) ;; we cannot statically determine if a Var is in a thread-local context
-                    ;; so checking whether it's dynamic or not is the most we can do
-                    :var         var
+                    :var         var              ;; so checking whether it's dynamic or not is the most we can do
                     :meta        m})
                  (if-let [maybe-class (namespace sym)] ;; e.g. js/foo.bar or Long/MAX_VALUE
                    (let [maybe-class (symbol maybe-class)]
