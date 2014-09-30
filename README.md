@@ -226,7 +226,7 @@ Latest stable release: 0.6.0
 API Index
 ========================================
 
-* [CrossClj Documentation](http://crossclj.info/doc/org.clojure/tools.analyzer/0.6.0/index.html)
+* [CrossClj Documentation](http://crossclj.info/doc/org.clojure/tools.analyzer/lastest/index.html)
 * [API index](http://clojure.github.io/tools.analyzer)
 
 Developer Information
