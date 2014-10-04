@@ -1,5 +1,9 @@
 Changelog
 ========================================
+* Release 0.6.1 on ???
+  * Significant performance enhancements
+  * Fixed scheduling of looping passes
+  * Uniquify :env :locals only if the :uniquify/uniquify-env pass-opt is true
 * Release 0.6.0 on 18 Sep 2014
   * Added pass scheduler (clojure.tools.analyzer.passes/schedule) and configured all the passes
   * Changed the interface of the collect-closed-overs pass
