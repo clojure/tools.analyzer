@@ -1,6 +1,6 @@
 Changelog
 ========================================
-* Release 0.6.1 on ???
+* Release 0.6.1 on 13 Oct 2014
   * Significant performance enhancements
   * Fixed scheduling of looping passes
   * Uniquify :env :locals only if the :uniquify/uniquify-env pass-opt is true
