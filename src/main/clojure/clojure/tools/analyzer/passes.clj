@@ -87,21 +87,21 @@
 (defn ffilter-walk [f c]
   (ffilter (comp f :walk) c))
 
+;; TODO: start a looping pass only if all the looping passes are available
 (defn schedule* [state passes]
   (let [state                     (reorder state)
         f                         (filter (comp empty? :dependants val) passes)
         [free & frs :as free-all] (vals f)
         [w g _]                   (group state)]
     (if (seq passes)
-      (if-let [x (or (ffilter :compiler free-all)
-                     (and w (or (ffilter-walk #{w} free-all)
-                                (ffilter-walk #{:any} free-all)))
-                     (ffilter-walk #{:none} free-all)
-                     (ffilter :affects free-all))]
+      (let [x (or (ffilter :compiler free-all)
+                  (and w (or (ffilter-walk #{w} free-all)
+                             (ffilter-walk #{:any} free-all)))
+                  (ffilter-walk #{:none} free-all)
+                  (ffilter :affects free-all)
+                  free)]
         (recur (cons (assoc x :passes [(:name x)]) state)
-               (remove-pass passes (:name x)))
-        (recur (cons (assoc free :passes [(:name free)]) state)
-               (remove-pass passes (:name free))))
+               (remove-pass passes (:name x))))
       state)))
 
 (defn collapse [state]
