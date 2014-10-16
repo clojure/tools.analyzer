@@ -191,11 +191,11 @@
                                                          (rest passes))
                                                    passes)]
                                       (mapv (fn [p] (if (:state (info p))
-                                                     (partial p (state p))
+                                                     (partial p ((state p)))
                                                      p)) passes)))
-                             with-state (filter (comp :state info) passes)]
+                             with-state (filter (comp :state info) passes)
+                             state (zipmap with-state (mapv #(:state (info %)) with-state))]
                          (fn analyze [ast]
-                           (let [state (zipmap with-state (mapv #((:state (info %))) with-state))]
-                             (walk ast (reduce comp (pfns state analyze)))))))
+                           (walk ast (reduce comp (pfns state analyze))))))
                     (comp f)))
                 identity (schedule-passes info))))))
