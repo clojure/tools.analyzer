@@ -1,22 +1,37 @@
 (ns clojure.tools.analyzer.passes
   (:require [clojure.tools.analyzer.ast :refer [prewalk postwalk]]))
 
-(defn has-deps? [pass]
+(defn ^:private has-deps?
+  "Returns true if the pass has some dependencies"
+  [pass]
   (seq (:dependencies pass)))
 
-(defn group-by-walk [passes]
+(defn ^:private group-by-walk
+  "Takes a set of pass-infos and returns a map grouping them by :walk.
+   Possible keys are :own, :none, :pre and :post"
+  [passes]
   (reduce-kv (fn [m k v] (assoc m k (set (map :name v))))
              {} (group-by :walk passes)))
 
-(defn indicize [passes]
+(defn ^:private indicize
+  "Takes a set of pass-infos and returns a map of pass-name -> pass-info"
+  [passes]
   (zipmap (map :name passes) passes))
 
-(defn remove-pass [passes pass]
+(defn ^:private remove-pass
+  "Takes a set of pass-infos and a pass, and removes the pass from the set of
+   pass-infos, updating :dependencies and :dependants aswell"
+  [passes pass]
   (indicize (reduce (fn [m p] (conj m (-> p (update-in [:dependencies] disj pass)
                                         (update-in [:dependants] disj pass))))
                     #{} (vals (dissoc passes pass)))))
 
-(defn calc-deps [m k deps passes]
+(defn ^:private calc-deps
+  "Takes a map of pass-name -> pass deps, a pass name, the explicit pass dependencies
+   and a set of available pass-infos.
+   Resolves all the transitive deps of the pass and assocs them to the map, indexed by
+   the pass name."
+  [m k deps passes]
   (if (m k)
     m
     (reduce (fn [m dep]
@@ -26,7 +41,10 @@
               (update-in m [k] into (conj (or (m dep) #{}) dep)))
             (assoc m k deps) deps)))
 
-(defn calculate-deps [passes]
+(defn calculate-deps
+  "Takes a map of pass-name -> pass-info and adds to each pass-info :dependencies and
+   :dependants info, which also contain the transitive dependencies"
+  [passes]
   (let [dependencies (reduce-kv (fn [deps pname {:keys [depends after]}]
                                   (calc-deps deps pname
                                              (into depends (concat (filter passes after)
@@ -60,37 +78,14 @@
          (recur (:walk cur) (conj group cur) rest)))
       [w group state])))
 
-(defn reorder [state]
-  (if (and (first state)
-           (not= :own (:walk (first state))))
-    (let [[g1-w g1 state'] (group state)
-          [_    g2 state'] (group state')
-          [g3-w g3 state'] (group state')
-          g1-nodes         (mapv :name g1)
-          g2-nodes         (mapv :name g2)]
-      (if (and (seq g1) (seq g2) (seq g3)
-               (= g1-w g3-w))
-        (cond
-         (not-any? #(seq (filter (:dependencies %) g1-nodes)) g2)
-         (concat (into (into g2 g1) g3) state')
+(def ^:private ffilter (comp first filter))
 
-         (not-any? #(seq (filter (:dependencies %) g2-nodes)) g3)
-         (concat (into (into g1 g3) g2) state')
-
-         :else
-         state)
-        state))
-    state))
-
-(def ffilter (comp first filter))
-
-(defn ffilter-walk [f c]
+(defn ^:private ffilter-walk [f c]
   (ffilter (comp f :walk) c))
 
 ;; TODO: start a looping pass only if all the looping passes are available
 (defn schedule* [state passes]
-  (let [state                     (reorder state)
-        f                         (filter (comp empty? :dependants val) passes)
+  (let [f                         (filter (comp empty? :dependants val) passes)
         [free & frs :as free-all] (vals f)
         [w g _]                   (group state)]
     (if (seq passes)
