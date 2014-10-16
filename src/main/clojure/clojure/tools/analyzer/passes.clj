@@ -1,6 +1,11 @@
 (ns clojure.tools.analyzer.passes
   (:require [clojure.tools.analyzer.ast :refer [prewalk postwalk]]))
 
+(def ^:private ffilter (comp first filter))
+
+(defn ^:private ffilter-walk [f c]
+  (ffilter (comp f :walk) c))
+
 (defn ^:private has-deps?
   "Returns true if the pass has some dependencies"
   [pass]
@@ -8,7 +13,7 @@
 
 (defn ^:private group-by-walk
   "Takes a set of pass-infos and returns a map grouping them by :walk.
-   Possible keys are :own, :none, :pre and :post"
+   Possible keys are :any, :none, :pre and :post"
   [passes]
   (reduce-kv (fn [m k v] (assoc m k (set (map :name v))))
              {} (group-by :walk passes)))
@@ -57,7 +62,17 @@
                                             {:dependencies (set v) :dependants (set (dependants k))})))
                {} dependencies)))
 
-(defn group [state]
+(defn group
+  "Takes a scheduler state and returns a vector of three elements (or nil):
+   * the :walk of the current group
+   * a vector of consecutive passes that can be collapsed in a single pass (the current group)
+   * the remaining scheduler state
+
+   E.g. given:
+   [{:walk :any .. } {:walk :pre ..} {:walk :post ..} {:walk :pre ..}]
+   it will return:
+   [:pre [{:walk :any ..} {:walk :pre ..}] [{:walk :post ..} {:walk :pre ..}]]"
+  [state]
   (loop [w nil group [] [cur & rest :as state] state]
     (if (seq state)
       (cond
@@ -78,16 +93,11 @@
          (recur (:walk cur) (conj group cur) rest)))
       [w group state])))
 
-(def ^:private ffilter (comp first filter))
-
-(defn ^:private ffilter-walk [f c]
-  (ffilter (comp f :walk) c))
-
 ;; TODO: start a looping pass only if all the looping passes are available
 (defn schedule* [state passes]
   (let [f                         (filter (comp empty? :dependants val) passes)
         [free & frs :as free-all] (vals f)
-        [w g _]                   (group state)]
+        w                         (first (group state))]
     (if (seq passes)
       (let [x (or (ffilter :compiler free-all)
                   (and w (or (ffilter-walk #{w} free-all)
