@@ -51,9 +51,10 @@
   "Takes a map of pass-name -> pass-info and adds to each pass-info :dependencies and
    :dependants info, which also contain the transitive dependencies"
   [passes]
-  (let [dependencies (reduce-kv (fn [deps pname {:keys [depends after]}]
+  (let [dependencies (reduce-kv (fn [deps pname {:keys [depends after affects]}]
                                   (calc-deps deps pname
                                              (into depends (concat (filter passes after)
+                                                                   (filter passes affects)
                                                                    (mapv key (filter #(get (-> % val :before) pname) passes)))) passes))
                                 {} passes)
         dependants   (reduce-kv (fn [m k v] (reduce (fn [m v] (update-in m [v] (fnil conj #{}) k))
@@ -180,7 +181,7 @@
                the specified passes must partecipate in
                This pass must take a function as argument and return the actual pass, the
                argument represents the reified tree traversal which the pass can use to
-               control a recursive traversal
+               control a recursive traversal, implies :depends
    * :state    a no-arg function that should return the init value of an atom that will be
                passed as the first argument to the pass (the pass will thus take the ast
                as the second parameter), the atom will be the same for the whole tree traversal
