@@ -53,8 +53,7 @@
   [passes]
   (let [dependencies (reduce-kv (fn [deps pname {:keys [depends after affects]}]
                                   (calc-deps deps pname
-                                             (into depends (concat (filter passes after)
-                                                                   (filter passes affects)
+                                             (into depends (concat (filter passes (into after affects))
                                                                    (mapv key (filter #(get (-> % val :before) pname) passes)))) passes))
                                 {} passes)
         dependants   (reduce-kv (fn [m k v] (reduce (fn [m v] (update-in m [v] (fnil conj #{}) k))
