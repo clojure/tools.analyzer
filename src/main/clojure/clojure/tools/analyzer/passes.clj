@@ -151,7 +151,7 @@
                                       :else
                                       (fn [a s ast] (p ast)))]
                                (fn [a s ast]
-                                 (f a s (p a s ast))))) (fn [_ _ a] a) (rseq passes))]
+                                 (p a s (f a s ast))))) (fn [_ _ a] a) passes)]
     (fn analyze [ast]
       (walk ast (partial pfns analyze (update-vals state #(%)))))))
 
