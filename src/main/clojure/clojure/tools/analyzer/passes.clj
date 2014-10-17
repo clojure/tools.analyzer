@@ -151,7 +151,7 @@
                                       :else
                                       (fn [_ _ ast] (p ast)))]
                                (fn [a s ast]
-                                 (p a s (f a s ast))))) (fn [_ _ a] a) passes)]
+                                 (p a s (f a s ast))))) (fn [_ _ ast] ast) passes)]
     (fn analyze [ast]
       (walk ast (partial pfns analyze (update-vals state #(%)))))))
 
