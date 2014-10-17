@@ -135,8 +135,7 @@
     (when (next (filter :compiler (vals passes)))
       (throw (ex-info "Only one compiler pass allowed" passes)))
 
-    (mapv #(select-keys % [:passes :walk])
-          (collapse (schedule* () passes)))))
+    (collapse (schedule* () passes))))
 
 (defn compile-passes [passes walk info]
   (let [with-state (filter (comp :state info) passes)
@@ -196,7 +195,8 @@
     (if (not= passes passes+deps)
       (recur passes+deps [opts])
       (if (:debug? opts)
-        (schedule-passes info)
+        (mapv #(select-keys % [:passes :walk])
+              (schedule-passes info))
         (reduce (fn [f {:keys [passes walk]}]
                   (let [pass (if (= walk :none)
                                (first passes)
