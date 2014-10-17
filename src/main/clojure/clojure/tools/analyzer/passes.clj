@@ -116,13 +116,12 @@
       (if (= :none (:walk cur))
         (recur rest (conj ret cur))
         (let [[w g state] (group state)]
-          (recur state (conj ret (merge {:walk (or w :pre) :passes (mapv :name g)}
-                                        (when-let [affects (first (filter :affects g))]
-                                          (let [passes (set (mapv :name g))]
-                                            (when (not-every? passes (:affects affects))
-                                              (throw (ex-info (str "looping pass doesn't encompass affected passes: " (:name affects))
-                                                              {:pass affects}))))
-                                          {:loops true}))))))
+          (when-let [affects (first (filter :affects g))]
+            (let [passes (set (mapv :name g))]
+              (when (not-every? passes (:affects affects))
+                (throw (ex-info (str "looping pass doesn't encompass affected passes: " (:name affects))
+                                {:pass affects})))))
+          (recur state (conj ret {:walk (or w :pre) :passes (mapv :name g)}))))
       ret)))
 
 (defn schedule-passes
@@ -136,7 +135,7 @@
     (when (next (filter :compiler (vals passes)))
       (throw (ex-info "Only one compiler pass allowed" passes)))
 
-    (mapv #(select-keys % [:passes :walk :loops])
+    (mapv #(select-keys % [:passes :walk])
           (collapse (schedule* () passes)))))
 
 (defn compile-passes [passes walk info]
