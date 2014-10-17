@@ -149,7 +149,7 @@
                                       (:affects i)
                                       (fn [a _ ast] ((p a) ast))
                                       :else
-                                      (fn [_ _  ast] (p ast)))]
+                                      (fn [_ _ ast] (p ast)))]
                                (fn [a s ast]
                                  (p a s (f a s ast))))) (fn [_ _ a] a) passes)]
     (fn analyze [ast]
