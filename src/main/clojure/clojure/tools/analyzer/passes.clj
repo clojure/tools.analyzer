@@ -145,11 +145,11 @@
                              (let [i (info p)
                                    p (cond
                                       (:state i)
-                                      (fn [a s ast] (p (s p) ast))
+                                      (fn [_ s ast] (p (s p) ast))
                                       (:affects i)
-                                      (fn [a s ast] ((p a) ast))
+                                      (fn [a _ ast] ((p a) ast))
                                       :else
-                                      (fn [a s ast] (p ast)))]
+                                      (fn [_ _  ast] (p ast)))]
                                (fn [a s ast]
                                  (p a s (f a s ast))))) (fn [_ _ a] a) passes)]
     (fn analyze [ast]
