@@ -1,5 +1,6 @@
 (ns clojure.tools.analyzer.passes
-  (:require [clojure.tools.analyzer.ast :refer [prewalk postwalk]]))
+  (:require [clojure.tools.analyzer.ast :refer [prewalk postwalk]]
+            [clojure.tools.analyzer.utils :refer [update-vals]]))
 
 (def ^:private ffilter (comp first filter))
 
@@ -138,6 +139,24 @@
     (mapv #(select-keys % [:passes :walk :loops])
           (collapse (schedule* () passes)))))
 
+(defn compile-passes [passes walk info]
+  (let [with-state (filter (comp :state info) passes)
+        state      (zipmap with-state (mapv #(:state (info %)) with-state))
+        pfns       (reduce (fn [f p]
+                             (let [i (info p)
+                                   p
+                                   (cond
+                                    (:state i)
+                                    (fn [a s ast] (p (s p) ast))
+                                    (:affects i)
+                                    (fn [a s ast] ((p a) ast))
+                                    :else
+                                    (fn [a s ast] (p ast)))]
+                               (fn [a s ast]
+                                 (f a s (p a s ast))))) (fn [_ _ a] a) passes)]
+    (fn analyze [ast]
+      (walk ast (partial pfns analyze (update-vals state #(%)))))))
+
 (defn schedule
   "Takes a set of Vars that represent tools.analyzer passes and returns a function
    that takes an AST and applies all the passes and their dependencies to the AST,
@@ -180,22 +199,9 @@
       (recur passes+deps [opts])
       (if (:debug? opts)
         (schedule-passes info)
-        (reduce (fn [f {:keys [passes walk loops]}]
-                  (-> (if (= walk :none)
-                       (first passes)
-                       (let [walk (if (= :pre walk) prewalk postwalk)
-                             passes (rseq passes)
-                             pfns (fn [state analyze]
-                                    (let [passes (if loops
-                                                   (cons ((first passes) analyze)
-                                                         (rest passes))
-                                                   passes)]
-                                      (mapv (fn [p] (if (:state (info p))
-                                                     (partial p ((state p)))
-                                                     p)) passes)))
-                             with-state (filter (comp :state info) passes)
-                             state (zipmap with-state (mapv #(:state (info %)) with-state))]
-                         (fn analyze [ast]
-                           (walk ast (reduce comp (pfns state analyze))))))
-                    (comp f)))
+        (reduce (fn [f {:keys [passes walk]}]
+                  (let [pass (if (= walk :none)
+                               (first passes)
+                               (compile-passes (rseq passes) (if (= :pre walk) prewalk postwalk) info))]
+                    (comp pass f)))
                 identity (schedule-passes info))))))
