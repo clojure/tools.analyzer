@@ -144,16 +144,15 @@
         state      (zipmap with-state (mapv #(:state (info %)) with-state))
         pfns       (reduce (fn [f p]
                              (let [i (info p)
-                                   p
-                                   (cond
-                                    (:state i)
-                                    (fn [a s ast] (p (s p) ast))
-                                    (:affects i)
-                                    (fn [a s ast] ((p a) ast))
-                                    :else
-                                    (fn [a s ast] (p ast)))]
+                                   p (cond
+                                      (:state i)
+                                      (fn [a s ast] (p (s p) ast))
+                                      (:affects i)
+                                      (fn [a s ast] ((p a) ast))
+                                      :else
+                                      (fn [a s ast] (p ast)))]
                                (fn [a s ast]
-                                 (f a s (p a s ast))))) (fn [_ _ a] a) passes)]
+                                 (f a s (p a s ast))))) (fn [_ _ a] a) (rseq passes))]
     (fn analyze [ast]
       (walk ast (partial pfns analyze (update-vals state #(%)))))))
 
@@ -202,6 +201,6 @@
         (reduce (fn [f {:keys [passes walk]}]
                   (let [pass (if (= walk :none)
                                (first passes)
-                               (compile-passes (rseq passes) (if (= :pre walk) prewalk postwalk) info))]
+                               (compile-passes passes (if (= :pre walk) prewalk postwalk) info))]
                     (comp pass f)))
                 identity (schedule-passes info))))))
