@@ -793,7 +793,7 @@ throws an exception.</pre>
 :dependants info, which also contain the transitive dependencies</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/b10e12547bd23fd3ba8d4e783ad93699cba283fc/src/main/clojure/clojure/tools/analyzer/passes.clj#L49" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/d9c421416d668812de9e4a281d9a219dfd65c97a/src/main/clojure/clojure/tools/analyzer/passes.clj#L50" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -812,7 +812,7 @@ it will return:
 [:pre [{:walk :any ..} {:walk :pre ..}] [{:walk :post ..} {:walk :pre ..}]]</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/b10e12547bd23fd3ba8d4e783ad93699cba283fc/src/main/clojure/clojure/tools/analyzer/passes.clj#L65" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/d9c421416d668812de9e4a281d9a219dfd65c97a/src/main/clojure/clojure/tools/analyzer/passes.clj#L66" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -844,7 +844,7 @@ optional):
             the specified passes must partecipate in
             This pass must take a function as argument and return the actual pass, the
             argument represents the reified tree traversal which the pass can use to
-            control a recursive traversal
+            control a recursive traversal, implies :depends
 * :state    a no-arg function that should return the init value of an atom that will be
             passed as the first argument to the pass (the pass will thus take the ast
             as the second parameter), the atom will be the same for the whole tree traversal
@@ -854,7 +854,7 @@ An opts map might be provided, valid parameters:
             function</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/b10e12547bd23fd3ba8d4e783ad93699cba283fc/src/main/clojure/clojure/tools/analyzer/passes.clj#L141" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/d9c421416d668812de9e4a281d9a219dfd65c97a/src/main/clojure/clojure/tools/analyzer/passes.clj#L157" id="var-source">Source</a>
   </div>
 </div>
 <br />
