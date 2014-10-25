@@ -25,7 +25,7 @@
    :name "clojure.tools.analyzer.env",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/5f04191a6f6b42d5c7cff5400af269c1acc6a956/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/blob/fc467448518876d1ec91d18cfac901e739f36594/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes-api.html",
    :name "clojure.tools.analyzer.passes",
@@ -496,9 +496,9 @@
    :name "calculate-deps",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/5f04191a6f6b42d5c7cff5400af269c1acc6a956/src/main/clojure/clojure/tools/analyzer/passes.clj#L50",
+   "https://github.com/clojure/tools.analyzer/blob/fc467448518876d1ec91d18cfac901e739f36594/src/main/clojure/clojure/tools/analyzer/passes.clj#L50",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/5f04191a6f6b42d5c7cff5400af269c1acc6a956/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/fc467448518876d1ec91d18cfac901e739f36594/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/calculate-deps",
    :doc
@@ -510,9 +510,9 @@
    :name "group",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/5f04191a6f6b42d5c7cff5400af269c1acc6a956/src/main/clojure/clojure/tools/analyzer/passes.clj#L66",
+   "https://github.com/clojure/tools.analyzer/blob/fc467448518876d1ec91d18cfac901e739f36594/src/main/clojure/clojure/tools/analyzer/passes.clj#L66",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/5f04191a6f6b42d5c7cff5400af269c1acc6a956/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/fc467448518876d1ec91d18cfac901e739f36594/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/group",
    :doc
@@ -524,9 +524,9 @@
    :name "schedule",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/5f04191a6f6b42d5c7cff5400af269c1acc6a956/src/main/clojure/clojure/tools/analyzer/passes.clj#L170",
+   "https://github.com/clojure/tools.analyzer/blob/fc467448518876d1ec91d18cfac901e739f36594/src/main/clojure/clojure/tools/analyzer/passes.clj#L170",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/5f04191a6f6b42d5c7cff5400af269c1acc6a956/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/fc467448518876d1ec91d18cfac901e739f36594/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/schedule",
    :doc
