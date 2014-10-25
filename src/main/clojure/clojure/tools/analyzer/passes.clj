@@ -94,7 +94,26 @@
          (recur (:walk cur) (conj group cur) rest)))
       [w group state])))
 
-;; TODO: start a looping pass only if all the looping passes are available
+(defn satisfies-affected? [{:keys [affects walk]} passes]
+  (loop [passes passes]
+    (let [free (filter (comp val empty? :dependants val) passes)]
+      (if-let [available-passes (seq (filter (comp #{walk :any} :walk) free))]
+        (recur (reduce remove-pass passes (mapv :name available-passes)))
+        (empty? (filter (fn [{:keys [name]}] ((set affects) name)) passes))))))
+
+(defn maybe-looping-pass [free passes]
+  (if-let [looping (seq (filter :affects free))]
+    (loop [[l & ls] looping]
+      (if l
+        (if (satisfies-affected? l (remove-pass passes (:name l)))
+          ;; all deps satisfied
+          l
+          (recur ls))
+        (throw (ex-info (str "looping pass doesn't encompass affected passes: " (:name l))
+                        {:pass l}))))
+    ;; pick a random one
+    (first free)))
+
 (defn schedule* [state passes]
   (let [f                         (filter (comp empty? :dependants val) passes)
         [free & frs :as free-all] (vals f)
@@ -104,8 +123,7 @@
                   (and w (or (ffilter-walk #{w} free-all)
                              (ffilter-walk #{:any} free-all)))
                   (ffilter-walk #{:none} free-all)
-                  (ffilter :affects free-all)
-                  free)]
+                  (maybe-looping-pass free-all passes))]
         (recur (cons (assoc x :passes [(:name x)]) state)
                (remove-pass passes (:name x))))
       state)))
@@ -116,11 +134,6 @@
       (if (= :none (:walk cur))
         (recur rest (conj ret cur))
         (let [[w g state] (group state)]
-          (when-let [affects (first (filter :affects g))]
-            (let [passes (set (mapv :name g))]
-              (when (not-every? passes (:affects affects))
-                (throw (ex-info (str "looping pass doesn't encompass affected passes: " (:name affects))
-                                {:pass affects})))))
           (recur state (conj ret {:walk (or w :pre) :passes (mapv :name g)}))))
       ret)))
 
