@@ -96,7 +96,7 @@
 
 (defn satisfies-affected? [{:keys [affects walk]} passes]
   (loop [passes passes]
-    (let [free (filter (comp val empty? :dependants val) passes)]
+    (let [free (vals (filter (comp empty? :dependants val) passes))]
       (if-let [available-passes (seq (filter (comp #{walk :any} :walk) free))]
         (recur (reduce remove-pass passes (mapv :name available-passes)))
         (empty? (filter (fn [{:keys [name]}] ((set affects) name)) passes))))))
