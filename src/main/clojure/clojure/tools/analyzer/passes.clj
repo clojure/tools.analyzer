@@ -99,7 +99,7 @@
     (let [free (vals (filter (comp empty? :dependants val) passes))]
       (if-let [available-passes (seq (filter (comp #{walk :any} :walk) free))]
         (recur (reduce remove-pass passes (mapv :name available-passes)))
-        (empty? (filter (fn [{:keys [name]}] ((set affects) name)) passes))))))
+        (empty? (filter (fn [{:keys [name]}] ((set affects) name)) (vals passes)))))))
 
 (defn maybe-looping-pass [free passes]
   (if-let [looping (seq (filter :affects free))]
@@ -109,23 +109,27 @@
           ;; all deps satisfied
           l
           (recur ls))
-        (throw (ex-info (str "looping pass doesn't encompass affected passes: " (:name l))
-                        {:pass l}))))
-    ;; pick a random one
+        (if-let [p (first (remove :affects free))]
+          ;; pick a random avaliable non-looping pass
+          p
+          (throw (ex-info (str "looping pass doesn't encompass affected passes: " (:name l))
+                          {:pass l})))))
+    ;; pick a random available pass
     (first free)))
 
 (defn schedule* [state passes]
   (let [f                         (filter (comp empty? :dependants val) passes)
         [free & frs :as free-all] (vals f)
-        w                         (first (group state))]
+        w                         (first (group state))
+        non-looping-free          (remove :affects free-all)]
     (if (seq passes)
-      (let [x (or (ffilter :compiler free-all)
-                  (and w (or (ffilter-walk #{w} free-all)
-                             (ffilter-walk #{:any} free-all)))
-                  (ffilter-walk #{:none} free-all)
-                  (maybe-looping-pass free-all passes))]
-        (recur (cons (assoc x :passes [(:name x)]) state)
-               (remove-pass passes (:name x))))
+      (let [{:keys [name] :as pass} (or (ffilter :compiler free-all)
+                                        (and w (or (ffilter-walk #{w} non-looping-free)
+                                                   (ffilter-walk #{:any} non-looping-free)))
+                                        (ffilter-walk #{:none} free-all)
+                                        (maybe-looping-pass free-all passes))]
+        (recur (cons (assoc pass :passes [name]) state)
+               (remove-pass passes name)))
       state)))
 
 (defn collapse [state]
