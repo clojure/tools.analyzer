@@ -1,5 +1,8 @@
 Changelog
 ========================================
+* Release 0.6.2 on 27 Oct 2014
+  * Fixes and improvements for looping pass scheduling
+  * Performance improvements on the scheduled pass function
 * Release 0.6.1 on 13 Oct 2014
   * Significant performance enhancements
   * Fixed scheduling of looping passes

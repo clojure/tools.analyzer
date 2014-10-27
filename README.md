@@ -180,7 +180,7 @@ clojure.tools.analyzer.jvm> (ast/prewalk (analyze '(do 1 (+ 1 2) :foo))
 ```
 As you can see, this time all the nodes have been marked `:visited`.
 
-Since version `0.6.1`, passes can be scheduled automatically using `clojure.tools.analyzer.passes/schedule` rather than having to compose them and sort out pass dependencies manually, refer to its docstrings and examples from `tools.analyzer.jvm` for more info.
+Since version `0.6.0`, passes can be scheduled automatically using `clojure.tools.analyzer.passes/schedule` rather than having to compose them and sort out pass dependencies manually, refer to its docstrings and examples from `tools.analyzer.jvm` for more info.
 
 ## SPONSORSHIP
 
@@ -199,7 +199,7 @@ YourKit is kindly supporting open source projects with its full-featured Java Pr
 Releases and Dependency Information
 ========================================
 
-Latest stable release: 0.6.1
+Latest stable release: 0.6.2
 
 * [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.clojure%22%20AND%20a%3A%22tools.analyzer%22)
 
@@ -208,7 +208,7 @@ Latest stable release: 0.6.1
 [Leiningen](https://github.com/technomancy/leiningen) dependency information:
 
 ```clojure
-[org.clojure/tools.analyzer "0.6.1"]
+[org.clojure/tools.analyzer "0.6.2"]
 ```
 [Maven](http://maven.apache.org/) dependency information:
 
@@ -216,7 +216,7 @@ Latest stable release: 0.6.1
 <dependency>
   <groupId>org.clojure</groupId>
   <artifactId>tools.analyzer</artifactId>
-  <version>0.6.1</version>
+  <version>0.6.2</version>
 </dependency>
 ```
 
