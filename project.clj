@@ -5,5 +5,5 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths ["src/main/clojure"]
   :test-paths ["src/test/clojure"]
-  :dependencies [[org.clojure/clojure "1.7.0-beta3"]
+  :dependencies [[org.clojure/clojure "1.7.0-alpha3"]
                  [com.datomic/datomic-free "0.9.4956" :scope "provided"]])
