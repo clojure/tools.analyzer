@@ -49,7 +49,7 @@
    :name "clojure.tools.analyzer.passes.constant-lifter",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/blob/349ea4623d4465fd9a044b40db51886582ce1d72/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.elide-meta-api.html",
    :name "clojure.tools.analyzer.passes.elide-meta",
@@ -582,24 +582,24 @@
    :name "elide-meta",
    :namespace "clojure.tools.analyzer.passes.elide-meta",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L80",
+   "https://github.com/clojure/tools.analyzer/blob/349ea4623d4465fd9a044b40db51886582ce1d72/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L79",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/raw/349ea4623d4465fd9a044b40db51886582ce1d72/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.elide-meta/elide-meta",
    :doc
    "If elides is not empty and the AST node contains metadata,\ndissoc all the keys in elides from the metadata.",
    :var-type "function",
-   :line 80,
+   :line 79,
    :file
    "src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj"}
   {:name "elides",
    :namespace "clojure.tools.analyzer.passes.elide-meta",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L12",
+   "https://github.com/clojure/tools.analyzer/blob/349ea4623d4465fd9a044b40db51886582ce1d72/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L12",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/b3b631708566d7718dd1a5d5498ef58871af4fec/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
+   "https://github.com/clojure/tools.analyzer/raw/349ea4623d4465fd9a044b40db51886582ce1d72/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.elide-meta/elides",
    :doc
