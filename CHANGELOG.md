@@ -1,5 +1,9 @@
 Changelog
 ========================================
+* Release 0.6.3 on 03 Oct 2014
+  * Preserve correct meta on emit-form
+  * Preserve :raw-forms in elide-meta
+  * Better source-info propagation
 * Release 0.6.2 on 27 Oct 2014
   * Fixes and improvements for looping pass scheduling
   * Performance improvements on the scheduled pass function
