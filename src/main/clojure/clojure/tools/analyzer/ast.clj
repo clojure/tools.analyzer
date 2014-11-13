@@ -54,28 +54,42 @@
             (recur (conj! ret val) (inc i))))
         (persistent! ret)))))
 
-(defn -update-children
+;; return transient or reduced holding transient
+(defn ^:private -update-children
   [ast f]
-  (persistent!
-   (reduce (fn [ast [k v]]
-             (let [val (if (vector? v) (mapv' f v) (f v))]
-               (if (reduced? val)
-                 (reduced (assoc! ast k @val))
-                 (assoc! ast k val))))
-           (transient ast)
-           (children* ast))))
+  (reduce (fn [ast [k v]]
+            (let [val (if (vector? v) (mapv' f v) (f v))]
+              (if (reduced? val)
+                (reduced (reduced (assoc! ast k @val)))
+                (assoc! ast k val))))
+          (transient ast)
+          (children* ast)))
 
-(defn -update-children-r
+;; return transient or reduced holding transient
+(defn ^:private -update-children-r
   [ast f]
-  (persistent!
-   (reduce (fn [ast [k v]]
-             (let [multi (vector? v)
-                   val (if multi (mapv' f (rseq v)) (f v))]
-               (if (reduced? val)
-                 (reduced (assoc! ast k (if multi (rseqv @val) @val)))
-                 (assoc! ast k (if multi (rseqv val) val)))))
-           (transient ast)
-           (rseq (children* ast)))))
+  (reduce (fn [ast [k v]]
+            (let [multi (vector? v)
+                  val (if multi (mapv' f (rseq v)) (f v))]
+              (if (reduced? val)
+                (reduced (reduced (assoc! ast k (if multi (rseqv @val) @val))))
+                (assoc! ast k (if multi (rseqv val) val)))))
+          (transient ast)
+          (rseq (children* ast))))
+
+(defn update-children-reduced
+  "Like update-children but returns a reduced holding the AST if f short-circuited."
+  ([ast f] (update-children-reduced ast f false))
+  ([ast f reversed?]
+     (if (and (not (reduced? ast))
+              (:children ast))
+       (let [ret (if reversed?
+                   (-update-children-r ast f)
+                   (-update-children   ast f))]
+         (if (reduced? ret)
+           (reduced (persistent! @ret))
+           (persistent! ret)))
+       ast)))
 
 (defn update-children
   "Applies `f` to each AST children node, replacing it with the returned value.
@@ -84,11 +98,10 @@
    Short-circuits on reduced."
   ([ast f] (update-children ast f false))
   ([ast f reversed?]
-     (if (:children ast)
-       (if reversed?
-         (-update-children-r ast f)
-         (-update-children   ast f))
-       ast)))
+     (let [r (update-children-reduced ast f reversed?)]
+       (if (reduced? r)
+         @r
+         r))))
 
 (defn walk
   "Walk the ast applying `pre` when entering the nodes, and `post` when exiting.
