@@ -6,6 +6,10 @@
   <name>${artifactId}</name>
   <description>An analyzer for Clojure code, written in Clojure and producing AST in EDN</description>
 
+  <properties>
+    <clojure.version>1.5.1</clojure.version>
+  </properties>
+
   <parent>
     <groupId>org.clojure</groupId>
     <artifactId>pom.contrib</artifactId>
