@@ -8,7 +8,7 @@
 
 (ns clojure.tools.analyzer.ast
   "Utilities for AST walking/updating"
-  (:require [clojure.tools.analyzer.utils :refer [into! rseqv]]))
+  (:require [clojure.tools.analyzer.utils :refer [into! rseqv mapv']]))
 
 (defn cycling
   "Combine the given passes in a single pass that will be applieed repeatedly
@@ -40,19 +40,6 @@
   (persistent!
    (reduce (fn [acc [_ c]] ((if (vector? c) into! conj!) acc c))
            (transient []) (children* ast))))
-
-
-(defn mapv'
-  "Like mapv, but short-circuits on reduced"
-  [f v]
-  (let [c (count v)]
-    (loop [ret (transient []) i 0]
-      (if (> c i)
-        (let [val (f (nth v i))]
-          (if (reduced? val)
-            (reduced (persistent! (reduce conj! (conj! ret @val) (subvec v (inc i)))))
-            (recur (conj! ret val) (inc i))))
-        (persistent! ret)))))
 
 ;; return transient or reduced holding transient
 (defn ^:private -update-children
