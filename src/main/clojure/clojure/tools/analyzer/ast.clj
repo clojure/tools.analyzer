@@ -41,11 +41,27 @@
    (reduce (fn [acc [_ c]] ((if (vector? c) into! conj!) acc c))
            (transient []) (children* ast))))
 
+
+(defn mapv'
+  "Like mapv, but short-circuits on reduced"
+  [f v]
+  (let [c (count v)]
+    (loop [ret (transient []) i 0]
+      (if (> c i)
+        (let [val (f (nth v i))]
+          (if (reduced? val)
+            (reduced (persistent! (reduce conj! (conj! ret @val) (subvec v (inc i)))))
+            (recur (conj! ret val) (inc i))))
+        (persistent! ret)))))
+
 (defn -update-children
   [ast f]
   (persistent!
    (reduce (fn [ast [k v]]
-             (assoc! ast k (if (vector? v) (mapv f v) (f v))))
+             (let [val (if (vector? v) (mapv' f v) (f v))]
+               (if (reduced? val)
+                 (reduced (assoc! ast k @val))
+                 (assoc! ast k val))))
            (transient ast)
            (children* ast))))
 
@@ -53,17 +69,20 @@
   [ast f]
   (persistent!
    (reduce (fn [ast [k v]]
-             (assoc! ast k (if (vector? v) (rseqv (mapv f (rseq v))) (f v))))
+             (let [multi (vector? v)
+                   val (if multi (mapv' f (rseq v)) (f v))]
+               (if (reduced? val)
+                 (reduced (assoc! ast k (if multi (rseqv @val) @val)))
+                 (assoc! ast k (if multi (rseqv val) val)))))
            (transient ast)
            (rseq (children* ast)))))
 
 (defn update-children
   "Applies `f` to each AST children node, replacing it with the returned value.
    If reversed? is not-nil, `pre` and `post` will be applied starting from the last
-   children of the AST node to the first one."
-  ([ast f] (if (:children ast)
-             (-update-children ast f)
-             ast))
+   children of the AST node to the first one.
+   Short-circuits on reduced."
+  ([ast f] (update-children ast f false))
   ([ast f reversed?]
      (if (:children ast)
        (if reversed?
