@@ -8,6 +8,7 @@
 
 (ns clojure.tools.analyzer.ast
   "Utilities for AST walking/updating"
+  (:refer-clojure :exclude [unreduced])
   (:require [clojure.tools.analyzer.utils :refer [into! rseqv mapv']]))
 
 (defn cycling
@@ -78,6 +79,11 @@
            (persistent! ret)))
        ast)))
 
+(defn ^:private unreduced [x]
+  (if (reduced? x)
+    @x
+    x))
+
 (defn update-children
   "Applies `f` to each AST children node, replacing it with the returned value.
    If reversed? is not-nil, `pre` and `post` will be applied starting from the last
@@ -85,10 +91,7 @@
    Short-circuits on reduced."
   ([ast f] (update-children ast f false))
   ([ast f reversed?]
-     (let [r (update-children-reduced ast f reversed?)]
-       (if (reduced? r)
-         @r
-         r))))
+     (unreduced (update-children-reduced ast f reversed?))))
 
 (defn walk
   "Walk the ast applying `pre` when entering the nodes, and `post` when exiting.
@@ -99,49 +102,41 @@
   ([ast pre post]
      (walk ast pre post false))
   ([ast pre post reversed?]
-     (let [ast ((fn walk [ast pre post reversed?]
-                  (let [walk #(walk % pre post reversed?)]
-                    (if (reduced? ast)
-                      ast
-                      (let [ret (update-children-reduced (pre ast) walk reversed?)]
-                        (if (reduced? ret)
-                          ret
-                          (post ret))))))
-                ast pre post reversed?)]
-       (if (reduced? ast)
-         @ast
-         ast))))
+     (unreduced
+      ((fn walk [ast pre post reversed?]
+         (let [walk #(walk % pre post reversed?)]
+           (if (reduced? ast)
+             ast
+             (let [ret (update-children-reduced (pre ast) walk reversed?)]
+               (if (reduced? ret)
+                 ret
+                 (post ret))))))
+       ast pre post reversed?))))
 
 (defn prewalk
   "Shorthand for (walk ast f identity)"
   [ast f]
-  (let [ast ((fn prewalk [ast f]
-               (let [walk #(prewalk % f)]
-                 (if (reduced? ast)
-                   ast
-                   (update-children-reduced (f ast) walk))))
-             ast f)]
-    (if (reduced? ast)
-      @ast
-      ast)))
+  (unreduced
+   ((fn prewalk [ast f]
+      (let [walk #(prewalk % f)]
+        (if (reduced? ast)
+          ast
+          (update-children-reduced (f ast) walk))))
+    ast f)))
 
 (defn postwalk
   "Shorthand for (walk ast identity f reversed?)"
   ([ast f]
      (postwalk ast f false))
   ([ast f reversed?]
-     (let [ast ((fn postwalk [ast f reversed?]
-                  (let [walk #(postwalk % f reversed?)]
-                    (if (reduced? ast)
-                      ast
-                      (let [ret (update-children-reduced ast walk reversed?)]
-                        (if (reduced? ret)
-                          ret
-                          (f ret))))))
-                ast f reversed?)]
-       (if (reduced? ast)
-         @ast
-         ast))))
+     (unreduced
+      ((fn postwalk [ast f reversed?]
+         (let [walk #(postwalk % f reversed?)
+               ret (update-children-reduced ast walk reversed?)]
+           (if (reduced? ret)
+             ret
+             (f ret))))
+       ast f reversed?))))
 
 (defn nodes
   "Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order."
