@@ -57,7 +57,7 @@
   [ast f]
   (reduce (fn [ast [k v]]
             (let [multi (vector? v)
-                  val (if multi (mapv' f (rseq v)) (f v))]
+                  val (if multi (mapv' f (rseqv v)) (f v))]
               (if (reduced? val)
                 (reduced (reduced (assoc! ast k (if multi (rseqv @val) @val))))
                 (assoc! ast k (if multi (rseqv val) val)))))
@@ -99,22 +99,49 @@
   ([ast pre post]
      (walk ast pre post false))
   ([ast pre post reversed?]
-     (let [walk #(walk % pre post reversed?)]
-       (post (update-children (pre ast) walk reversed?)))))
+     (let [ast ((fn walk [ast pre post reversed?]
+                  (let [walk #(walk % pre post reversed?)]
+                    (if (reduced? ast)
+                      ast
+                      (let [ret (update-children-reduced (pre ast) walk reversed?)]
+                        (if (reduced? ret)
+                          ret
+                          (post ret))))))
+                ast pre post reversed?)]
+       (if (reduced? ast)
+         @ast
+         ast))))
 
 (defn prewalk
   "Shorthand for (walk ast f identity)"
   [ast f]
-  (let [walk #(prewalk % f)]
-    (update-children (f ast) walk)))
+  (let [ast ((fn prewalk [ast f]
+               (let [walk #(prewalk % f)]
+                 (if (reduced? ast)
+                   ast
+                   (update-children-reduced (f ast) walk))))
+             ast f)]
+    (if (reduced? ast)
+      @ast
+      ast)))
 
 (defn postwalk
   "Shorthand for (walk ast identity f reversed?)"
   ([ast f]
      (postwalk ast f false))
   ([ast f reversed?]
-     (let [walk #(postwalk % f reversed?)]
-       (f (update-children ast walk reversed?)))))
+     (let [ast ((fn postwalk [ast f reversed?]
+                  (let [walk #(postwalk % f reversed?)]
+                    (if (reduced? ast)
+                      ast
+                      (let [ret (update-children-reduced ast walk reversed?)]
+                        (if (reduced? ret)
+                          ret
+                          (f ret))))))
+                ast f reversed?)]
+       (if (reduced? ast)
+         @ast
+         ast))))
 
 (defn nodes
   "Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order."
