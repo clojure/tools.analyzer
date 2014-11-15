@@ -44,26 +44,16 @@
 
 ;; return transient or reduced holding transient
 (defn ^:private -update-children
-  [ast f]
-  (reduce (fn [ast [k v]]
-            (let [val (if (vector? v) (mapv' f v) (f v))]
-              (if (reduced? val)
-                (reduced (reduced (assoc! ast k @val)))
-                (assoc! ast k val))))
-          (transient ast)
-          (children* ast)))
-
-;; return transient or reduced holding transient
-(defn ^:private -update-children-r
-  [ast f]
-  (reduce (fn [ast [k v]]
-            (let [multi (vector? v)
-                  val (if multi (mapv' f (rseqv v)) (f v))]
-              (if (reduced? val)
-                (reduced (reduced (assoc! ast k (if multi (rseqv @val) @val))))
-                (assoc! ast k (if multi (rseqv val) val)))))
-          (transient ast)
-          (rseq (children* ast))))
+  [ast f r?]
+  (let [fix (if r? rseqv identity)]
+    (reduce (fn [ast [k v]]
+              (let [multi (vector? v)
+                    val (if multi (mapv' f (fix v)) (f v))]
+                (if (reduced? val)
+                  (reduced (reduced (assoc! ast k (if multi (fix @val) @val))))
+                  (assoc! ast k (if multi (fix val) val)))))
+            (transient ast)
+            (fix (children* ast)))))
 
 (defn update-children-reduced
   "Like update-children but returns a reduced holding the AST if f short-circuited."
@@ -71,9 +61,7 @@
   ([ast f reversed?]
      (if (and (not (reduced? ast))
               (:children ast))
-       (let [ret (if reversed?
-                   (-update-children-r ast f)
-                   (-update-children   ast f))]
+       (let [ret (-update-children ast f reversed?)]
          (if (reduced? ret)
            (reduced (persistent! @ret))
            (persistent! ret)))
@@ -98,7 +86,8 @@
    Both functions must return a valid node since the returned value will replace
    the node in the AST which was given as input to the function.
    If reversed? is not-nil, `pre` and `post` will be applied starting from the last
-   children of the AST node to the first one."
+   children of the AST node to the first one.
+   Short-circuits on reduced."
   ([ast pre post]
      (walk ast pre post false))
   ([ast pre post reversed?]
@@ -116,27 +105,14 @@
 (defn prewalk
   "Shorthand for (walk ast f identity)"
   [ast f]
-  (unreduced
-   ((fn prewalk [ast f]
-      (let [walk #(prewalk % f)]
-        (if (reduced? ast)
-          ast
-          (update-children-reduced (f ast) walk))))
-    ast f)))
+  (walk ast f identity))
 
 (defn postwalk
   "Shorthand for (walk ast identity f reversed?)"
   ([ast f]
      (postwalk ast f false))
   ([ast f reversed?]
-     (unreduced
-      ((fn postwalk [ast f reversed?]
-         (let [walk #(postwalk % f reversed?)
-               ret (update-children-reduced ast walk reversed?)]
-           (if (reduced? ret)
-             ret
-             (f ret))))
-       ast f reversed?))))
+     (walk ast identity f reversed?)))
 
 (defn nodes
   "Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order."
