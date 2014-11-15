@@ -7,7 +7,7 @@
    :doc
    "Analyzer for clojure code, host agnostic.\n\nEntry point:\n* analyze\n\nPlatform implementers must provide dynamic bindings for:\n* macroexpand-1\n* parse\n* create-var\n* var?\n\nSetting up the global env is also required, see clojure.tools.analyzer.env\n\nSee clojure.tools.analyzer.core-test for an example on how to setup the analyzer."}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.ast-api.html",
    :name "clojure.tools.analyzer.ast",
@@ -247,139 +247,139 @@
    :name "ast->eav",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L152",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L147",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/ast->eav",
    :doc
    "Returns an EAV representation of the current AST that can be used by\nDatomic's Datalog.",
    :var-type "function",
-   :line 152,
+   :line 147,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([ast]),
    :name "children",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L35",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L36",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/children",
    :doc
    "Return a vector of the children expression of the AST node, if it has any.\nThe children expressions are kept in order and flattened so that the returning\nvector contains only nodes and not vectors of nodes.",
    :var-type "function",
-   :line 35,
+   :line 36,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([{:keys [children], :as ast}]),
    :name "children*",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L25",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L26",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/children*",
    :doc
    "Return a vector of vectors of the children node key and the children expression\nof the AST node, if it has any.\nThe returned vector returns the childrens in the order as they appear in the\n:children field of the AST, and the children expressions may be either a node\nor a vector of nodes.",
    :var-type "function",
-   :line 25,
+   :line 26,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([& fns*]),
    :name "cycling",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L13",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L14",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/cycling",
    :doc
    "Combine the given passes in a single pass that will be applieed repeatedly\nto the AST until applying it another time will have no effect",
    :var-type "function",
-   :line 13,
+   :line 14,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([ast]),
    :name "nodes",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L146",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L141",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/nodes",
    :doc
    "Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order.",
    :var-type "function",
-   :line 146,
+   :line 141,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([ast f] [ast f reversed?]),
    :name "postwalk",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L128",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L127",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/postwalk",
    :doc "Shorthand for (walk ast identity f reversed?)",
    :var-type "function",
-   :line 128,
+   :line 127,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([ast f]),
    :name "prewalk",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L115",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L116",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/prewalk",
    :doc "Shorthand for (walk ast f identity)",
    :var-type "function",
-   :line 115,
+   :line 116,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([ast f] [ast f reversed?]),
    :name "update-children",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L81",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L87",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/update-children",
    :doc
    "Applies `f` to each AST children node, replacing it with the returned value.\nIf reversed? is not-nil, `pre` and `post` will be applied starting from the last\nchildren of the AST node to the first one.\nShort-circuits on reduced.",
    :var-type "function",
-   :line 81,
+   :line 87,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([ast f] [ast f reversed?]),
    :name "update-children-reduced",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L67",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L68",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/update-children-reduced",
    :doc
    "Like update-children but returns a reduced holding the AST if f short-circuited.",
    :var-type "function",
-   :line 67,
+   :line 68,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([ast pre post] [ast pre post reversed?]),
    :name "walk",
    :namespace "clojure.tools.analyzer.ast",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj#L93",
+   "https://github.com/clojure/tools.analyzer/blob/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj#L96",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/6bb62aa9874dd109027a5f6ef079e0f87bf3a92e/src/main/clojure/clojure/tools/analyzer/ast.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5864ed6b1a0b628fd89afca2899af2489c12e962/src/main/clojure/clojure/tools/analyzer/ast.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast/walk",
    :doc
    "Walk the ast applying `pre` when entering the nodes, and `post` when exiting.\nBoth functions must return a valid node since the returned value will replace\nthe node in the AST which was given as input to the function.\nIf reversed? is not-nil, `pre` and `post` will be applied starting from the last\nchildren of the AST node to the first one.",
    :var-type "function",
-   :line 93,
+   :line 96,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
   {:arglists ([asts]),
    :name "db",
