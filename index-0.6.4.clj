@@ -13,7 +13,7 @@
    :name "clojure.tools.analyzer.ast",
    :doc "Utilities for AST walking/updating"}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
+   "https://github.com/clojure/tools.analyzer/blob/3f3c10e3de60340934f1557376acbdecc25b6be7/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.ast.query-api.html",
    :name "clojure.tools.analyzer.ast.query",
@@ -381,76 +381,6 @@
    :var-type "function",
    :line 84,
    :file "src/main/clojure/clojure/tools/analyzer/ast.clj"}
-  {:arglists ([asts]),
-   :name "db",
-   :namespace "clojure.tools.analyzer.ast.query",
-   :source-url
-   "https://github.com/clojure/tools.analyzer/blob/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L77",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/db",
-   :doc
-   "Given a list of ASTs, returns a representation of those\nthat can be used as a database in a Datomic Datalog query",
-   :var-type "function",
-   :line 77,
-   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
-  {:arglists ([query asts & inputs]),
-   :name "q",
-   :namespace "clojure.tools.analyzer.ast.query",
-   :source-url
-   "https://github.com/clojure/tools.analyzer/blob/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L83",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/q",
-   :doc
-   "Execute a Datomic Datalog query against the ASTs.\nThe first input is always assumed to be an AST database, if more\nare required, it's required to call `db` on them.\n`unfold-expression-clauses` is automatically applied to the\nquery.",
-   :var-type "function",
-   :line 83,
-   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
-  {:arglists ([query]),
-   :name "query-map",
-   :namespace "clojure.tools.analyzer.ast.query",
-   :source-url
-   "https://github.com/clojure/tools.analyzer/blob/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L14",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/query-map",
-   :doc
-   "Transoforms a Datomic query from its vector representation to its map one.\nIf the given query is already in its map representation, the original query\nis returned.",
-   :var-type "function",
-   :line 14,
-   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
-  {:arglists ([query]),
-   :name "resolve-calls",
-   :namespace "clojure.tools.analyzer.ast.query",
-   :source-url
-   "https://github.com/clojure/tools.analyzer/blob/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L59",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/resolve-calls",
-   :doc
-   "Automatically replace fn name symbols in expression clauses with\ntheir namespace qualified one if the symbol can be resolved in the\ncurrent namespace.",
-   :var-type "function",
-   :line 59,
-   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
-  {:arglists ([query]),
-   :name "unfold-expression-clauses",
-   :namespace "clojure.tools.analyzer.ast.query",
-   :source-url
-   "https://github.com/clojure/tools.analyzer/blob/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L29",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/87bc3a0a8faff84362e2cbd43e20774e869343fb/src/main/clojure/clojure/tools/analyzer/ast/query.clj",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.ast.query/unfold-expression-clauses",
-   :doc
-   "Given a Datomic query, walk the :where clauses searching for\nexpression clauses with nested calls, unnesting those calls.\n\nE.g {:where [[(inc (dec ?foo)) ?bar] ..] ..} will be transformed in\n{:where [[(dec ?foo) ?1234] [(inc ?1234) ?bar] ..] ..}",
-   :var-type "function",
-   :line 29,
-   :file "src/main/clojure/clojure/tools/analyzer/ast/query.clj"}
   {:name "*env*",
    :namespace "clojure.tools.analyzer.env",
    :source-url
