@@ -19,12 +19,11 @@
   (if (map? query)
     query
     (loop [ret {:find [] :in [] :where []} query query op nil]
-      (if (seq query)
-        (let [[el & query] query]
-          (if (keyword? el)
-            (recur ret query el)
-            (recur (update-in ret [op] conj el) query op)))
-        (reduce-kv (fn [m k v] (if (seq v) (assoc m k v) m)) {} ret)))))
+      (if-let [[el & query] (seq query)]
+        (if (keyword? el)
+          (recur ret query el)
+          (recur (update-in ret [op] conj el) query op)))
+      (reduce-kv (fn [m k v] (if (seq v) (assoc m k v) m)) {} ret))))
 
 (defn unfold-expression-clauses
   "Given a Datomic query, walk the :where clauses searching for
@@ -41,18 +40,17 @@
                        (if-let [[f & args] (and (seq? op) op)]
                          (if (some seq? args)
                            (loop [args args to-ssa {} cur [f] binds rest ret []]
-                             (if (seq args)
-                               (let [[a & args] args]
-                                 (if (and (seq? a)
-                                          (not= 'quote (first a)))
-                                   (let [g (gensym "?")]
-                                     (recur args (assoc to-ssa g a) (conj cur g) binds ret))
-                                   (recur args to-ssa (conj cur a) binds ret)))
-                               (let [ret (conj ret (into [(seq cur)] binds))]
-                                 (if (seq to-ssa)
-                                   (let [[k [f & args]] (first to-ssa)]
-                                     (recur args (dissoc to-ssa k) [f] [k] ret))
-                                   ret))))
+                             (if-let [[a & args] (seq args)]
+                               (if (and (seq? a)
+                                        (not= 'quote (first a)))
+                                 (let [g (gensym "?")]
+                                   (recur args (assoc to-ssa g a) (conj cur g) binds ret))
+                                 (recur args to-ssa (conj cur a) binds ret)))
+                             (let [ret (conj ret (into [(seq cur)] binds))]
+                               (if (seq to-ssa)
+                                 (let [[k [f & args]] (first to-ssa)]
+                                   (recur args (dissoc to-ssa k) [f] [k] ret))
+                                 ret)))
                            [form])
                          [form])) where)))))
 
