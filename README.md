@@ -199,7 +199,7 @@ YourKit is kindly supporting open source projects with its full-featured Java Pr
 Releases and Dependency Information
 ========================================
 
-Latest stable release: 0.6.3
+Latest stable release: 0.6.4
 
 * [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.clojure%22%20AND%20a%3A%22tools.analyzer%22)
 
@@ -208,7 +208,7 @@ Latest stable release: 0.6.3
 [Leiningen](https://github.com/technomancy/leiningen) dependency information:
 
 ```clojure
-[org.clojure/tools.analyzer "0.6.3"]
+[org.clojure/tools.analyzer "0.6.4"]
 ```
 [Maven](http://maven.apache.org/) dependency information:
 
@@ -216,7 +216,7 @@ Latest stable release: 0.6.3
 <dependency>
   <groupId>org.clojure</groupId>
   <artifactId>tools.analyzer</artifactId>
-  <version>0.6.3</version>
+  <version>0.6.4</version>
 </dependency>
 ```
 

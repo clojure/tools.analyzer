@@ -1,5 +1,9 @@
 Changelog
 ========================================
+* Release 0.6.4 on 20 Nov 2014
+  * Fixed a bug in the pass scheduler regarding transitive deps
+  * Added reduced support for update-children, walk, prewalk and postwalk
+  * Fixed parsing of catch expressions outside a try block
 * Release 0.6.3 on 03 Oct 2014
   * Preserve correct meta on emit-form
   * Preserve :raw-forms in elide-meta
