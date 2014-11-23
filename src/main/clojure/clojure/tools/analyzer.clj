@@ -402,8 +402,9 @@
                              (-source-info form env)))))
     (if (and (empty? cblocks)
              (empty? fblocks))
-      ;; TODO: what about the meta?
-      (assoc (analyze-body body env) :form form) ;; discard the useless try
+      (-> (with-meta (list* 'do body) (meta form)) ;; discard the useless try but preserves meta
+        (analyze-form env)
+        (update-in [:raw-forms] (fnil conj ()) form)) ;; and original form in :raw-forms
       (let [env' (assoc env :in-try true)
             body (analyze-body body (assoc env' :no-recur true)) ;; cannot recur across try
             cenv (ctx env' :ctx/expr)
