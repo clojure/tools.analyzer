@@ -271,10 +271,7 @@
                     :class mform})))
              {:env  env
               :form mform})
-      (-> (if (obj? mform)
-           (with-meta mform (meta sym))
-           mform)
-        (analyze-form env)
+      (-> (analyze-form mform env)
         (update-in [:raw-forms] (fnil conj ()) sym)))))
 
 (defn analyze-seq
@@ -288,7 +285,7 @@
       (if (= form mform) ;; function/special-form invocation
         (parse mform env)
         (-> (analyze-form mform env)
-          (update-in [:raw-forms] (fnil conj ()) form)))))) ;; TODO: should passes propagate this?
+          (update-in [:raw-forms] (fnil conj ()) form))))))
 
 (defmethod -parse 'do
   [[_ & exprs :as form] env]
