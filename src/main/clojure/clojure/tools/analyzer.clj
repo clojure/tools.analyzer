@@ -587,6 +587,12 @@
      :children    [:exprs]}))
 
 (defn analyze-fn-method [[params & body :as form] {:keys [locals local] :as env}]
+  (when-not (vector? params)
+    (throw (ex-info "Parameter declaration should be a vector"
+                    (merge {:params params
+                            :form   form}
+                           (-source-info form env)
+                           (-source-info params env)))))
   (when (not-every? valid-binding-symbol? params)
     (throw (ex-info (str "Params must be valid binding symbols, had: "
                          (mapv class params))
@@ -594,12 +600,6 @@
                             :form   form}
                            (-source-info form env)
                            (-source-info params env))))) ;; more specific
-  (when-not (vector? params)
-    (throw (ex-info "Parameter declaration should be a vector"
-                    (merge {:params params
-                            :form   form}
-                           (-source-info form env)
-                           (-source-info params env)))))
   (let [variadic? (boolean (some '#{&} params))
         params-names (if variadic? (conj (pop (pop params)) (peek params)) params)
         env (dissoc env :local)
