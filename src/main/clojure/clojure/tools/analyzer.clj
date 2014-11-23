@@ -179,8 +179,7 @@
 
 (defn analyze-const
   [form env & [type]]
-  (let [type (or type (classify form))
-        m (meta form)]
+  (let [type (or type (classify form))]
     (merge
      {:op       :const
       :env      env
@@ -188,8 +187,8 @@
       :literal? true
       :val      form
       :form     form}
-     (when (and (obj? form)
-                (seq m))
+     (when-let [m (and (obj? form)
+                       (not-empty (meta form)))]
        {:meta     (analyze-const m (ctx env :ctx/expr) :map) ;; metadata on a constant literal will not be evaluated at
         :children [:meta]}))))                               ;; runtime, this is also true for metadata on quoted collection literals
 
