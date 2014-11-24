@@ -26,13 +26,7 @@
             [clojure.tools.analyzer.env :as env])
   (:import (clojure.lang Symbol IPersistentVector IPersistentMap IPersistentSet ISeq IType IRecord)))
 
-;; Expression hierarchy
-;; :ctx/return
-;; :ctx/statement
-;; :ctx/expr
-
-(derive :ctx.invoke/param :ctx/expr)
-(derive :ctx.invoke/target :ctx/expr)
+(derive :ctx/return :ctx/expr)
 
 (defmulti -parse
   "Takes a form and an env map and dispatches on the head of the form, that is
@@ -101,12 +95,9 @@
   "Given a form to analyze and an environment, a map containing:
    * :locals     a map from binding symbol to AST of the binding value
    * :context    a keyword describing the form's context from the :ctx/* hierarchy.
-    ** :ctx/return    the form is in return position
-    ** :ctx/statement the return value of the form is not needed
-    ** :ctx/expr      the form is an expression, it's value is used
-    Derived from :ctx/expr
-    ** :ctx.invoke/target  the form is an expression that is invoked as a function
-    ** :ctx.invoke/param   the form is an expression used as parameter in a function call
+    ** :ctx/expr      the form is an expression: its value is used
+    ** :ctx/return    the form is an expression in return position, derives :ctx/expr
+    ** :ctx/statement the value of the form is not used
    * :ns         a symbol representing the current namespace of the form to be
                  analyzed
 
@@ -802,8 +793,9 @@
 
 (defn parse-invoke
   [[f & args :as form] env]
-  (let [fn-expr (analyze-form f (ctx env :ctx.invoke/target))
-        args-expr (mapv (analyze-in-env (ctx env :ctx.invoke/param)) args)
+  (let [fenv (ctx env :ctx/expr)
+        fn-expr (analyze-form f fenv)
+        args-expr (mapv (analyze-in-env fenv) args)
         m (meta form)]
     (merge {:op   :invoke
             :form form
