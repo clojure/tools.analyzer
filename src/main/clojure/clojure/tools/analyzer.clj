@@ -276,7 +276,8 @@
       (if (= form mform) ;; function/special-form invocation
         (parse mform env)
         (-> (analyze-form mform env)
-          (update-in [:raw-forms] (fnil conj ()) form))))))
+          (update-in [:raw-forms] (fnil conj ())
+                     (vary-meta form assoc ::resolved-op (resolve-sym op env))))))))
 
 (defmethod -parse 'do
   [[_ & exprs :as form] env]
