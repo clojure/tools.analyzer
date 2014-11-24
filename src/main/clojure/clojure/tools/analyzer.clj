@@ -246,7 +246,7 @@
                       {:op          :local
                        :assignable? (boolean mutable)
                        :children    (vec (remove #{:init} children))})
-               (if-let [var (let [v (resolve-var sym env)]
+               (if-let [var (let [v (resolve-sym sym env)]
                               (and (var? v) v))]
                  (let [m (meta var)]
                    {:op          :var

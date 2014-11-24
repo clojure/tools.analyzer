@@ -5,7 +5,7 @@
             [clojure.tools.analyzer.env :refer [with-env]]
             [clojure.tools.analyzer.passes.elide-meta :refer [elides elide-meta]]
             [clojure.test :refer [deftest is]]
-            [clojure.tools.analyzer.utils :refer [resolve-var]]))
+            [clojure.tools.analyzer.utils :refer [resolve-sym]]))
 
 (defn desugar-host-expr [[op & expr :as form]]
   (if (symbol? op)
@@ -31,7 +31,7 @@
     (let [op (first form)]
       (if (ana/specials op)
         form
-        (let [v (resolve-var op env)]
+        (let [v (resolve-sym op env)]
           (if (and (not (-> env :locals (get op))) ;; locals cannot be macros
                    (:macro (meta v)))
             (apply v form env (rest form)) ; (m &form &env & args)
