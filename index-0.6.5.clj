@@ -31,7 +31,7 @@
    :name "clojure.tools.analyzer.passes",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.add-binding-atom-api.html",
    :name "clojure.tools.analyzer.passes.add-binding-atom",
@@ -43,7 +43,7 @@
    :name "clojure.tools.analyzer.passes.collect-closed-overs",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.constant-lifter-api.html",
    :name "clojure.tools.analyzer.passes.constant-lifter",
@@ -55,7 +55,7 @@
    :name "clojure.tools.analyzer.passes.elide-meta",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.emit-form-api.html",
    :name "clojure.tools.analyzer.passes.emit-form",
@@ -73,13 +73,13 @@
    :name "clojure.tools.analyzer.passes.source-info",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.uniquify-api.html",
    :name "clojure.tools.analyzer.passes.uniquify",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes.warn-earmuff-api.html",
    :name "clojure.tools.analyzer.passes.warn-earmuff",
@@ -548,20 +548,21 @@
    :var-type "function",
    :line 177,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
-  {:file
-   "src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
+  {:arglists ([ast] [state ast]),
+   :name "add-binding-atom",
+   :namespace "clojure.tools.analyzer.passes.add-binding-atom",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L13",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L13",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.add-binding-atom/add-binding-atom",
-   :namespace "clojure.tools.analyzer.passes.add-binding-atom",
-   :line 13,
-   :var-type "multimethod",
    :doc
    "Adds an atom-backed-map to every local binding,the same\natom will be shared between all occurences of that local.\n\nThe atom is put in the :atom field of the node.",
-   :name "add-binding-atom"}
+   :var-type "function",
+   :line 13,
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj"}
   {:arglists ([ast]),
    :name "collect-closed-overs",
    :namespace "clojure.tools.analyzer.passes.collect-closed-overs",
@@ -580,9 +581,9 @@
   {:file
    "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L12",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L12",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.constant-lifter/constant-lift",
    :namespace "clojure.tools.analyzer.passes.constant-lifter",
@@ -625,10 +626,10 @@
    :name "-emit-form*",
    :namespace "clojure.tools.analyzer.passes.emit-form",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L14",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L14",
    :dynamic true,
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.emit-form/-emit-form*",
    :doc
@@ -641,9 +642,9 @@
    :name "emit-form",
    :namespace "clojure.tools.analyzer.passes.emit-form",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L24",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L24",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.emit-form/emit-form",
    :doc
@@ -656,9 +657,9 @@
    :name "emit-hygienic-form",
    :namespace "clojure.tools.analyzer.passes.emit-form",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L32",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L32",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.emit-form/emit-hygienic-form",
    :doc "Return an hygienic form represented by the given AST",
@@ -700,23 +701,23 @@
    :name "uniquify-locals",
    :namespace "clojure.tools.analyzer.passes.uniquify",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L97",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L85",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.uniquify/uniquify-locals",
    :doc
    "Walks the AST performing alpha-conversion on the :name field\n of :local/:binding nodes, invalidates :local map in :env field\n\nPasses opts:\n* :uniquify/uniquify-env  If true, uniquifies the :env :locals map",
    :var-type "function",
-   :line 97,
+   :line 85,
    :file "src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj"}
   {:arglists ([ast]),
    :name "warn-earmuff",
    :namespace "clojure.tools.analyzer.passes.warn-earmuff",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj#L12",
+   "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj#L12",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/24735d2d8a7bf489147de5473a091fc31dc001ae/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
+   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.warn-earmuff/warn-earmuff",
    :doc
