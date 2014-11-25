@@ -160,7 +160,7 @@
   (let [meta (meta form)]
     (if (and (obj? form)
              (seq meta))
-      {:op       :with-meta
+      {:op       :op/with-meta
        :env      env
        :form     form
        :meta     (analyze-form meta (ctx env :ctx/expr))
@@ -172,7 +172,7 @@
   [form env & [type]]
   (let [type (or type (classify form))]
     (merge
-     {:op       :const
+     {:op       :op/const
       :env      env
       :type     type
       :literal? true
@@ -188,7 +188,7 @@
   (let [items-env (ctx env :ctx/expr)
         items (mapv (analyze-in-env items-env) form)]
     (wrapping-meta
-     {:op       :vector
+     {:op       :op/vector
       :env      env
       :items    items
       :form     form
@@ -203,7 +203,7 @@
         ks (mapv (analyze-in-env kv-env) keys)
         vs (mapv (analyze-in-env kv-env) vals)]
     (wrapping-meta
-     {:op       :map
+     {:op       :op/map
       :env      env
       :keys     ks
       :vals     vs
@@ -215,7 +215,7 @@
   (let [items-env (ctx env :ctx/expr)
         items (mapv (analyze-in-env items-env) form)]
     (wrapping-meta
-     {:op       :set
+     {:op       :op/set
       :env      env
       :items    items
       :form     form
@@ -243,22 +243,22 @@
     (if (= mform sym)
       (merge (if-let [{:keys [mutable children] :as local-binding} (-> env :locals sym)] ;; locals shadow globals
                (merge (dissoc local-binding :init)                                      ;; avoids useless passes later
-                      {:op          :local
+                      {:op          :op/local
                        :assignable? (boolean mutable)
                        :children    (vec (remove #{:init} children))})
                (if-let [var (let [v (resolve-sym sym env)]
                               (and (var? v) v))]
                  (let [m (meta var)]
-                   {:op          :var
+                   {:op          :op/var
                     :assignable? (dynamic? var m) ;; we cannot statically determine if a Var is in a thread-local context
                     :var         var              ;; so checking whether it's dynamic or not is the most we can do
                     :meta        m})
                  (if-let [maybe-class (namespace sym)] ;; e.g. js/foo.bar or Long/MAX_VALUE
                    (let [maybe-class (symbol maybe-class)]
-                     {:op    :maybe-host-form
+                     {:op    :op/maybe-host-form
                       :class maybe-class
                       :field (symbol (name sym))})
-                   {:op    :maybe-class ;; e.g. java.lang.Integer or Long
+                   {:op    :op/maybe-class ;; e.g. java.lang.Integer or Long
                     :class mform})))
              {:env  env
               :form mform})
@@ -288,7 +288,7 @@
                              [statements e]))
         statements (mapv (analyze-in-env statements-env) statements)
         ret (analyze-form ret env)]
-    {:op         :do
+    {:op         :op/do
      :env        env
      :form       form
      :statements statements
@@ -305,7 +305,7 @@
   (let [test-expr (analyze-form test (ctx env :ctx/expr))
         then-expr (analyze-form then env)
         else-expr (analyze-form else env)]
-    {:op       :if
+    {:op       :op/if
      :form     form
      :env      env
      :test     test-expr
@@ -321,7 +321,7 @@
                            (-source-info form env)))))
   (let [args-env (ctx env :ctx/expr)
         args (mapv (analyze-in-env args-env) args)]
-    {:op          :new
+    {:op          :op/new
      :env         env
      :form        form
      :class       (analyze-form class (assoc env :locals {})) ;; avoid shadowing
@@ -335,7 +335,7 @@
                     (merge {:form form}
                            (-source-info form env)))))
   (let [const (analyze-const expr env)]
-    {:op       :quote
+    {:op       :op/quote
      :expr     const
      :form     form
      :env      env
@@ -350,7 +350,7 @@
                            (-source-info form env)))))
   (let [target (analyze-form target (ctx env :ctx/expr))
         val (analyze-form val (ctx env :ctx/expr))]
-    {:op       :set!
+    {:op       :op/set!
      :env      env
      :form     form
      :target   target
@@ -403,7 +403,7 @@
             cblocks (mapv #(parse % cenv) cblocks)
             fblock (when-not (empty? fblock)
                      (analyze-body (rest fblock) (ctx env :ctx/statement)))]
-        (merge {:op      :try
+        (merge {:op      :op/try
                 :env     env
                 :form    form
                 :body    body
@@ -425,13 +425,13 @@
                                 :form form}
                                (-source-info form env)))))
       (let [env (dissoc env :in-try)
-            local {:op    :binding
+            local {:op    :op/binding
                    :env   env
                    :form  ename
                    :name  ename
                    :local :catch
                    :tag   etype}]
-        {:op          :catch
+        {:op          :op/catch
          :class       (analyze-form etype (assoc env :locals {}))
          :local       local
          :env         env
@@ -445,7 +445,7 @@
     (throw (ex-info (str "Wrong number of args to throw, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
-  {:op        :throw
+  {:op        :op/throw
    :env       env
    :form      form
    :exception (analyze-form throw (ctx env :ctx/expr))
@@ -479,7 +479,7 @@
                              (-source-info form env)))))
     (let [binds (reduce (fn [binds name]
                           (assoc binds name
-                                 {:op    :binding
+                                 {:op    :op/binding
                                   :env   env
                                   :name  name
                                   :form  name
@@ -495,7 +495,7 @@
                            {} binds)
           e (update-in env [:locals] merge (update-vals binds dissoc-env))
           body (analyze-body body e)]
-      {:op       :letfn
+      {:op       :op/letfn
        :env      env
        :form     form
        :bindings (vec (vals binds)) ;; order is irrelevant
@@ -516,7 +516,7 @@
                                   :sym  name}
                                  (-source-info form env))))
           (let [init-expr (analyze-form init env)
-                bind-expr {:op       :binding
+                bind-expr {:op       :op/binding
                            :env      env
                            :name     name
                            :init     init-expr
@@ -531,26 +531,24 @@
                                              (when loop?
                                                {:loop-id     loop-id
                                                 :loop-locals (count binds)})))]
-          {:body     body
+          {:op       (if loop? :op/loop :op/let)
+           :form     form
+           :env      env
+           :body     body
            :bindings binds
            :children [:bindings :body]})))))
 
 (defmethod -parse 'let*
   [form env]
-  (into {:op   :let
-         :form form
-         :env  env}
-        (analyze-let form env)))
+  (analyze-let form env))
 
 (defmethod -parse 'loop*
   [form env]
   (let [loop-id (gensym "loop_") ;; can be used to find matching recur
-        env (dissoc (assoc env :loop-id loop-id) :no-recur)]
-    (into {:op      :loop
-           :form    form
-           :env     env
-           :loop-id loop-id}
-          (analyze-let form env))))
+        env' (dissoc (assoc env :loop-id loop-id) :no-recur)]
+    (merge (analyze-let form env')
+           {:env     env
+            :loop-id loop-id})))
 
 (defmethod -parse 'recur
   [[_ & exprs :as form] {:keys [context loop-locals loop-id no-recur]
@@ -572,7 +570,7 @@
                            (-source-info form env)))))
 
   (let [exprs (mapv (analyze-in-env (ctx env :ctx/expr)) exprs)]
-    {:op          :recur
+    {:op          :op/recur
      :env         env
      :form        form
      :exprs       exprs
@@ -598,12 +596,12 @@
         env (dissoc env :local)
         arity (count params-names)
         params-expr (mapv (fn [name id]
-                            {:env       env
+                            {:op        :op/binding
+                             :env       env
                              :form      name
                              :name      name
                              :variadic? (and variadic?
                                              (= id (dec arity)))
-                             :op        :binding
                              :arg-id    id
                              :local     :arg})
                           params-names (range))
@@ -633,7 +631,7 @@
                                  (-source-info form env)
                                  (-source-info params env)))))))
     (merge
-     {:op          :fn-method
+     {:op          :op/fn-method
       :form        form
       :loop-id     loop-id
       :env         env
@@ -651,7 +649,7 @@
    (let [[n meths] (if (symbol? (first args))
                      [(first args) (next args)]
                      [nil (seq args)])
-         name-expr {:op    :binding
+         name-expr {:op    :op/binding
                     :env   env
                     :form  n
                     :local :fn
@@ -681,7 +679,7 @@
        (throw (ex-info "Can't have fixed arity overload with more params than variadic overload"
                        (merge {:form form}
                               (-source-info form env)))))
-     (merge {:op              :fn
+     (merge {:op              :op/fn
              :env             env
              :form            form
              :variadic?       variadic?
@@ -741,7 +739,7 @@
         children (into (into [] (when meta [:meta]))
                        (when init? [:init]))]
 
-    (merge {:op   :def
+    (merge {:op   :op/def
             :env  env
             :form form
             :name sym
@@ -775,19 +773,19 @@
             :target target-expr}
            (cond
             call?
-            {:op       :host-call
+            {:op       :op/host-call
              :method   (symbol (name (first m-or-f)))
              :args     (mapv (analyze-in-env (ctx env :ctx/expr)) (next m-or-f))
              :children [:target :args]}
 
             field?
-            {:op          :host-field
+            {:op          :op/host-field
              :assignable? true
              :field       (symbol (name m-or-f))
              :children    [:target]}
 
             :else
-            {:op          :host-interop ;; either field access or no-args method call
+            {:op          :op/host-interop ;; either field access or no-args method call
              :assignable? true
              :m-or-f      (symbol (name m-or-f))
              :children    [:target]}))))
@@ -798,7 +796,7 @@
         fn-expr (analyze-form f fenv)
         args-expr (mapv (analyze-in-env fenv) args)
         m (meta form)]
-    (merge {:op   :invoke
+    (merge {:op   :op/invoke
             :form form
             :env  env
             :fn   fn-expr

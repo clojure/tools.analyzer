@@ -48,10 +48,10 @@
   (is (= 1 (-> {:form ^{:end-column 1 :line 1} [1]} source-info :env :end-column))))
 
 (deftest constant-lift-test
-  (is (= :const (-> (ast {:a {:b :c}}) (postwalk constant-lift) :op)))
-  (is (not= :const (-> (ast {:a {:b #()}}) (postwalk constant-lift) :op)))
-  (is (= :const (-> (ast [:foo 1 "bar" #{#"baz" {23 []}}])
-                  (postwalk constant-lift) :op))))
+  (is (= :op/const (-> (ast {:a {:b :c}}) (postwalk constant-lift) :op)))
+  (is (not= :op/const (-> (ast {:a {:b #()}}) (postwalk constant-lift) :op)))
+  (is (= :op/const (-> (ast [:foo 1 "bar" #{#"baz" {23 []}}])
+                    (postwalk constant-lift) :op))))
 
 (deftest uniquify-test
   (let [the-ast (with-env e1

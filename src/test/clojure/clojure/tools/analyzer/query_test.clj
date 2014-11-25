@@ -16,7 +16,7 @@
             (ffirst
              (q '[:find ?docstring
                   :where
-                  [?def :op :def]
+                  [?def :op :op/def]
                   [?def :init ?fn]
                   [?fn :methods ?method]
                   [?method :body ?body]
