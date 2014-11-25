@@ -15,18 +15,18 @@
   {:pass-info {:walk :post :depends #{}}}
   :op)
 
-(defmethod constant-lift :op/vector
+(defmethod constant-lift :vector
   [{:keys [items form env] :as ast}]
   (if (and (every? :literal? items)
            (empty? (meta form)))
     (merge (dissoc ast :items :children)
-           {:op       :op/const
+           {:op       :const
             :val      (mapv const-val items)
             :type     :vector
             :literal? true})
     ast))
 
-(defmethod constant-lift :op/map
+(defmethod constant-lift :map
   [{:keys [keys vals form env] :as ast}]
   (if (and (every? :literal? keys)
            (every? :literal? vals)
@@ -38,18 +38,18 @@
               c
               (apply array-map (mapcat identity c)))]
       (merge (dissoc ast :keys :vals :children)
-             {:op       :op/const
+             {:op       :const
               :val      c
               :type     :map
               :literal? true}))
     ast))
 
-(defmethod constant-lift :op/set
+(defmethod constant-lift :set
   [{:keys [items form env] :as ast}]
   (if (and (every? :literal? items)
            (empty? (meta form)))
     (merge (dissoc ast :items :children)
-           {:op       :op/const
+           {:op       :const
             :val      (into (empty form) (mapv const-val items))
             :type     :set
             :literal? true})

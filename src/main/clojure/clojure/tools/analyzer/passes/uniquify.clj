@@ -34,7 +34,7 @@
 (defn uniquify-locals* [ast]
   (update-children ast uniquify-locals-around))
 
-(defmethod -uniquify-locals :op/local
+(defmethod -uniquify-locals :local
   [ast]
   (if (= :field (:local ast)) ;; deftype fields cannot be uniquified
     ast                       ;; to allow field access/set! to work
@@ -52,44 +52,32 @@
         :name name
         :init i))))
 
-(defmethod -uniquify-locals :op/letfn
+(defmethod -uniquify-locals :letfn
   [ast]
   (doseq [{:keys [name]} (:bindings ast)] ;; take into account that letfn
     (uniquify name))                      ;; accepts parallel bindings
   (uniquify-locals* ast))
 
-(defmulti -uniquify-binding :local)
+(defmethod -uniquify-locals :binding
+  [{:keys [name local] :as ast}]
+  (case local
+    (:let :loop)
+    (uniquify-binding ast)
 
-(defmethod -uniquify-binding :default
-  [{:keys [name] :as ast}]
-  (do (uniquify name)
-      (assoc ast :name (normalize name))))
+    :letfn
+    (-> ast
+      (assoc :name (normalize name))
+      uniquify-locals*)
 
-(defmethod -uniquify-binding :op/let
+    :field
+    ast
+
+    (do (uniquify name)
+        (assoc ast :name (normalize name)))))
+
+(defmethod -uniquify-locals :default
   [ast]
-  (uniquify-binding ast))
-
-(defmethod -uniquify-binding :op/loop
-  [ast]
-  (uniquify-binding ast))
-
-(defmethod -uniquify-binding :op/field
-  [ast]
-  ast)
-
-(defmethod -uniquify-binding :op/letfn
-  [ast]
-  (-> ast
-    (update-in [:name] normalize)
-    uniquify-locals*))
-
-(defmethod -uniquify-locals :op/binding
-  [ast]
-  (-uniquify-binding ast))
-
-(defmethod -uniquify-locals :op/default
-  [ast]
-  (if (some #(isa? :op/binding (:op %)) (children ast))
+  (if (some #(= :binding (:op %)) (children ast))
     (binding [*locals-frame* (atom @*locals-frame*)] ;; set up frame so locals won't leak
       (uniquify-locals* ast))
     (uniquify-locals* ast)))

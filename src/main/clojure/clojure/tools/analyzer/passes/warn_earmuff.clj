@@ -15,7 +15,7 @@
   {:pass-info {:walk :pre :depends #{}}}
   [ast]
   (let [name (str (:name ast))]
-    (when (and (isa? :op/def (:op ast))
+    (when (and (= :def (:op ast))
                (> (count name) 2)  ;; Allow * and ** as non-dynamic names
                (.startsWith name "*")
                (.endsWith name "*")
