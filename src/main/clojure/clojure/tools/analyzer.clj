@@ -690,7 +690,7 @@
              :once            once?}
             (when n
               {:local name-expr})
-            {:children `[~@(when n [:local]) :methods]}))))
+            {:children (conj (if n [:local] []) :methods)}))))
 
 (defmethod -parse 'def
   [[_ sym & expr :as form] {:keys [ns] :as env}]
