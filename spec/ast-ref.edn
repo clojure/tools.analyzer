@@ -183,7 +183,8 @@
    :doc  "Node for a recur special-form expression"
    :keys [[:form "`(recur expr*)`"]
           ^:children
-          [:exprs "A vector of AST nodes representing the new bound values for the loop binding on the next loop iteration"]]}
+          [:exprs "A vector of AST nodes representing the new bound values for the loop binding on the next loop iteration"]
+          [:loop-id "Unique symbol identifying the enclosing loop target"]]}
   {:op   :set
    :doc  "Node for a set literal"
    :keys [[:form "`#{item*}`"]
