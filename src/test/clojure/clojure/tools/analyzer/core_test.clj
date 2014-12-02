@@ -157,7 +157,7 @@
     (is (= :local/loop (-> l-ast :bindings first :local)))
     (is (= :ctx/return (-> l-ast :body :env :context))))
 
-  (let [f-ast (ast (fn a ([y & x] [x y]) ([] a) ([z] z)))]
+  (let [f-ast (-> (ast (fn a ([y & x] [x y]) ([] a) ([z] z))) :ret)]
     (is (= 1 (-> f-ast :max-fixed-arity)) (:meta f-ast))
     (is (:variadic? f-ast))
     (is (= true (-> f-ast :methods first :variadic?))))

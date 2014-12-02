@@ -57,8 +57,8 @@
   (let [the-ast (with-env e1
                   (uniquify-locals (ast (let [x 1 y x x (let [x x] x)]
                                           (fn [y] x)))))]
-    (is (= 'x__#2 (-> the-ast :body :ret :methods first :body :ret :name)))
-    (is (= 'y__#1 (-> the-ast :body :ret :methods first :params first :name)))
+    (is (= 'x__#2 (-> the-ast :body :ret :ret :methods first :body :ret :name)))
+    (is (= 'y__#1 (-> the-ast :body :ret :ret :methods first :params first :name)))
     (is (apply not= (->> the-ast :bindings (mapv :name))))))
 
 (deftest emit-form-test
