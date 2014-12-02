@@ -26,7 +26,9 @@
             [clojure.tools.analyzer.env :as env])
   (:import (clojure.lang Symbol IPersistentVector IPersistentMap IPersistentSet ISeq IType IRecord)))
 
-(derive :ctx/return :ctx/expr)
+(def ^:dynamic h (atom (make-hierarchy)))
+
+(derive! h :ctx/return :ctx/expr)
 
 (defmulti -parse
   "Takes a form and an env map and dispatches on the head of the form, that is
@@ -429,7 +431,7 @@
                    :env   env
                    :form  ename
                    :name  ename
-                   :local :catch
+                   :local :local/catch
                    :tag   etype}]
         {:op          :op/catch
          :class       (analyze-form etype (assoc env :locals {}))
@@ -483,7 +485,7 @@
                                   :env   env
                                   :name  name
                                   :form  name
-                                  :local :letfn}))
+                                  :local :local/letfn}))
                         {} fns)
           e (update-in env [:locals] merge binds) ;; pre-seed locals
           binds (reduce-kv (fn [binds name bind]
@@ -521,7 +523,7 @@
                            :name     name
                            :init     init-expr
                            :form     name
-                           :local    (if loop? :loop :let)
+                           :local    (if loop? :local/loop :local/let)
                            :children [:init]}]
             (recur bindings
                    (assoc-in env [:locals name] (dissoc-env bind-expr))
@@ -555,7 +557,7 @@
                          :as env}]
   (when-let [error-msg
              (cond
-              (not (isa? context :ctx/return))
+              (not (isa? @h context :ctx/return))
               "Can only recur from tail position"
 
               no-recur
@@ -603,7 +605,7 @@
                              :variadic? (and variadic?
                                              (= id (dec arity)))
                              :arg-id    id
-                             :local     :arg})
+                             :local     :local/arg})
                           params-names (range))
         fixed-arity (if variadic?
                       (dec arity)
@@ -652,7 +654,7 @@
          name-expr {:op    :op/binding
                     :env   env
                     :form  n
-                    :local :fn
+                    :local :local/fn
                     :name  n}
          e (if n (assoc (assoc-in env [:locals n] (dissoc-env name-expr)) :local name-expr) env)
          once? (-> op meta :once boolean)

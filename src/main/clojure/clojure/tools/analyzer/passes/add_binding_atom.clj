@@ -7,7 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.add-binding-atom
-  (:require [clojure.tools.analyzer.ast :refer [prewalk]]
+  (:require [clojure.tools.analyzer :refer [h]]
+            [clojure.tools.analyzer.ast :refer [prewalk]]
             [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
 
 (defmulti add-binding-atom
@@ -16,7 +17,8 @@
 
    The atom is put in the :atom field of the node."
   {:pass-info {:walk :pre :depends #{#'uniquify-locals} :state (fn [] (atom {}))}}
-  (fn [_ ast] (:op ast)))
+  (fn [_ ast] (:op ast))
+  :hierarchy h)
 
 (defmethod add-binding-atom :op/binding
   [state ast]

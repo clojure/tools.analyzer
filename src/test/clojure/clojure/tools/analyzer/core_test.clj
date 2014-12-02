@@ -116,7 +116,7 @@
 
   (let [l-ast (ast (let [a 1] a))]
     (is (= :op/local (-> l-ast :body :ret :op)))
-    (is (= :let (-> l-ast :body :ret :local))))
+    (is (= :local/let (-> l-ast :body :ret :local))))
 
   (let [do-ast (ast (do 1 2 3))]
     (is (= 3 (-> do-ast :ret :form)))
@@ -150,11 +150,11 @@
     (is (= 3 (-> t-ast :finally :ret :form))))
 
   (let [lfn-ast (ast (letfn [(a [] (b)) (b [] (a))] a))]
-    (is (= :letfn (-> lfn-ast :body :ret :local)))
+    (is (= :local/letfn (-> lfn-ast :body :ret :local)))
     (is (= '#{a b} (->> lfn-ast :bindings (mapv :name) set))))
 
   (let [l-ast (ast (loop [x 1] (recur 2)))]
-    (is (= :loop (-> l-ast :bindings first :local)))
+    (is (= :local/loop (-> l-ast :bindings first :local)))
     (is (= :ctx/return (-> l-ast :body :env :context))))
 
   (let [f-ast (ast (fn a ([y & x] [x y]) ([] a) ([z] z)))]

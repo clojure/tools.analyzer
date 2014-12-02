@@ -7,7 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.warn-earmuff
-  (:require [clojure.tools.analyzer.utils :refer [dynamic?]]))
+  (:require [clojure.tools.analyzer :refer [h]]
+            [clojure.tools.analyzer.utils :refer [dynamic?]]))
 
 (defn warn-earmuff
   "Prints a warning to *err* if the AST node is a :def node and the
@@ -15,7 +16,7 @@
   {:pass-info {:walk :pre :depends #{}}}
   [ast]
   (let [name (str (:name ast))]
-    (when (and (isa? :op/def (:op ast))
+    (when (and (isa? @h :op/def (:op ast))
                (> (count name) 2)  ;; Allow * and ** as non-dynamic names
                (.startsWith name "*")
                (.endsWith name "*")

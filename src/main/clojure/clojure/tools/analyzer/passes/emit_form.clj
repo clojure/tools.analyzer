@@ -7,9 +7,10 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.emit-form
-  (:require [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
+  (:require [clojure.tools.analyzer :refer [h]]
+            [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
 
-(defmulti -emit-form (fn [{:keys [op]} _] op))
+(defmulti -emit-form (fn [{:keys [op]} _] op) :hierarchy h)
 
 (defn ^:dynamic -emit-form*
   "Extension point for custom emit-form implementations, should be rebound

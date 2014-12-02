@@ -7,13 +7,15 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.constant-lifter
-  (:require [clojure.tools.analyzer.utils :refer [const-val]]))
+  (:require [clojure.tools.analyzer :refer [h]]
+            [clojure.tools.analyzer.utils :refer [const-val]]))
 
 (defmulti constant-lift
   "If the node represents a collection with no metadata, and every item of that
    collection is a literal, transform the node to an equivalent :const node."
   {:pass-info {:walk :post :depends #{}}}
-  :op)
+  :op
+  :hierarchy h)
 
 (defmethod constant-lift :op/vector
   [{:keys [items form env] :as ast}]

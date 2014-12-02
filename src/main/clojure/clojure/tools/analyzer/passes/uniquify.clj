@@ -7,7 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.uniquify
-  (:require [clojure.tools.analyzer.ast :refer [update-children children]]
+  (:require [clojure.tools.analyzer :refer [h]]
+            [clojure.tools.analyzer.ast :refer [update-children children]]
             [clojure.tools.analyzer.utils :refer [update-vals]]
             [clojure.tools.analyzer.env :as env]))
 
@@ -21,7 +22,7 @@
   (swap! *locals-counter* #(update-in % [name] (fnil inc -1)))
   (swap! *locals-frame* #(assoc-in % [name] (symbol (str name "__#" (@*locals-counter* name))))))
 
-(defmulti -uniquify-locals :op)
+(defmulti -uniquify-locals :op :hierarchy h)
 
 (defn uniquify-locals-around
   [ast]
@@ -36,7 +37,7 @@
 
 (defmethod -uniquify-locals :op/local
   [ast]
-  (if (= :field (:local ast)) ;; deftype fields cannot be uniquified
+  (if (isa? @h :local/field (:local ast)) ;; deftype fields cannot be uniquified
     ast                       ;; to allow field access/set! to work
     (let [name (normalize (:name ast))]
       (assoc ast :name name))))
@@ -60,21 +61,23 @@
 
 (defmethod -uniquify-locals :op/binding
   [{:keys [name local] :as ast}]
-  (case local
-    (:let :loop)
-    (uniquify-binding ast)
-    :letfn
-    (-> ast
-      (assoc :name (normalize name))
-      uniquify-locals*)
-    :field
-    ast
-    (do (uniquify name)
-        (assoc ast :name (normalize name)))))
+  (cond
+   (or (isa? @h :local/let local)
+       (isa? @h :local/loop local))
+   (uniquify-binding ast)
+   (isa? @h :local/letfn local)
+   (-> ast
+     (assoc :name (normalize name))
+     uniquify-locals*)
+   (isa? @h :local/field local)
+   ast
+   :else
+   (do (uniquify name)
+       (assoc ast :name (normalize name)))))
 
 (defmethod -uniquify-locals :default
   [ast]
-  (if (some #(isa? :op/binding (:op %)) (children ast))
+  (if (some #(isa? @h :op/binding (:op %)) (children ast))
     (binding [*locals-frame* (atom @*locals-frame*)] ;; set up frame so locals won't leak
       (uniquify-locals* ast))
     (uniquify-locals* ast)))

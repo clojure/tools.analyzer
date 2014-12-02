@@ -7,7 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.collect-closed-overs
-  (:require [clojure.tools.analyzer.ast :refer [update-children]]
+  (:require [clojure.tools.analyzer :refer [h]]
+            [clojure.tools.analyzer.ast :refer [update-children]]
             [clojure.tools.analyzer.env :as env]
             [clojure.tools.analyzer.passes.cleanup :refer [cleanup]]
             [clojure.tools.analyzer.passes.uniquify :refer [uniquify-locals]]))
@@ -16,7 +17,7 @@
 
 (declare collect-closed-overs*)
 
-(defmulti -collect-closed-overs* :op)
+(defmulti -collect-closed-overs* :op :hierarchy h)
 
 (defmethod -collect-closed-overs* :default [ast] ast)
 
@@ -51,7 +52,7 @@
 (defn collect-closed-overs*
   [{:keys [op] :as ast}]
   (let [collects @*collects*
-        collect? (some #(isa? % op) (:where collects))]
+        collect? (some #(isa? @h % op) (:where collects))]
     (if collect?
       (let [[ast {:keys [closed-overs locals]}]
             (binding [*collects* (atom (merge @*collects*
@@ -60,8 +61,8 @@
         (swap! *collects* #(update-in % [:closed-overs] merge ;; propagate closed-overs from the inner frame to the outer frame
                                       (into {}
                                             (remove (fn [[_ {:keys [local]}]] ;; remove deftype fields from the closed-over locals
-                                                      (and (isa? :op/deftype)
-                                                           (= :field local)))
+                                                      (and (isa? @h :op/deftype op)
+                                                           (isa? @h :local/field local)))
                                                     (apply dissoc closed-overs        ;; remove from the closed-overs locals that were
                                                            (:locals @*collects*)))))) ;; local to the inner frame
         (assoc ast :closed-overs closed-overs))

@@ -7,7 +7,8 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.elide-meta
-  (:require [clojure.tools.analyzer.passes.source-info :refer [source-info]]))
+  (:require [clojure.tools.analyzer :refer [h]]
+            [clojure.tools.analyzer.passes.source-info :refer [source-info]]))
 
 (def ^:dynamic elides
   "A map of op keywords to predicate IFns.
@@ -19,7 +20,7 @@
   {:all (set (:elide-meta *compiler-options*))})
 
 (defn replace-meta [meta new-meta]
-  (if (isa? :op/const (:op meta))
+  (if (isa? @h :op/const (:op meta))
     (assoc meta :val  new-meta)
     (let [meta-map (mapv (fn [k v]
                            (when-not (elides (:form k))
@@ -31,15 +32,15 @@
 
 (defn get-elides [{:keys [op expr type]}]
   (let [k (cond
-           (isa? :op/with-meta op)
+           (isa? @h :op/with-meta op)
            (:op expr)
 
-           (isa? :op/const op)
+           (isa? @h :op/const op)
            type
 
            :else
            nil)
-        f (reduce-kv (fn [f op v] (when (isa? op k)
+        f (reduce-kv (fn [f op v] (when (isa? @h op k)
                                    (reduced v))) nil (dissoc elides :all))]
     (if f
       (some-fn (:all elides) f)
@@ -50,7 +51,7 @@
   (let [form (:form meta)
         new-meta (apply dissoc form (filter (get-elides ast) (keys form)))]
     (cond
-     (isa? :op/const op)
+     (isa? @h :op/const op)
      (if (or (not meta)
              (= new-meta (:form meta)))
        ast
@@ -59,7 +60,7 @@
          (-> ast
            (update-in [:val] with-meta nil)
            (dissoc :children :meta))))
-     (isa? :op/with-meta op)
+     (isa? @h :op/with-meta op)
      (if (not (empty? new-meta))
        (if (= new-meta (:form meta))
          ast
@@ -70,7 +71,7 @@
          (if (:raw-forms ast)
            (update-in ret [:raw-forms] (partial concat (:raw-forms ast)))
            ast)))
-     (isa? :op/def op)
+     (isa? @h :op/def op)
      (if (not (empty? new-meta))
        (if (= new-meta (:form meta))
          ast
