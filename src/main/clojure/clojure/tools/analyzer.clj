@@ -28,12 +28,6 @@
 
 (derive :ctx/return :ctx/expr)
 
-(defmulti -parse
-  "Takes a form and an env map and dispatches on the head of the form, that is
-   a special form."
-  (fn [[op & rest] env] op)
-  :default :invoke)
-
 (defmulti -analyze-form (fn [form _] (class form)))
 
 (declare analyze-symbol
@@ -224,7 +218,7 @@
 (def specials
   "Set of special forms common to every clojure variant"
   '#{do if new quote set! try
-     catch throw finally & def .
+     catch throw finally def .
      let* letfn* loop* recur fn*})
 
 (defn macroexpand
@@ -279,7 +273,7 @@
           (update-in [:raw-forms] (fnil conj ())
                      (vary-meta form assoc ::resolved-op (resolve-sym op env))))))))
 
-(defmethod -parse 'do
+(defn parse-do
   [[_ & exprs :as form] env]
   (let [statements-env (ctx env :ctx/statement)
         [statements ret] (loop [statements [] [e & exprs] exprs]
@@ -295,7 +289,7 @@
      :ret        ret
      :children   [:statements :ret]}))
 
-(defmethod -parse 'if
+(defn parse-if
   [[_ test then else :as form] env]
   (let [formc (count form)]
     (when-not (or (= formc 3) (= formc 4))
@@ -313,7 +307,7 @@
      :else     else-expr
      :children [:test :then :else]}))
 
-(defmethod -parse 'new
+(defn parse-new
   [[_ class & args :as form] env]
   (when-not (>= (count form) 2)
     (throw (ex-info (str "Wrong number of args to new, had: " (dec (count form)))
@@ -328,7 +322,7 @@
      :args        args
      :children    [:class :args]}))
 
-(defmethod -parse 'quote
+(defn parse-quote
   [[_ expr :as form] env]
   (when-not (= 2 (count form))
     (throw (ex-info (str "Wrong number of args to quote, had: " (dec (count form)))
@@ -342,7 +336,7 @@
      :literal? true
      :children [:expr]}))
 
-(defmethod -parse 'set!
+(defn parse-set!
   [[_ target val :as form] env]
   (when-not (= 3 (count form))
     (throw (ex-info (str "Wrong number of args to set!, had: " (dec (count form)))
@@ -375,7 +369,7 @@
           [(seq take) drop]))
       [(seq take) ()])))
 
-(defmethod -parse 'try
+(defn parse-try
   [[_ & body :as form] env]
   (let [catch? (every-pred seq? #(= (first %) 'catch))
         finally? (every-pred seq? #(= (first %) 'finally))
@@ -414,7 +408,7 @@
                                 (when fblock [:finally]))})))))
 
 (declare parse-invoke)
-(defmethod -parse 'catch
+(defn parse-catch
   [[_ etype ename & body :as form] env]
   (if-not (:in-try env)
     (parse-invoke form env)
@@ -439,7 +433,7 @@
          :body        (analyze-body body (assoc-in env [:locals ename] (dissoc-env local)))
          :children    [:class :local :body]}))))
 
-(defmethod -parse 'throw
+(defn parse-throw
   [[_ throw :as form] env]
   (when-not (= 2 (count form))
     (throw (ex-info (str "Wrong number of args to throw, had: " (dec (count form)))
@@ -467,7 +461,7 @@
                             :bindings bindings}
                            (-source-info form env))))))
 
-(defmethod -parse 'letfn*
+(defn parse-letfn*
   [[_ bindings & body :as form] env]
   (validate-bindings form env)
   (let [bindings (apply array-map bindings) ;; pick only one local with the same name, if more are present.
@@ -535,14 +529,14 @@
            :bindings binds
            :children [:bindings :body]})))))
 
-(defmethod -parse 'let*
+(defn parse-let*
   [form env]
   (into {:op   :let
          :form form
          :env  env}
         (analyze-let form env)))
 
-(defmethod -parse 'loop*
+(defn parse-loop*
   [form env]
   (let [loop-id (gensym "loop_") ;; can be used to find matching recur
         env (dissoc (assoc env :loop-id loop-id) :no-recur)]
@@ -552,7 +546,7 @@
            :loop-id loop-id}
           (analyze-let form env))))
 
-(defmethod -parse 'recur
+(defn parse-recur
   [[_ & exprs :as form] {:keys [context loop-locals loop-id no-recur]
                          :as env}]
   (when-let [error-msg
@@ -645,7 +639,7 @@
      (when local
        {:local (dissoc-env local)}))))
 
-(defmethod -parse 'fn*
+(defn parse-fn*
   [[op & args :as form] env]
   (wrapping-meta
    (let [[n meths] (if (symbol? (first args))
@@ -692,7 +686,7 @@
               {:local name-expr})
             {:children (conj (if n [:local] []) :methods)}))))
 
-(defmethod -parse 'def
+(defn parse-def
   [[_ sym & expr :as form] {:keys [ns] :as env}]
   (when (not (symbol? sym))
     (throw (ex-info (str "First argument to def must be a symbol, had: " (class sym))
@@ -752,7 +746,7 @@
            (when-not (empty? children)
              {:children children}))))
 
-(defmethod -parse '.
+(defn parse-dot
   [[_ target & [m-or-f & args] :as form] env]
   (when-not (>= (count form) 3)
     (throw (ex-info (str "Wrong number of args to ., had: " (dec (count form)))
@@ -807,6 +801,25 @@
              {:meta m}) ;; meta on invoke form will not be evaluated
            {:children [:fn :args]})))
 
-(defmethod -parse :invoke
+(defn -parse
+  "Takes a form and an env map and dispatches on the head of the form, that is
+   a special form."
   [form env]
-  (parse-invoke form env))
+  ((case (first form)
+     do      parse-do
+     if      parse-if
+     new     parse-new
+     quote   parse-quote
+     set!    parse-set!
+     try     parse-try
+     catch   parse-catch
+     throw   parse-throw
+     def     parse-def
+     .       parse-dot
+     let*    parse-let*
+     letfn*  parse-letfn*
+     loop*   parse-loop*
+     recur   parse-recur
+     fn*     parse-fn*
+     #_:else parse-invoke)
+   form env))
