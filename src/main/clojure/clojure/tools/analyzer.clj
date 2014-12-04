@@ -386,26 +386,22 @@
                       (merge {:expr fblocks
                               :form form}
                              (-source-info form env)))))
-    (if (and (empty? cblocks)
-             (empty? fblocks))
-      (-> (with-meta (list* 'do body) (meta form)) ;; discard the useless try but preserves meta
-        (analyze-form env)
-        (update-in [:raw-forms] (fnil conj ()) form)) ;; and original form in :raw-forms
-      (let [env' (assoc env :in-try true)
-            body (analyze-body body (assoc env' :no-recur true)) ;; cannot recur across try
-            cenv (ctx env' :ctx/expr)
-            cblocks (mapv #(parse % cenv) cblocks)
-            fblock (when-not (empty? fblock)
-                     (analyze-body (rest fblock) (ctx env :ctx/statement)))]
-        (merge {:op      :try
-                :env     env
-                :form    form
-                :body    body
-                :catches cblocks}
-               (when fblock
-                 {:finally fblock})
-               {:children (into [:body :catches]
-                                (when fblock [:finally]))})))))
+    (let [env' (assoc env :in-try true)
+          ;; TODO: move this validation in a pass
+          body (analyze-body body (assoc env' :no-recur true)) ;; cannot recur across try
+          cenv (ctx env' :ctx/expr)
+          cblocks (mapv #(parse % cenv) cblocks)
+          fblock (when-not (empty? fblock)
+                   (analyze-body (rest fblock) (ctx env :ctx/statement)))]
+      (merge {:op      :try
+              :env     env
+              :form    form
+              :body    body
+              :catches cblocks}
+             (when fblock
+               {:finally fblock})
+             {:children (into [:body :catches]
+                              (when fblock [:finally]))}))))
 
 (declare parse-invoke)
 (defn parse-catch

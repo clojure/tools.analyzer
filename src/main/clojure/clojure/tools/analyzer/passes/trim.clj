@@ -16,10 +16,9 @@
 
 (defmethod trim :default [ast] ast)
 
-(defn preserving-raw-forms [ast body]
-  (if-let [raw-forms (:raw-forms ast)]
-    (update-in (into ast body) [:raw-forms] into (reverse raw-forms))
-    (into ast body)))
+(defn preserving-raw-forms [{:keys [form raw-forms] :as ast} body]
+  (let [raw-forms (reverse (cons form raw-forms))]
+    (update-in (into ast body) [:raw-forms] into raw-forms)))
 
 (defmethod trim :do
   [{:keys [statements ret] :as ast}]
@@ -34,4 +33,11 @@
                (:literal? body))
           (empty? bindings))
     (preserving-raw-forms (dissoc ast :children :bindings :body) body)
+    ast))
+
+(defmethod trim :try
+  [{:keys [catches finally body] :as ast}]
+  (if (and (empty? catches)
+           (empty? finally))
+    (preserving-raw-forms (dissoc ast :children :body :finally :catches) body)
     ast))
