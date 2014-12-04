@@ -19,24 +19,27 @@
     (update-in (into ast body) [:raw-forms] into raw-forms)))
 
 (defmethod -trim :do
-  [{:keys [statements ret] :as ast}]
-  (if (every? :literal? statements)
+  [{:keys [statements ret form] :as ast}]
+  (if (and (every? :literal? statements)
+           (not (:tag (meta form))))
     (preserving-raw-forms (dissoc ast :children :statements :ret) ret)
     ast))
 
-;; TODO: letfn/loop
+;;TODO: letfn/loop
 (defmethod -trim :let
-  [{:keys [bindings body] :as ast}]
-  (if (or (and (every? (comp :literal? :init) bindings)
-               (:literal? body))
-          (empty? bindings))
+  [{:keys [bindings body form] :as ast}]
+  (if (and (or (and (every? (comp :literal? :init) bindings)
+                    (:literal? body))
+               (empty? bindings))
+           (not (:tag (meta form))))
     (preserving-raw-forms (dissoc ast :children :bindings :body) body)
     ast))
 
 (defmethod -trim :try
-  [{:keys [catches finally body] :as ast}]
+  [{:keys [catches finally body form] :as ast}]
   (if (and (empty? catches)
-           (empty? finally))
+           (empty? finally)
+           (not (:tag (meta form))))
     (preserving-raw-forms (dissoc ast :children :body :finally :catches) body)
     ast))
 
