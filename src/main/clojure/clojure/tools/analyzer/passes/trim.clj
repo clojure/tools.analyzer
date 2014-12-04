@@ -16,10 +16,15 @@
 
 (defmethod trim :default [ast] ast)
 
+(defn preserving-raw-forms [ast body]
+  (if-let [raw-forms (:raw-forms ast)]
+    (update-in (into ast body) [:raw-forms] into (reverse raw-forms))
+    (into ast body)))
+
 (defmethod trim :do
   [{:keys [statements ret] :as ast}]
   (if (every? :literal? statements)
-    (into (dissoc ast :children :statements :ret) ret)
+    (preserving-raw-forms (dissoc ast :children :statements :ret) ret)
     ast))
 
 ;; TODO: letfn/loop
@@ -28,5 +33,5 @@
   (if (or (and (every? (comp :literal? :init) bindings)
                (:literal? body))
           (empty? bindings))
-    (into (dissoc ast :children :bindings :body) body)
+    (preserving-raw-forms (dissoc ast :children :bindings :body) body)
     ast))
