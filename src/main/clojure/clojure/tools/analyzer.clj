@@ -388,8 +388,7 @@
                               :form form}
                              (-source-info form env)))))
     (let [env' (assoc env :in-try true)
-          ;; TODO: move this validation in a pass
-          body (analyze-body body (assoc env' :no-recur true)) ;; cannot recur across try
+          body (analyze-body body env')
           cenv (ctx env' :ctx/expr)
           cblocks (mapv #(parse-catch % cenv) cblocks)
           fblock (when-not (empty? fblock)
@@ -532,7 +531,7 @@
 (defn parse-loop*
   [form env]
   (let [loop-id (gensym "loop_") ;; can be used to find matching recur
-        env (dissoc (assoc env :loop-id loop-id) :no-recur)]
+        env (assoc env :loop-id loop-id)]
     (into {:op      :loop
            :form    form
            :env     env
@@ -540,15 +539,12 @@
           (analyze-let form env))))
 
 (defn parse-recur
-  [[_ & exprs :as form] {:keys [context loop-locals loop-id no-recur]
+  [[_ & exprs :as form] {:keys [context loop-locals loop-id]
                          :as env}]
   (when-let [error-msg
              (cond
               (not (isa? context :ctx/return))
               "Can only recur from tail position"
-
-              no-recur
-              "Cannot recur across try"
 
               (not (= (count exprs) loop-locals))
               (str "Mismatched argument count to recur, expected: " loop-locals
@@ -645,7 +641,7 @@
                     :name  n}
          e (if n (assoc (assoc-in env [:locals n] (dissoc-env name-expr)) :local name-expr) env)
          once? (-> op meta :once boolean)
-         menv (assoc (dissoc e :no-recur :in-try) :once once?)
+         menv (assoc (dissoc e :in-try) :once once?)
          meths (if (vector? (first meths)) (list meths) meths) ;;turn (fn [] ...) into (fn ([]...))
          methods-exprs (mapv #(analyze-fn-method % menv) meths)
          variadic (seq (filter :variadic? methods-exprs))
