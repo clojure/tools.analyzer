@@ -369,6 +369,7 @@
           [(seq take) drop]))
       [(seq take) ()])))
 
+(declare parse-catch)
 (defn parse-try
   [[_ & body :as form] env]
   (let [catch? (every-pred seq? #(= (first %) 'catch))
@@ -390,7 +391,7 @@
           ;; TODO: move this validation in a pass
           body (analyze-body body (assoc env' :no-recur true)) ;; cannot recur across try
           cenv (ctx env' :ctx/expr)
-          cblocks (mapv #(parse % cenv) cblocks)
+          cblocks (mapv #(parse-catch % cenv) cblocks)
           fblock (when-not (empty? fblock)
                    (analyze-body (rest fblock) (ctx env :ctx/statement)))]
       (merge {:op      :try
@@ -403,31 +404,27 @@
              {:children (into [:body :catches]
                               (when fblock [:finally]))}))))
 
-(declare parse-invoke)
 (defn parse-catch
   [[_ etype ename & body :as form] env]
-  (if-not (:in-try env)
-    (parse-invoke form env)
-    (do
-      (when-not (valid-binding-symbol? ename)
-        (throw (ex-info (str "Bad binding form: " ename)
-                        (merge {:sym ename
-                                :form form}
-                               (-source-info form env)))))
-      (let [env (dissoc env :in-try)
-            local {:op    :binding
-                   :env   env
-                   :form  ename
-                   :name  ename
-                   :local :catch
-                   :tag   etype}]
-        {:op          :catch
-         :class       (analyze-form etype (assoc env :locals {}))
-         :local       local
-         :env         env
-         :form        form
-         :body        (analyze-body body (assoc-in env [:locals ename] (dissoc-env local)))
-         :children    [:class :local :body]}))))
+  (when-not (valid-binding-symbol? ename)
+    (throw (ex-info (str "Bad binding form: " ename)
+                    (merge {:sym ename
+                            :form form}
+                           (-source-info form env)))))
+  (let [env (dissoc env :in-try)
+        local {:op    :binding
+               :env   env
+               :form  ename
+               :name  ename
+               :local :catch
+               :tag   etype}]
+    {:op          :catch
+     :class       (analyze-form etype (assoc env :locals {}))
+     :local       local
+     :env         env
+     :form        form
+     :body        (analyze-body body (assoc-in env [:locals ename] (dissoc-env local)))
+     :children    [:class :local :body]}))
 
 (defn parse-throw
   [[_ throw :as form] env]
@@ -808,7 +805,6 @@
      quote   parse-quote
      set!    parse-set!
      try     parse-try
-     catch   parse-catch
      throw   parse-throw
      def     parse-def
      .       parse-dot
