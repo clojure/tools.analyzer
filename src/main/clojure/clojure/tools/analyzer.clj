@@ -415,8 +415,7 @@
                :env   env
                :form  ename
                :name  ename
-               :local :catch
-               :tag   etype}]
+               :local :catch}]
     {:op          :catch
      :class       (analyze-form etype (assoc env :locals {}))
      :local       local
