@@ -217,7 +217,7 @@
 
 (def specials
   "Set of special forms common to every clojure variant"
-  '#{do if new quote set! try
+  '#{do if new quote set! try var
      catch throw finally def .
      let* letfn* loop* recur fn*})
 
