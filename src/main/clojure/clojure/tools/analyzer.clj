@@ -789,6 +789,19 @@
              {:meta m}) ;; meta on invoke form will not be evaluated
            {:children [:fn :args]})))
 
+(defn parse-var
+  [[_ var :as form] env]
+  (when-not (= 2 (count form))
+    (throw (ex-info (str "Wrong number of args to var, had: " (dec (count form)))
+                    (merge {:form form}
+                           (-source-info form env)))))
+  (if-let [var (resolve-sym var env)]
+    {:op   :the-var
+     :env  env
+     :form form
+     :var  var}
+    (throw (ex-info (str "var not found: " var) {:var var}))))
+
 (defn -parse
   "Takes a form and an env map and dispatches on the head of the form, that is
    a special form."
@@ -808,5 +821,6 @@
      loop*   parse-loop*
      recur   parse-recur
      fn*     parse-fn*
+     var     parse-var
      #_:else parse-invoke)
    form env))
