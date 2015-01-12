@@ -217,6 +217,12 @@ namespace.
       
     </div>
   </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#clojure.tools.analyzer.passes.trim" style="margin-top: 3px;">clojure.tools.analyzer.passes.trim</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.trim/trim">trim</a>
+      
+    </div>
+  </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#clojure.tools.analyzer.passes.uniquify" style="margin-top: 3px;">clojure.tools.analyzer.passes.uniquify</a>
     <div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes.uniquify/uniquify-locals">uniquify-locals</a>
@@ -359,13 +365,14 @@ See clojure.tools.analyzer.core-test for an example on how to setup the analyzer
     <br />
     <hr />
     <h2 id="clojure.tools.analyzer/-parse">-parse</h2>
-    <span id="var-type">multimethod</span><br />
-    <pre id="var-usage">No usage documentation available</pre>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (-parse form env)
+</pre>
     <pre id="var-docstr">Takes a form and an env map and dispatches on the head of the form, that is
 a special form.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L31" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L805" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -399,7 +406,7 @@ map that is not reachable by :children, there's no guarantee that such a map
 will contain the guaranteed keys.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L94" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L88" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -409,7 +416,7 @@ will contain the guaranteed keys.</pre>
     <pre id="var-docstr">Like analyze, but does not mark the form with :top-level true</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L46" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L40" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -420,7 +427,7 @@ will contain the guaranteed keys.</pre>
     <pre id="var-docstr">Takes an env map and returns a function that analyzes a form in that env</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L130" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L124" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -431,7 +438,7 @@ will contain the guaranteed keys.</pre>
     <pre id="var-docstr">Creates a var for sym and returns it</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L146" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L140" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -442,7 +449,7 @@ will contain the guaranteed keys.</pre>
     <pre id="var-docstr">Returns an empty env</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L123" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L117" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -454,7 +461,7 @@ will contain the guaranteed keys.</pre>
 represents a macro form, then returns it.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L230" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L224" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -466,7 +473,7 @@ represents a macro form, then returns it.</pre>
 else returns form.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L135" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L129" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -477,7 +484,7 @@ else returns form.</pre>
     <pre id="var-docstr">Multimethod that dispatches on op, should default to -parse</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L141" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L135" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -487,7 +494,7 @@ else returns form.</pre>
     <pre id="var-docstr">Set of special forms common to every clojure variant</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L224" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L218" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -498,7 +505,7 @@ else returns form.</pre>
     <pre id="var-docstr">Returns true if obj represent a var form as returned by create-var</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/8818e723e750bc1f64f003502a36cf672217bc81/src/main/clojure/clojure/tools/analyzer.clj#L151" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L145" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -977,7 +984,7 @@ collection is a literal, transform the node to an equivalent :const node.</pre>
 dissoc all the keys in elides from the metadata.</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/349ea4623d4465fd9a044b40db51886582ce1d72/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L79" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/54457278c2c20d2ccb2de71bb8e67b7b08dd12fb/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L79" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -992,7 +999,7 @@ metadata.
 Defaults to {:all (set (:elide-meta *compiler-options*))}</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/349ea4623d4465fd9a044b40db51886582ce1d72/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L12" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/54457278c2c20d2ccb2de71bb8e67b7b08dd12fb/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L12" id="var-source">Source</a>
   </div>
 </div>
 <br />
@@ -1092,6 +1099,30 @@ of the node vector.</pre>
     
     
     <a href="https://github.com/clojure/tools.analyzer/blob/88e3d8ca1e3b94cd8961d6993afa607d35097d34/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj#L17" id="var-source">Source</a>
+  </div>
+</div>
+<br />
+<h2 id="clojure.tools.analyzer.passes.trim">clojure.tools.analyzer.passes.trim</h2>
+<pre id="namespace-docstr"></pre>
+
+
+<br />
+
+
+<div id="var-section">
+  <p></p>
+  <h2>Public Variables and Functions</h2>
+  <div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.passes.trim/trim">trim</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (trim ast)
+</pre>
+    <pre id="var-docstr">Trims the AST of unnecessary nodes, e.g. (do (do 1)) -&gt; 1</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/8a95cd2cfc1abf7a48caf52c3871b61453427e76/src/main/clojure/clojure/tools/analyzer/passes/trim.clj#L46" id="var-source">Source</a>
   </div>
 </div>
 <br />
