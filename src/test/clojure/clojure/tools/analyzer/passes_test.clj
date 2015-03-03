@@ -71,7 +71,7 @@
   (is (= 'a.b/c (emit-form (ast a.b/c))))
   (is (= '(. b (a c)) (emit-form (ast (.a b c)))))
   (is (= '(. b (a (c))) (emit-form (ast (.a b (c))))))
-  (is (= '(.-a b) (emit-form (ast (.-a b)))))
+  (is (= '(. b -a) (emit-form (ast (.-a b)))))
   (is (= '(. b a) (emit-form (ast (.a b)))))
   (is (= '(let* [a 1] a) (emit-form (ast (let [a 1] a)))))
   (is (= '(fn* ([] nil)) (emit-form (ast (fn [])))))
