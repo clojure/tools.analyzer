@@ -1,5 +1,12 @@
 Changelog
 ========================================
+* Release 0.6.5 on 23 Feb 2015
+  * Small performance enhancements
+  * Fixed some metadata handling
+  * Removed :ctx.invoke, derive :ctx/return from :ctx/expr
+  * Renamed resolve-var to resolve-sym
+  * Attached resolved op to :raw-forms
+  * Added var special form
 * Release 0.6.4 on 20 Nov 2014
   * Fixed a bug in the pass scheduler regarding transitive deps
   * Added reduced support for update-children, walk, prewalk and postwalk
