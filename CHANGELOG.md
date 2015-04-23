@@ -1,5 +1,7 @@
 Changelog
 ========================================
+* Release 0.6.6 on 23 Apr 2015
+  * Fix emit-form for :host-field
 * Release 0.6.5 on 23 Feb 2015
   * Small performance enhancements
   * Fixed some metadata handling
