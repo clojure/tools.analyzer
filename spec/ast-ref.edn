@@ -206,6 +206,8 @@
    :doc  "Node for a try special-form expression"
    :keys  [[:form "`(try body* catch* finally?)`"]
            ^:children
+           [:body "Synthetic :do AST node (with :body? `true`) representing the body of this try expression"]
+           ^:children
            [:catches "A vector of :catch AST nodes representing the catch clauses of this try expression"]
            ^:optional ^:children
            [:finally "Synthetic :do AST node (with :body? `true`) representing the final clause of this try expression"]]}
