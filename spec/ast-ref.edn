@@ -195,6 +195,7 @@
    :keys [[:form "`(set! target val)`"]
           ^:children
           [:target "An AST node representing the target of the set! expression, must be :assignable?"]
+          ^:children
           [:val "An AST node representing the new value for the target"]]}
   {:op   :throw
    :doc  "Node for a throw special-form statement"
