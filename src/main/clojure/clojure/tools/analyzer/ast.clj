@@ -9,7 +9,9 @@
 (ns clojure.tools.analyzer.ast
   "Utilities for AST walking/updating"
   (:refer-clojure :exclude [unreduced])
-  (:require [clojure.tools.analyzer.utils :refer [into! rseqv mapv']]))
+  (:require [clojure.tools.analyzer.utils :refer [into! rseqv mapv' merge']]
+            [clojure.string :as str])
+  (:import (clojure.lang Reflector ITransientCollection ITransientMap IEditableCollection IPersistentMap IFn)))
 
 (defn cycling
   "Combine the given passes in a single pass that will be applieed repeatedly
@@ -131,3 +133,60 @@
                   (into [[ast k v]] (ast->eav v))
                   (mapcat (fn [v] (into [[ast k v]] (ast->eav v))) v))
                 [[ast k v]])) ast)))
+
+(defn new-node [{:keys [op] :as node}]
+  (let [capitalize (partial map str/capitalize)
+        ^Class node-class (-> op
+                             name
+                             (str/split #"-")
+                             capitalize
+                             str/join
+                             symbol
+                             resolve)]
+    `(new ~node-class ~@(mapv #(get node (keyword %))
+                              (Reflector/invokeStaticMethod node-class "getBasis" (object-array []))))))
+(defprotocol Node
+  (op [ast])
+  (form [ast])
+  (env [ast]))
+
+(defmacro defnode [node argvec]
+  (let [args (conj argvec 'op 'form 'env)
+        args (if (some (comp :children meta) argvec)
+               (conj args 'children)
+               args)
+        tctor (symbol (str "->Transient" node))]
+    `(do
+       (declare ~tctor)
+       (defrecord ~node ~args
+         Node
+         (op [_#] ~'op)
+         (form [_#] ~'form)
+         (env [_#] ~'env)
+         IEditableCollection
+         (asTransient [this#]
+           (~tctor ~@args ~'__extmap))
+         IFn
+         (invoke [this# key#]
+           (get this# key#))
+         (invoke [this# key# not-found#]
+           (get this# key# not-found#)))
+       (deftype ~(symbol (str "Transient" node))
+           ~(mapv #(vary-meta % assoc :volatile-mutable true) (conj args 'extmap))
+         ITransientCollection
+         (conj [this# val#]
+           (.assoc this# (key val#) (val val#))
+           this#)
+         (^IPersistentMap persistent [this#]
+           (new ~node ~@args {} ~'extmap))
+         ITransientMap
+         ~(let [key (gensym)
+                val (gensym)]
+            `(^ITransientMap assoc [this# ~key ~val]
+                             (case ~key
+                               ~@(mapcat (fn [arg]
+                                           [(keyword (name arg)) `(set! ~arg ~val)])  args)
+                               (set! ~'extmap (assoc ~'extmap ~key ~val)))
+                             this#))
+         (^ITransientMap without [this# key#]
+           (throw (UnsupportedOperationException. "dissoc not supported")))))))

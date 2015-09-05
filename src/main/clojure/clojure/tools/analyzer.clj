@@ -23,6 +23,7 @@
    See clojure.tools.analyzer.core-test for an example on how to setup the analyzer."
   (:refer-clojure :exclude [macroexpand-1 macroexpand var? record?])
   (:require [clojure.tools.analyzer.utils :refer :all]
+            [clojure.tools.analyzer.ast :refer [defnode]]
             [clojure.tools.analyzer.env :as env])
   (:import (clojure.lang Symbol IPersistentVector IPersistentMap IPersistentSet ISeq IType IRecord)))
 
@@ -147,6 +148,9 @@
        :doc      "Returns true if obj represent a var form as returned by create-var"}
   var?)
 
+
+(defnode WithMeta [^:children meta ^:children expr])
+
 ;; this node wraps non-quoted collections literals with metadata attached
 ;; to them, the metadata will be evaluated at run-time, not treated like a constant
 (defn wrapping-meta
@@ -154,39 +158,45 @@
   (let [meta (meta form)]
     (if (and (obj? form)
              (seq meta))
-      {:op       :with-meta
-       :env      env
-       :form     form
-       :meta     (analyze-form meta (ctx env :ctx/expr))
-       :expr     (assoc-in expr [:env :context] :ctx/expr)
-       :children [:meta :expr]}
+      #ast/node {:op       :with-meta
+                 :env      env
+                 :form     form
+                 :meta     (analyze-form meta (ctx env :ctx/expr))
+                 :expr     (assoc-in expr [:env :context] :ctx/expr)
+                 :children [:meta :expr]}
       expr)))
+
+(defnode Const [literal? val ^:children meta type])
 
 (defn analyze-const
   [form env & [type]]
   (let [type (or type (classify form))]
     (merge
-     {:op       :const
-      :env      env
-      :type     type
-      :literal? true
-      :val      form
-      :form     form}
+     #ast/node {:op       :const
+                :env      env
+                :type     type
+                :literal? true
+                :val      form
+                :form     form}
      (when-let [m (and (obj? form)
                        (not-empty (meta form)))]
        {:meta     (analyze-const m (ctx env :ctx/expr) :map) ;; metadata on a constant literal will not be evaluated at
         :children [:meta]}))))                               ;; runtime, this is also true for metadata on quoted collection literals
+
+(defnode Vector [^:children items])
 
 (defn analyze-vector
   [form env]
   (let [items-env (ctx env :ctx/expr)
         items (mapv (analyze-in-env items-env) form)]
     (wrapping-meta
-     {:op       :vector
-      :env      env
-      :items    items
-      :form     form
-      :children [:items]})))
+     #ast/node {:op       :vector
+                :env      env
+                :items    items
+                :form     form
+                :children [:items]})))
+
+(defnode Map [^:children keys ^:children vals])
 
 (defn analyze-map
   [form env]
@@ -197,23 +207,25 @@
         ks (mapv (analyze-in-env kv-env) keys)
         vs (mapv (analyze-in-env kv-env) vals)]
     (wrapping-meta
-     {:op       :map
-      :env      env
-      :keys     ks
-      :vals     vs
-      :form     form
-      :children [:keys :vals]})))
+     #ast/node {:op       :map
+                :env      env
+                :keys     ks
+                :vals     vs
+                :form     form
+                :children [:keys :vals]})))
+
+(defnode Set [^:children items])
 
 (defn analyze-set
   [form env]
   (let [items-env (ctx env :ctx/expr)
         items (mapv (analyze-in-env items-env) form)]
     (wrapping-meta
-     {:op       :set
-      :env      env
-      :items    items
-      :form     form
-      :children [:items]})))
+     #ast/node {:op       :set
+                :env      env
+                :items    items
+                :form     form
+                :children [:items]})))
 
 (def specials
   "Set of special forms common to every clojure variant"
@@ -231,29 +243,35 @@
         mform
         (recur mform)))))
 
+(defnode Local [assignable? name])
+(defnode Var [assignable? var meta])
+(defnode MaybeHostForm [class field])
+(defnode MaybeClass [class])
+
 (defn analyze-symbol
   [sym env]
   (let [mform (macroexpand-1 sym env)] ;; t.a.j/macroexpand-1 macroexpands Class/Field into (. Class Field)
     (if (= mform sym)
       (merge (if-let [{:keys [mutable children] :as local-binding} (-> env :locals sym)] ;; locals shadow globals
-               (merge (dissoc local-binding :init)                                      ;; avoids useless passes later
-                      {:op          :local
-                       :assignable? (boolean mutable)
-                       :children    (vec (remove #{:init} children))})
+               (merge #ast/node {:op          :local
+                                 :assignable? (boolean mutable)
+                                 :children    (vec (remove #{:init} children))}
+                      (dissoc local-binding :init))                                      ;; avoids useless passes later
+
                (if-let [var (let [v (resolve-sym sym env)]
                               (and (var? v) v))]
                  (let [m (meta var)]
-                   {:op          :var
-                    :assignable? (dynamic? var m) ;; we cannot statically determine if a Var is in a thread-local context
-                    :var         var              ;; so checking whether it's dynamic or not is the most we can do
-                    :meta        m})
+                   #ast/node {:op          :var
+                              :assignable? (dynamic? var m) ;; we cannot statically determine if a Var is in a thread-local context
+                              :var         var              ;; so checking whether it's dynamic or not is the most we can do
+                              :meta        m})
                  (if-let [maybe-class (namespace sym)] ;; e.g. js/foo.bar or Long/MAX_VALUE
                    (let [maybe-class (symbol maybe-class)]
-                     {:op    :maybe-host-form
-                      :class maybe-class
-                      :field (symbol (name sym))})
-                   {:op    :maybe-class ;; e.g. java.lang.Integer or Long
-                    :class mform})))
+                     #ast/node {:op    :maybe-host-form
+                                :class maybe-class
+                                :field (symbol (name sym))})
+                   #ast/node {:op    :maybe-class ;; e.g. java.lang.Integer or Long
+                              :class mform})))
              {:env  env
               :form mform})
       (-> (analyze-form mform env)
@@ -273,6 +291,8 @@
           (update-in [:raw-forms] (fnil conj ())
                      (vary-meta form assoc ::resolved-op (resolve-sym op env))))))))
 
+(defnode Do [^:children statements ^:children ret])
+
 (defn parse-do
   [[_ & exprs :as form] env]
   (let [statements-env (ctx env :ctx/statement)
@@ -282,12 +302,14 @@
                              [statements e]))
         statements (mapv (analyze-in-env statements-env) statements)
         ret (analyze-form ret env)]
-    {:op         :do
-     :env        env
-     :form       form
-     :statements statements
-     :ret        ret
-     :children   [:statements :ret]}))
+    #ast/node {:op         :do
+               :env        env
+               :form       form
+               :statements statements
+               :ret        ret
+               :children   [:statements :ret]}))
+
+(defnode If [^:children test ^:children then ^:children else])
 
 (defn parse-if
   [[_ test then else :as form] env]
@@ -299,13 +321,15 @@
   (let [test-expr (analyze-form test (ctx env :ctx/expr))
         then-expr (analyze-form then env)
         else-expr (analyze-form else env)]
-    {:op       :if
-     :form     form
-     :env      env
-     :test     test-expr
-     :then     then-expr
-     :else     else-expr
-     :children [:test :then :else]}))
+    #ast/node {:op       :if
+               :form     form
+               :env      env
+               :test     test-expr
+               :then     then-expr
+               :else     else-expr
+               :children [:test :then :else]}))
+
+(defnode New [^:children class ^:children args])
 
 (defn parse-new
   [[_ class & args :as form] env]
@@ -315,12 +339,14 @@
                            (-source-info form env)))))
   (let [args-env (ctx env :ctx/expr)
         args (mapv (analyze-in-env args-env) args)]
-    {:op          :new
-     :env         env
-     :form        form
-     :class       (analyze-form class (assoc env :locals {})) ;; avoid shadowing
-     :args        args
-     :children    [:class :args]}))
+    #ast/node {:op          :new
+               :env         env
+               :form        form
+               :class       (analyze-form class (assoc env :locals {})) ;; avoid shadowing
+               :args        args
+               :children    [:class :args]}))
+
+(defnode Quote [literal? ^:children expr])
 
 (defn parse-quote
   [[_ expr :as form] env]
@@ -329,12 +355,14 @@
                     (merge {:form form}
                            (-source-info form env)))))
   (let [const (analyze-const expr env)]
-    {:op       :quote
-     :expr     const
-     :form     form
-     :env      env
-     :literal? true
-     :children [:expr]}))
+    #ast/node {:op       :quote
+               :expr     const
+               :form     form
+               :env      env
+               :literal? true
+               :children [:expr]}))
+
+(defnode Set! [^:children target ^:children val])
 
 (defn parse-set!
   [[_ target val :as form] env]
@@ -344,12 +372,12 @@
                            (-source-info form env)))))
   (let [target (analyze-form target (ctx env :ctx/expr))
         val (analyze-form val (ctx env :ctx/expr))]
-    {:op       :set!
-     :env      env
-     :form     form
-     :target   target
-     :val      val
-     :children [:target :val]}))
+    #ast/node {:op       :set!
+               :env      env
+               :form     form
+               :target   target
+               :val      val
+               :children [:target :val]}))
 
 (defn analyze-body [body env]
   ;; :body is used by emit-form to remove the artificial 'do
@@ -368,6 +396,8 @@
           (recur (conj take el) r)
           [(seq take) drop]))
       [(seq take) ()])))
+
+(defnode Try [^:children body ^:children catches ^:children finally])
 
 (declare parse-catch)
 (defn parse-try
@@ -393,15 +423,18 @@
           cblocks (mapv #(parse-catch % cenv) cblocks)
           fblock (when-not (empty? fblock)
                    (analyze-body (rest fblock) (ctx env :ctx/statement)))]
-      (merge {:op      :try
-              :env     env
-              :form    form
-              :body    body
-              :catches cblocks}
+      (merge #ast/node {:op      :try
+                        :env     env
+                        :form    form
+                        :body    body
+                        :catches cblocks}
              (when fblock
                {:finally fblock})
              {:children (into [:body :catches]
                               (when fblock [:finally]))}))))
+
+(defnode Binding [^:children init name local mutable])
+(defnode Catch [^:children class ^:children local ^:children body])
 
 (defn parse-catch
   [[_ etype ename & body :as form] env]
@@ -411,18 +444,20 @@
                             :form form}
                            (-source-info form env)))))
   (let [env (dissoc env :in-try)
-        local {:op    :binding
-               :env   env
-               :form  ename
-               :name  ename
-               :local :catch}]
-    {:op          :catch
-     :class       (analyze-form etype (assoc env :locals {}))
-     :local       local
-     :env         env
-     :form        form
-     :body        (analyze-body body (assoc-in env [:locals ename] (dissoc-env local)))
-     :children    [:class :local :body]}))
+        local #ast/node {:op    :binding
+                         :env   env
+                         :form  ename
+                         :name  ename
+                         :local :catch}]
+    #ast/node {:op          :catch
+               :class       (analyze-form etype (assoc env :locals {}))
+               :local       local
+               :env         env
+               :form        form
+               :body        (analyze-body body (assoc-in env [:locals ename] (dissoc-env local)))
+               :children    [:class :local :body]}))
+
+(defnode Throw [^:children exception])
 
 (defn parse-throw
   [[_ throw :as form] env]
@@ -430,11 +465,11 @@
     (throw (ex-info (str "Wrong number of args to throw, had: " (dec (count form)))
                     (merge {:form form}
                            (-source-info form env)))))
-  {:op        :throw
-   :env       env
-   :form      form
-   :exception (analyze-form throw (ctx env :ctx/expr))
-   :children  [:exception]})
+  #ast/node {:op        :throw
+             :env       env
+             :form      form
+             :exception (analyze-form throw (ctx env :ctx/expr))
+             :children  [:exception]})
 
 (defn validate-bindings
   [[op bindings & _ :as form] env]
@@ -452,6 +487,8 @@
                             :bindings bindings}
                            (-source-info form env))))))
 
+(defnode Letfn [^:children bindings ^:children body])
+
 (defn parse-letfn*
   [[_ bindings & body :as form] env]
   (validate-bindings form env)
@@ -464,11 +501,11 @@
                              (-source-info form env)))))
     (let [binds (reduce (fn [binds name]
                           (assoc binds name
-                                 {:op    :binding
-                                  :env   env
-                                  :name  name
-                                  :form  name
-                                  :local :letfn}))
+                                 #ast/node {:op    :binding
+                                            :env   env
+                                            :name  name
+                                            :form  name
+                                            :local :letfn}))
                         {} fns)
           e (update-in env [:locals] merge binds) ;; pre-seed locals
           binds (reduce-kv (fn [binds name bind]
@@ -480,12 +517,12 @@
                            {} binds)
           e (update-in env [:locals] merge (update-vals binds dissoc-env))
           body (analyze-body body e)]
-      {:op       :letfn
-       :env      env
-       :form     form
-       :bindings (vec (vals binds)) ;; order is irrelevant
-       :body     body
-       :children [:bindings :body]})))
+      #ast/node {:op       :letfn
+                 :env      env
+                 :form     form
+                 :bindings (vec (vals binds)) ;; order is irrelevant
+                 :body     body
+                 :children [:bindings :body]})))
 
 (defn analyze-let
   [[op bindings & body :as form] {:keys [context loop-id] :as env}]
@@ -501,13 +538,13 @@
                                   :sym  name}
                                  (-source-info form env))))
           (let [init-expr (analyze-form init env)
-                bind-expr {:op       :binding
-                           :env      env
-                           :name     name
-                           :init     init-expr
-                           :form     name
-                           :local    (if loop? :loop :let)
-                           :children [:init]}]
+                bind-expr #ast/node {:op       :binding
+                                     :env      env
+                                     :name     name
+                                     :init     init-expr
+                                     :form     name
+                                     :local    (if loop? :loop :let)
+                                     :children [:init]}]
             (recur bindings
                    (assoc-in env [:locals name] (dissoc-env bind-expr))
                    (conj binds bind-expr))))
@@ -520,22 +557,28 @@
            :bindings binds
            :children [:bindings :body]})))))
 
+(defnode Let [^:children bindings ^:children body])
+
 (defn parse-let*
   [form env]
-  (into {:op   :let
-         :form form
-         :env  env}
+  (into #ast/node {:op   :let
+                   :form form
+                   :env  env}
         (analyze-let form env)))
+
+(defnode Loop [^:children bindings ^:children body loop-id])
 
 (defn parse-loop*
   [form env]
   (let [loop-id (gensym "loop_") ;; can be used to find matching recur
         env (assoc env :loop-id loop-id)]
-    (into {:op      :loop
-           :form    form
-           :env     env
-           :loop-id loop-id}
+    (into #ast/node {:op      :loop
+                     :form    form
+                     :env     env
+                     :loop-id loop-id}
           (analyze-let form env))))
+
+(defnode Recur [^:children exprs loop-id])
 
 (defn parse-recur
   [[_ & exprs :as form] {:keys [context loop-locals loop-id]
@@ -554,12 +597,14 @@
                            (-source-info form env)))))
 
   (let [exprs (mapv (analyze-in-env (ctx env :ctx/expr)) exprs)]
-    {:op          :recur
-     :env         env
-     :form        form
-     :exprs       exprs
-     :loop-id     loop-id
-     :children    [:exprs]}))
+    #ast/node {:op          :recur
+               :env         env
+               :form        form
+               :exprs       exprs
+               :loop-id     loop-id
+               :children    [:exprs]}))
+
+(defnode FnMethod [^:children params ^:children body loop-id fixed-arity variadic?])
 
 (defn analyze-fn-method [[params & body :as form] {:keys [locals local] :as env}]
   (when-not (vector? params)
@@ -580,14 +625,14 @@
         env (dissoc env :local)
         arity (count params-names)
         params-expr (mapv (fn [name id]
-                            {:env       env
-                             :form      name
-                             :name      name
-                             :variadic? (and variadic?
-                                             (= id (dec arity)))
-                             :op        :binding
-                             :arg-id    id
-                             :local     :arg})
+                            #ast/node {:op        :binding
+                                       :env       env
+                                       :form      name
+                                       :name      name
+                                       :variadic? (and variadic?
+                                                       (= id (dec arity)))
+                                       :arg-id    id
+                                       :local     :arg})
                           params-names (range))
         fixed-arity (if variadic?
                       (dec arity)
@@ -615,17 +660,19 @@
                                  (-source-info form env)
                                  (-source-info params env)))))))
     (merge
-     {:op          :fn-method
-      :form        form
-      :loop-id     loop-id
-      :env         env
-      :variadic?   variadic?
-      :params      params-expr
-      :fixed-arity fixed-arity
-      :body        body
-      :children    [:params :body]}
+     #ast/node {:op          :fn-method
+                :form        form
+                :loop-id     loop-id
+                :env         env
+                :variadic?   variadic?
+                :params      params-expr
+                :fixed-arity fixed-arity
+                :body        body
+                :children    [:params :body]}
      (when local
        {:local (dissoc-env local)}))))
+
+(defnode Fn [^:children local ^:children methods once max-fixed-arity variadic?])
 
 (defn parse-fn*
   [[op & args :as form] env]
@@ -633,11 +680,11 @@
    (let [[n meths] (if (symbol? (first args))
                      [(first args) (next args)]
                      [nil (seq args)])
-         name-expr {:op    :binding
-                    :env   env
-                    :form  n
-                    :local :fn
-                    :name  n}
+         name-expr #ast/node {:op    :binding
+                              :env   env
+                              :form  n
+                              :local :fn
+                              :name  n}
          e (if n (assoc (assoc-in env [:locals n] (dissoc-env name-expr)) :local name-expr) env)
          once? (-> op meta :once boolean)
          menv (assoc (dissoc e :in-try) :once once?)
@@ -663,16 +710,18 @@
        (throw (ex-info "Can't have fixed arity overload with more params than variadic overload"
                        (merge {:form form}
                               (-source-info form env)))))
-     (merge {:op              :fn
-             :env             env
-             :form            form
-             :variadic?       variadic?
-             :max-fixed-arity max-fixed-arity
-             :methods         methods-exprs
-             :once            once?}
+     (merge #ast/node {:op              :fn
+                       :env             env
+                       :form            form
+                       :variadic?       variadic?
+                       :max-fixed-arity max-fixed-arity
+                       :methods         methods-exprs
+                       :once            once?}
             (when n
               {:local name-expr})
             {:children (conj (if n [:local] []) :methods)}))))
+
+(defnode Def [name var ^:children meta ^:children init])
 
 (defn parse-def
   [[_ sym & expr :as form] {:keys [ns] :as env}]
@@ -723,16 +772,20 @@
         children (into (into [] (when meta [:meta]))
                        (when init? [:init]))]
 
-    (merge {:op   :def
-            :env  env
-            :form form
-            :name sym
-            :var  var}
+    (merge #ast/node {:op   :def
+                      :env  env
+                      :form form
+                      :name sym
+                      :var  var}
            (when meta
              {:meta meta-expr})
            args
            (when-not (empty? children)
              {:children children}))))
+
+(defnode HostCall [^:children target ^:children args method])
+(defnode HostField [^:children target assignable? field])
+(defnode HostInterop [^:children target assignable? m-or-f])
 
 (defn parse-dot
   [[_ target & [m-or-f & args] :as form] env]
@@ -752,27 +805,29 @@
                       (merge {:form   form
                               :method m-or-f}
                              (-source-info form env)))))
-    (merge {:form   form
+    (merge (cond
+             call?
+             #ast/node {:op       :host-call
+                        :method   (symbol (name (first m-or-f)))
+                        :args     (mapv (analyze-in-env (ctx env :ctx/expr)) (next m-or-f))
+                        :children [:target :args]}
+
+             field?
+             #ast/node {:op          :host-field
+                        :assignable? true
+                        :field       (symbol (name m-or-f))
+                        :children    [:target]}
+
+             :else
+             #ast/node {:op          :host-interop ;; either field access or no-args method call
+                        :assignable? true
+                        :m-or-f      (symbol (name m-or-f))
+                        :children    [:target]})
+           {:form   form
             :env    env
-            :target target-expr}
-           (cond
-            call?
-            {:op       :host-call
-             :method   (symbol (name (first m-or-f)))
-             :args     (mapv (analyze-in-env (ctx env :ctx/expr)) (next m-or-f))
-             :children [:target :args]}
+            :target target-expr})))
 
-            field?
-            {:op          :host-field
-             :assignable? true
-             :field       (symbol (name m-or-f))
-             :children    [:target]}
-
-            :else
-            {:op          :host-interop ;; either field access or no-args method call
-             :assignable? true
-             :m-or-f      (symbol (name m-or-f))
-             :children    [:target]}))))
+(defnode Invoke [^:children fn ^:children args meta])
 
 (defn parse-invoke
   [[f & args :as form] env]
@@ -780,14 +835,16 @@
         fn-expr (analyze-form f fenv)
         args-expr (mapv (analyze-in-env fenv) args)
         m (meta form)]
-    (merge {:op   :invoke
-            :form form
-            :env  env
-            :fn   fn-expr
-            :args args-expr}
+    (merge #ast/node {:op   :invoke
+                      :form form
+                      :env  env
+                      :fn   fn-expr
+                      :args args-expr}
            (when (seq m)
              {:meta m}) ;; meta on invoke form will not be evaluated
            {:children [:fn :args]})))
+
+(defnode TheVar [var])
 
 (defn parse-var
   [[_ var :as form] env]
@@ -796,10 +853,10 @@
                     (merge {:form form}
                            (-source-info form env)))))
   (if-let [var (resolve-sym var env)]
-    {:op   :the-var
-     :env  env
-     :form form
-     :var  var}
+    #ast/node {:op   :the-var
+               :env  env
+               :form form
+               :var  var}
     (throw (ex-info (str "var not found: " var) {:var var}))))
 
 (defn -parse
