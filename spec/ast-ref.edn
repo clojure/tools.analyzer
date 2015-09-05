@@ -140,6 +140,7 @@
           [:local "One of :arg, :catch, :fn, :let, :letfn or :loop"]
           ^:optional
           [:arg-id "When :local is :arg, the parameter index"]
+          [:assignable? "`true` if the local is mutable"]
           ^:optional
           [:variadic? "When :local is :arg, a boolean indicating whether this parameter binds to a variable number of arguments"]]}
   {:op   :loop
