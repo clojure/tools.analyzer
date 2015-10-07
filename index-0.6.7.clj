@@ -25,11 +25,11 @@
    :name "clojure.tools.analyzer.env",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes-api.html",
    :name "clojure.tools.analyzer.passes",
-   :doc nil}
+   :doc "Utilities for pass scheduling"}
   {:source-url
    "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj",
    :wiki-url
@@ -1025,43 +1025,57 @@
    :name "calculate-deps",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj#L54",
+   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L46",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/calculate-deps",
    :doc
    "Takes a map of pass-name -> pass-info and adds to each pass-info :dependencies and\n:dependants info, which also contain the transitive dependencies",
    :var-type "function",
-   :line 54,
+   :line 46,
+   :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
+  {:arglists ([passes]),
+   :name "desugar-deps",
+   :namespace "clojure.tools.analyzer.passes",
+   :source-url
+   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L24",
+   :raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/desugar-deps",
+   :doc
+   "Takes a map of pass-name -> pass deps and puts the :after :affects and :before passes\nin the appropriate pass :depends",
+   :var-type "function",
+   :line 24,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([state]),
    :name "group",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj#L69",
+   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L61",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/group",
    :doc
    "Takes a scheduler state and returns a vector of three elements (or nil):\n* the :walk of the current group\n* a vector of consecutive passes that can be collapsed in a single pass (the current group)\n* the remaining scheduler state\n\nE.g. given:\n[{:walk :any .. } {:walk :pre ..} {:walk :post ..} {:walk :pre ..}]\nit will return:\n[:pre [{:walk :any ..} {:walk :pre ..}] [{:walk :post ..} {:walk :pre ..}]]",
    :var-type "function",
-   :line 69,
+   :line 61,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([passes & [opts]]),
    :name "schedule",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj#L177",
+   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L172",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/schedule",
    :doc
    "Takes a set of Vars that represent tools.analyzer passes and returns a function\nthat takes an AST and applies all the passes and their dependencies to the AST,\ntrying to compose together as many passes as possible to reduce the number of\nfull tree traversals.\n\nEach pass must have a :pass-info element in its Var's metadata and it must point\nto a map with the following parameters (:before, :after, :affects and :state are\noptional):\n* :after    a set of Vars, the passes that must be run before this pass\n* :before   a set of Vars, the passes that must be run after this pass\n* :depends  a set of Vars, the passes this pass depends on, implies :after\n* :walk     a keyword, one of:\n              - :none if the pass does its own tree walking and cannot be composed\n                      with other passes\n              - :post if the pass requires a postwalk and can be composed with other\n                      passes\n              - :pre  if the pass requires a prewalk and can be composed with other\n                      passes\n              - :any  if the pass can be composed with other passes in both a prewalk\n                      or a postwalk\n* :affects  a set of Vars, this pass must be the last in the same tree traversal that all\n            the specified passes must partecipate in\n            This pass must take a function as argument and return the actual pass, the\n            argument represents the reified tree traversal which the pass can use to\n            control a recursive traversal, implies :depends\n* :state    a no-arg function that should return the init value of an atom that will be\n            passed as the first argument to the pass (the pass will thus take the ast\n            as the second parameter), the atom will be the same for the whole tree traversal\n            and thus can be used to preserve state across the traversal\nAn opts map might be provided, valid parameters:\n* :debug?   if true, returns a vector of the scheduled passes rather than the concrete\n            function",
    :var-type "function",
-   :line 177,
+   :line 172,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
   {:arglists ([ast] [state ast]),
    :name "add-binding-atom",

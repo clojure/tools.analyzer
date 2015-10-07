@@ -291,6 +291,9 @@ namespace.
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/calculate-deps">calculate-deps</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
+      <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/desugar-deps">desugar-deps</a>
+      
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a class="toc-entry-anchor" href="#clojure.tools.analyzer.passes/group">group</a>
       
     </div><div style="margin-left: 1em;" class="toc-entry">
@@ -1380,7 +1383,7 @@ throws an exception.</pre>
 </div>
 <br />
 <h2 id="clojure.tools.analyzer.passes">clojure.tools.analyzer.passes</h2>
-<pre id="namespace-docstr"></pre>
+<pre id="namespace-docstr">Utilities for pass scheduling</pre>
 
 
 <br />
@@ -1400,7 +1403,19 @@ throws an exception.</pre>
 :dependants info, which also contain the transitive dependencies</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj#L54" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L46" id="var-source">Source</a>
+  </div><div id="var-entry">
+    <br />
+    <hr />
+    <h2 id="clojure.tools.analyzer.passes/desugar-deps">desugar-deps</h2>
+    <span id="var-type">function</span><br />
+    <pre id="var-usage">Usage: (desugar-deps passes)
+</pre>
+    <pre id="var-docstr">Takes a map of pass-name -&gt; pass deps and puts the :after :affects and :before passes
+in the appropriate pass :depends</pre>
+    
+    
+    <a href="https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L24" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -1419,7 +1434,7 @@ it will return:
 [:pre [{:walk :any ..} {:walk :pre ..}] [{:walk :post ..} {:walk :pre ..}]]</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj#L69" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L61" id="var-source">Source</a>
   </div><div id="var-entry">
     <br />
     <hr />
@@ -1461,7 +1476,7 @@ An opts map might be provided, valid parameters:
             function</pre>
     
     
-    <a href="https://github.com/clojure/tools.analyzer/blob/c1f36a71343bab7d3597300a3d2e8eb0c61144b9/src/main/clojure/clojure/tools/analyzer/passes.clj#L177" id="var-source">Source</a>
+    <a href="https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L172" id="var-source">Source</a>
   </div>
 </div>
 <br />
