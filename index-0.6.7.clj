@@ -25,7 +25,7 @@
    :name "clojure.tools.analyzer.env",
    :doc nil}
   {:source-url
-   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer/clojure.tools.analyzer.passes-api.html",
    :name "clojure.tools.analyzer.passes",
@@ -1025,9 +1025,9 @@
    :name "calculate-deps",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L46",
+   "https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj#L46",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/calculate-deps",
    :doc
@@ -1039,9 +1039,9 @@
    :name "desugar-deps",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L24",
+   "https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj#L24",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/desugar-deps",
    :doc
@@ -1053,9 +1053,9 @@
    :name "group",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L61",
+   "https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj#L61",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/group",
    :doc
@@ -1067,13 +1067,13 @@
    :name "schedule",
    :namespace "clojure.tools.analyzer.passes",
    :source-url
-   "https://github.com/clojure/tools.analyzer/blob/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj#L172",
+   "https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj#L172",
    :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/186777ee96929abd47a9484d01275357b3c00676/src/main/clojure/clojure/tools/analyzer/passes.clj",
+   "https://github.com/clojure/tools.analyzer/raw/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes/schedule",
    :doc
-   "Takes a set of Vars that represent tools.analyzer passes and returns a function\nthat takes an AST and applies all the passes and their dependencies to the AST,\ntrying to compose together as many passes as possible to reduce the number of\nfull tree traversals.\n\nEach pass must have a :pass-info element in its Var's metadata and it must point\nto a map with the following parameters (:before, :after, :affects and :state are\noptional):\n* :after    a set of Vars, the passes that must be run before this pass\n* :before   a set of Vars, the passes that must be run after this pass\n* :depends  a set of Vars, the passes this pass depends on, implies :after\n* :walk     a keyword, one of:\n              - :none if the pass does its own tree walking and cannot be composed\n                      with other passes\n              - :post if the pass requires a postwalk and can be composed with other\n                      passes\n              - :pre  if the pass requires a prewalk and can be composed with other\n                      passes\n              - :any  if the pass can be composed with other passes in both a prewalk\n                      or a postwalk\n* :affects  a set of Vars, this pass must be the last in the same tree traversal that all\n            the specified passes must partecipate in\n            This pass must take a function as argument and return the actual pass, the\n            argument represents the reified tree traversal which the pass can use to\n            control a recursive traversal, implies :depends\n* :state    a no-arg function that should return the init value of an atom that will be\n            passed as the first argument to the pass (the pass will thus take the ast\n            as the second parameter), the atom will be the same for the whole tree traversal\n            and thus can be used to preserve state across the traversal\nAn opts map might be provided, valid parameters:\n* :debug?   if true, returns a vector of the scheduled passes rather than the concrete\n            function",
+   "Takes a set of Vars that represent tools.analyzer passes and returns a function\nthat takes an AST and applies all the passes and their dependencies to the AST,\ntrying to compose together as many passes as possible to reduce the number of\nfull tree traversals.\n\nEach pass must have a :pass-info element in its Var's metadata and it must point\nto a map with the following parameters (:before, :after, :affects and :state are\noptional):\n* :after    a set of Vars, the passes that must be run before this pass\n* :before   a set of Vars, the passes that must be run after this pass\n* :depends  a set of Vars, the passes this pass depends on, implies :after\n* :walk     a keyword, one of:\n              - :none if the pass does its own tree walking and cannot be composed\n                      with other passes\n              - :post if the pass requires a postwalk and can be composed with other\n                      passes\n              - :pre  if the pass requires a prewalk and can be composed with other\n                      passes\n              - :any  if the pass can be composed with other passes in both a prewalk\n                      or a postwalk\n* :affects  a set of Vars, this pass must be the last in the same tree traversal that all\n            the specified passes must partecipate in\n            This pass must take a function as argument and return the actual pass, the\n            argument represents the reified tree traversal which the pass can use to\n            control a recursive traversal, implies :depends\n* :state    a no-arg function that should return an atom holding an init value that will be\n            passed as the first argument to the pass (the pass will thus take the ast\n            as the second parameter), the atom will be the same for the whole tree traversal\n            and thus can be used to preserve state across the traversal\nAn opts map might be provided, valid parameters:\n* :debug?   if true, returns a vector of the scheduled passes rather than the concrete\n            function",
    :var-type "function",
    :line 172,
    :file "src/main/clojure/clojure/tools/analyzer/passes.clj"}
