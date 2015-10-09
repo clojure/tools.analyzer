@@ -195,7 +195,7 @@
                This pass must take a function as argument and return the actual pass, the
                argument represents the reified tree traversal which the pass can use to
                control a recursive traversal, implies :depends
-   * :state    a no-arg function that should return the init value of an atom that will be
+   * :state    a no-arg function that should return an atom holding an init value that will be
                passed as the first argument to the pass (the pass will thus take the ast
                as the second parameter), the atom will be the same for the whole tree traversal
                and thus can be used to preserve state across the traversal
