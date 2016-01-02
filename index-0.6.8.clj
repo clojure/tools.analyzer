@@ -372,6 +372,7 @@
    :dynamic true,
    :line 41,
    :var-type "multimethod",
+   :arglists nil,
    :doc
    "Like analyze, but does not mark the form with :top-level true",
    :namespace "clojure.tools.analyzer",
@@ -455,7 +456,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L169",
    :line 169,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.Const, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -469,7 +470,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L246",
    :line 246,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.Local, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -483,7 +484,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L199",
    :line 199,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.Map, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -497,7 +498,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L249",
    :line 249,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.MaybeClass, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -511,7 +512,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L248",
    :line 248,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.MaybeHostForm, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -525,7 +526,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L217",
    :line 217,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.Set, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -539,7 +540,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L247",
    :line 247,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.Var, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -553,7 +554,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L186",
    :line 186,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.Vector, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -567,7 +568,7 @@
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L152",
    :line 152,
    :var-type "function",
-   :arglists ([m__5818__auto__]),
+   :arglists ([m#]),
    :doc
    "Factory function for class clojure.tools.analyzer.WithMeta, taking a map of keywords to field values.",
    :namespace "clojure.tools.analyzer",
@@ -587,18 +588,19 @@
    :namespace "clojure.tools.analyzer",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/parse"}
-  {:name "specials",
-   :doc "Set of special forms common to every clojure variant",
-   :var-type "var",
-   :line 230,
-   :namespace "clojure.tools.analyzer",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/specials",
+  {:raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj",
+   :name "specials",
+   :file "src/main/clojure/clojure/tools/analyzer.clj",
    :source-url
    "https://github.com/clojure/tools.analyzer/blob/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj#L230",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj",
-   :file "src/main/clojure/clojure/tools/analyzer.clj"}
+   :line 230,
+   :var-type "var",
+   :arglists nil,
+   :doc "Set of special forms common to every clojure variant",
+   :namespace "clojure.tools.analyzer",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/specials"}
   {:raw-source-url
    "https://github.com/clojure/tools.analyzer/raw/b5ffef9c060feea2971f0448a15fc8e583ac7a82/src/main/clojure/clojure/tools/analyzer.clj",
    :name "var?",
@@ -617,6 +619,7 @@
   {:name "Const",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/Const",
    :source-url nil,
@@ -625,6 +628,7 @@
   {:name "Local",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/Local",
    :source-url nil,
@@ -633,6 +637,7 @@
   {:name "Map",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/Map",
    :source-url nil,
@@ -641,6 +646,7 @@
   {:name "MaybeClass",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/MaybeClass",
    :source-url nil,
@@ -649,6 +655,7 @@
   {:name "MaybeHostForm",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/MaybeHostForm",
    :source-url nil,
@@ -657,6 +664,7 @@
   {:name "Set",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/Set",
    :source-url nil,
@@ -665,6 +673,7 @@
   {:name "TransientConst",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientConst",
    :source-url nil,
@@ -673,6 +682,7 @@
   {:name "TransientLocal",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientLocal",
    :source-url nil,
@@ -681,6 +691,7 @@
   {:name "TransientMap",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientMap",
    :source-url nil,
@@ -689,6 +700,7 @@
   {:name "TransientMaybeClass",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientMaybeClass",
    :source-url nil,
@@ -697,6 +709,7 @@
   {:name "TransientMaybeHostForm",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientMaybeHostForm",
    :source-url nil,
@@ -705,6 +718,7 @@
   {:name "TransientSet",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientSet",
    :source-url nil,
@@ -713,6 +727,7 @@
   {:name "TransientVar",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientVar",
    :source-url nil,
@@ -721,6 +736,7 @@
   {:name "TransientVector",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientVector",
    :source-url nil,
@@ -729,6 +745,7 @@
   {:name "TransientWithMeta",
    :var-type "type",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/TransientWithMeta",
    :source-url nil,
@@ -737,6 +754,7 @@
   {:name "Var",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/Var",
    :source-url nil,
@@ -745,6 +763,7 @@
   {:name "Vector",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/Vector",
    :source-url nil,
@@ -753,6 +772,7 @@
   {:name "WithMeta",
    :var-type "record",
    :namespace "clojure.tools.analyzer",
+   :arglists nil,
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer/WithMeta",
    :source-url nil,
@@ -975,6 +995,7 @@
    :dynamic true,
    :line 12,
    :var-type "var",
+   :arglists nil,
    :doc
    "Global env atom\nRequired options:\n * :namespaces an atom containing a map from namespace symbol to namespace map,\n   the namespace map contains at least the following keys:\n  ** :mappings a map of mappings of the namespace, symbol to var/class\n  ** :aliases a map of the aliases of the namespace, symbol to symbol\n  ** :ns a symbol representing the namespace",
    :namespace "clojure.tools.analyzer.env",
@@ -1107,20 +1128,21 @@
    :namespace "clojure.tools.analyzer.passes.collect-closed-overs",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.collect-closed-overs/collect-closed-overs"}
-  {:name "constant-lift",
-   :doc
-   "If the node represents a collection with no metadata, and every item of that\ncollection is a literal, transform the node to an equivalent :const node.",
-   :var-type "multimethod",
-   :line 12,
-   :namespace "clojure.tools.analyzer.passes.constant-lifter",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.constant-lifter/constant-lift",
+  {:raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
+   :name "constant-lift",
+   :file
+   "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
    :source-url
    "https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L12",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj",
-   :file
-   "src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj"}
+   :line 12,
+   :var-type "multimethod",
+   :arglists nil,
+   :doc
+   "If the node represents a collection with no metadata, and every item of that\ncollection is a literal, transform the node to an equivalent :const node.",
+   :namespace "clojure.tools.analyzer.passes.constant-lifter",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.passes.constant-lifter/constant-lift"}
   {:raw-source-url
    "https://github.com/clojure/tools.analyzer/raw/54457278c2c20d2ccb2de71bb8e67b7b08dd12fb/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj",
    :name "elide-meta",
@@ -1146,6 +1168,7 @@
    :dynamic true,
    :line 12,
    :var-type "var",
+   :arglists nil,
    :doc
    "A map of op keywords to predicate IFns.\nThe predicate will be used to indicate what map keys should be elided on\nmetadata of nodes for that op.\n:all can be used to indicate what should be elided for every node with\nmetadata.\nDefaults to {:all (set (:elide-meta *compiler-options*))}",
    :namespace "clojure.tools.analyzer.passes.elide-meta",
@@ -1453,18 +1476,19 @@
    :namespace "clojure.tools.analyzer.utils",
    :wiki-url
    "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/merge'"}
-  {:name "mmerge",
-   :doc "Same as (fn [m1 m2] (merge-with merge m2 m1))",
-   :var-type "var",
-   :line 234,
-   :namespace "clojure.tools.analyzer.utils",
-   :wiki-url
-   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/mmerge",
+  {:raw-source-url
+   "https://github.com/clojure/tools.analyzer/raw/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj",
+   :name "mmerge",
+   :file "src/main/clojure/clojure/tools/analyzer/utils.clj",
    :source-url
    "https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L234",
-   :raw-source-url
-   "https://github.com/clojure/tools.analyzer/raw/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj",
-   :file "src/main/clojure/clojure/tools/analyzer/utils.clj"}
+   :line 234,
+   :var-type "var",
+   :arglists nil,
+   :doc "Same as (fn [m1 m2] (merge-with merge m2 m1))",
+   :namespace "clojure.tools.analyzer.utils",
+   :wiki-url
+   "http://clojure.github.com/tools.analyzer//clojure.tools.analyzer-api.html#clojure.tools.analyzer.utils/mmerge"}
   {:raw-source-url
    "https://github.com/clojure/tools.analyzer/raw/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj",
    :name "obj?",
