@@ -88,6 +88,9 @@ namespace.
       
     </div>
   </div><div class="toc-section" style="margin-left: 1em;">
+    <a style="margin-top: 3px;" href="#"></a>
+    
+  </div><div class="toc-section" style="margin-left: 1em;">
     <a style="margin-top: 3px;" href="#clojure.tools.analyzer.ast">clojure.tools.analyzer.ast</a>
     <div class="toc-entry" style="margin-left: 1em;">
       <a href="#clojure.tools.analyzer.ast/ast-&gt;eav" class="toc-entry-anchor">ast-&gt;eav</a>
@@ -373,6 +376,7 @@ See clojure.tools.analyzer.core-test for an example on how to setup the analyzer
 </pre>
     <pre id="var-docstr">Takes a form and an env map and dispatches on the head of the form, that is
 a special form.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L805">Source</a>
@@ -407,6 +411,7 @@ It is considered a node either the top-level node (marked with :top-level true)
 or a node that can be reached via :children; if a node contains a node-like
 map that is not reachable by :children, there's no guarantee that such a map
 will contain the guaranteed keys.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L88">Source</a>
@@ -417,6 +422,7 @@ will contain the guaranteed keys.</pre>
     <span id="var-type">dynamic multimethod</span><br />
     <pre id="var-usage">No usage documentation available</pre>
     <pre id="var-docstr">Like analyze, but does not mark the form with :top-level true</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L40">Source</a>
@@ -428,6 +434,7 @@ will contain the guaranteed keys.</pre>
     <pre id="var-usage">Usage: (analyze-in-env env)
 </pre>
     <pre id="var-docstr">Takes an env map and returns a function that analyzes a form in that env</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L124">Source</a>
@@ -439,6 +446,7 @@ will contain the guaranteed keys.</pre>
     <pre id="var-usage">Usage: (create-var sym env)
 </pre>
     <pre id="var-docstr">Creates a var for sym and returns it</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L140">Source</a>
@@ -450,6 +458,7 @@ will contain the guaranteed keys.</pre>
     <pre id="var-usage">Usage: (empty-env)
 </pre>
     <pre id="var-docstr">Returns an empty env</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L117">Source</a>
@@ -462,6 +471,7 @@ will contain the guaranteed keys.</pre>
 </pre>
     <pre id="var-docstr">Repeatedly calls macroexpand-1 on form until it no longer
 represents a macro form, then returns it.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L224">Source</a>
@@ -474,6 +484,7 @@ represents a macro form, then returns it.</pre>
 </pre>
     <pre id="var-docstr">If form represents a macro form, returns its expansion,
 else returns form.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L129">Source</a>
@@ -485,6 +496,7 @@ else returns form.</pre>
     <pre id="var-usage">Usage: (parse [op &amp; args] env)
 </pre>
     <pre id="var-docstr">Multimethod that dispatches on op, should default to -parse</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L135">Source</a>
@@ -495,6 +507,7 @@ else returns form.</pre>
     <span id="var-type">var</span><br />
     <pre id="var-usage"></pre>
     <pre id="var-docstr">Set of special forms common to every clojure variant</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L218">Source</a>
@@ -506,11 +519,13 @@ else returns form.</pre>
     <pre id="var-usage">Usage: (var? obj)
 </pre>
     <pre id="var-docstr">Returns true if obj represent a var form as returned by create-var</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/1c8693b30e8459ad3fbdb21871164ba82afb7b43/src/main/clojure/clojure/tools/analyzer.clj#L145">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.ast">clojure.tools.analyzer.ast</h2>
 <pre id="namespace-docstr">Utilities for AST walking/updating</pre>
@@ -531,6 +546,7 @@ else returns form.</pre>
 </pre>
     <pre id="var-docstr">Returns an EAV representation of the current AST that can be used by
 Datomic's Datalog.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L123">Source</a>
@@ -544,6 +560,7 @@ Datomic's Datalog.</pre>
     <pre id="var-docstr">Return a vector of the children expression of the AST node, if it has any.
 The children expressions are kept in order and flattened so that the returning
 vector contains only nodes and not vectors of nodes.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L36">Source</a>
@@ -559,6 +576,7 @@ of the AST node, if it has any.
 The returned vector returns the childrens in the order as they appear in the
 :children field of the AST, and the children expressions may be either a node
 or a vector of nodes.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L26">Source</a>
@@ -571,6 +589,7 @@ or a vector of nodes.</pre>
 </pre>
     <pre id="var-docstr">Combine the given passes in a single pass that will be applieed repeatedly
 to the AST until applying it another time will have no effect</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L14">Source</a>
@@ -582,6 +601,7 @@ to the AST until applying it another time will have no effect</pre>
     <pre id="var-usage">Usage: (nodes ast)
 </pre>
     <pre id="var-docstr">Returns a lazy-seq of all the nodes in the given AST, in depth-first pre-order.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L117">Source</a>
@@ -594,6 +614,7 @@ to the AST until applying it another time will have no effect</pre>
        (postwalk ast f reversed?)
 </pre>
     <pre id="var-docstr">Shorthand for (walk ast identity f reversed?)</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L110">Source</a>
@@ -605,6 +626,7 @@ to the AST until applying it another time will have no effect</pre>
     <pre id="var-usage">Usage: (prewalk ast f)
 </pre>
     <pre id="var-docstr">Shorthand for (walk ast f identity)</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L105">Source</a>
@@ -620,6 +642,7 @@ to the AST until applying it another time will have no effect</pre>
 If reversed? is not-nil, `pre` and `post` will be applied starting from the last
 children of the AST node to the first one.
 Short-circuits on reduced.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L75">Source</a>
@@ -632,6 +655,7 @@ Short-circuits on reduced.</pre>
        (update-children-reduced ast f reversed?)
 </pre>
     <pre id="var-docstr">Like update-children but returns a reduced holding the AST if f short-circuited.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L58">Source</a>
@@ -649,11 +673,13 @@ the node in the AST which was given as input to the function.
 If reversed? is not-nil, `pre` and `post` will be applied starting from the last
 children of the AST node to the first one.
 Short-circuits on reduced.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/fd763e6a06319679f933f7fb9bf29910a004b262/src/main/clojure/clojure/tools/analyzer/ast.clj#L84">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.ast.query">clojure.tools.analyzer.ast.query</h2>
 <pre id="namespace-docstr">Utilities for querying tools.analyzer ASTs with Datomic</pre>
@@ -674,6 +700,7 @@ Short-circuits on reduced.</pre>
 </pre>
     <pre id="var-docstr">Given a list of ASTs, returns a representation of those
 that can be used as a database in a Datomic Datalog query</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/4625930565c53488dc94454ce2ee40853df24962/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L74">Source</a>
@@ -689,6 +716,7 @@ The first input is always assumed to be an AST database, if more
 are required, it's required to call `db` on them.
 `unfold-expression-clauses` is automatically applied to the
 query.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/4625930565c53488dc94454ce2ee40853df24962/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L80">Source</a>
@@ -702,6 +730,7 @@ query.</pre>
     <pre id="var-docstr">Transoforms a Datomic query from its vector representation to its map one.
 If the given query is already in its map representation, the original query
 is returned.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/4625930565c53488dc94454ce2ee40853df24962/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L14">Source</a>
@@ -715,6 +744,7 @@ is returned.</pre>
     <pre id="var-docstr">Automatically replace fn name symbols in expression clauses with
 their namespace qualified one if the symbol can be resolved in the
 current namespace.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/4625930565c53488dc94454ce2ee40853df24962/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L56">Source</a>
@@ -730,11 +760,13 @@ expression clauses with nested calls, unnesting those calls.
 
 E.g {:where [[(inc (dec ?foo)) ?bar] ..] ..} will be transformed in
 {:where [[(dec ?foo) ?1234] [(inc ?1234) ?bar] ..] ..}</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/4625930565c53488dc94454ce2ee40853df24962/src/main/clojure/clojure/tools/analyzer/ast/query.clj#L28">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.env">clojure.tools.analyzer.env</h2>
 <pre id="namespace-docstr"></pre>
@@ -759,6 +791,7 @@ Required options:
   ** :mappings a map of mappings of the namespace, symbol to var/class
   ** :aliases a map of the aliases of the namespace, symbol to symbol
   ** :ns a symbol representing the namespace</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L12">Source</a>
@@ -771,6 +804,7 @@ Required options:
 </pre>
     <pre id="var-docstr">Returns the value of the current global env if bound, otherwise
 throws an exception.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L44">Source</a>
@@ -782,6 +816,7 @@ throws an exception.</pre>
     <pre id="var-usage">Usage: (ensure env &amp; body)
 </pre>
     <pre id="var-docstr">If *env* is not bound it binds it to env before executing the body</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L36">Source</a>
@@ -793,11 +828,13 @@ throws an exception.</pre>
     <pre id="var-usage">Usage: (with-env env &amp; body)
 </pre>
     <pre id="var-docstr">Binds the global env to env, then executes the body</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/16abd6b3f3a85196c2addac42de4ff83519cf10f/src/main/clojure/clojure/tools/analyzer/env.clj#L22">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes">clojure.tools.analyzer.passes</h2>
 <pre id="namespace-docstr">Utilities for pass scheduling</pre>
@@ -818,6 +855,7 @@ throws an exception.</pre>
 </pre>
     <pre id="var-docstr">Takes a map of pass-name -&gt; pass-info and adds to each pass-info :dependencies and
 :dependants info, which also contain the transitive dependencies</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj#L46">Source</a>
@@ -830,6 +868,7 @@ throws an exception.</pre>
 </pre>
     <pre id="var-docstr">Takes a map of pass-name -&gt; pass deps and puts the :after :affects and :before passes
 in the appropriate pass :depends</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj#L24">Source</a>
@@ -849,6 +888,7 @@ E.g. given:
 [{:walk :any .. } {:walk :pre ..} {:walk :post ..} {:walk :pre ..}]
 it will return:
 [:pre [{:walk :any ..} {:walk :pre ..}] [{:walk :post ..} {:walk :pre ..}]]</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj#L61">Source</a>
@@ -891,11 +931,13 @@ optional):
 An opts map might be provided, valid parameters:
 * :debug?   if true, returns a vector of the scheduled passes rather than the concrete
             function</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/29c3db85bd96b1d24ea2a9c0cfc2fd05fe796336/src/main/clojure/clojure/tools/analyzer/passes.clj#L172">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.add-binding-atom">clojure.tools.analyzer.passes.add-binding-atom</h2>
 <pre id="namespace-docstr"></pre>
@@ -919,11 +961,13 @@ An opts map might be provided, valid parameters:
 atom will be shared between all occurences of that local.
 
 The atom is put in the :atom field of the node.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/add_binding_atom.clj#L13">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.collect-closed-overs">clojure.tools.analyzer.passes.collect-closed-overs</h2>
 <pre id="namespace-docstr"></pre>
@@ -948,11 +992,13 @@ The atom is put in the :atom field of the node.</pre>
 
 The info will be attached in the :closed-overs field of the AST node
 and will be a map of local name -&gt; binding AST node</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/b17311c9e2ef1700563665f8647e48c571f85011/src/main/clojure/clojure/tools/analyzer/passes/collect_closed_overs.clj#L59">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.constant-lifter">clojure.tools.analyzer.passes.constant-lifter</h2>
 <pre id="namespace-docstr"></pre>
@@ -972,11 +1018,13 @@ and will be a map of local name -&gt; binding AST node</pre>
     <pre id="var-usage">No usage documentation available</pre>
     <pre id="var-docstr">If the node represents a collection with no metadata, and every item of that
 collection is a literal, transform the node to an equivalent :const node.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/constant_lifter.clj#L12">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.elide-meta">clojure.tools.analyzer.passes.elide-meta</h2>
 <pre id="namespace-docstr"></pre>
@@ -997,6 +1045,7 @@ collection is a literal, transform the node to an equivalent :const node.</pre>
 </pre>
     <pre id="var-docstr">If elides is not empty and the AST node contains metadata,
 dissoc all the keys in elides from the metadata.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/54457278c2c20d2ccb2de71bb8e67b7b08dd12fb/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L79">Source</a>
@@ -1012,11 +1061,13 @@ metadata of nodes for that op.
 :all can be used to indicate what should be elided for every node with
 metadata.
 Defaults to {:all (set (:elide-meta *compiler-options*))}</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/54457278c2c20d2ccb2de71bb8e67b7b08dd12fb/src/main/clojure/clojure/tools/analyzer/passes/elide_meta.clj#L12">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.emit-form">clojure.tools.analyzer.passes.emit-form</h2>
 <pre id="namespace-docstr"></pre>
@@ -1037,6 +1088,7 @@ Defaults to {:all (set (:elide-meta *compiler-options*))}</pre>
 </pre>
     <pre id="var-docstr">Extension point for custom emit-form implementations, should be rebound
 to a multimethod with custom emit-form :opts.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/88b74a22c4a62b716aa7dd587539aea257bfa3c0/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L14">Source</a>
@@ -1051,6 +1103,7 @@ to a multimethod with custom emit-form :opts.</pre>
     <pre id="var-docstr">Return the form represented by the given AST.
 Opts is a set of options, valid options are:
  * :hygienic</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/88b74a22c4a62b716aa7dd587539aea257bfa3c0/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L24">Source</a>
@@ -1062,11 +1115,13 @@ Opts is a set of options, valid options are:
     <pre id="var-usage">Usage: (emit-hygienic-form ast)
 </pre>
     <pre id="var-docstr">Return an hygienic form represented by the given AST</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/88b74a22c4a62b716aa7dd587539aea257bfa3c0/src/main/clojure/clojure/tools/analyzer/passes/emit_form.clj#L32">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.index-vector-nodes">clojure.tools.analyzer.passes.index-vector-nodes</h2>
 <pre id="namespace-docstr"></pre>
@@ -1087,11 +1142,13 @@ Opts is a set of options, valid options are:
 </pre>
     <pre id="var-docstr">Adds an :idx attribute to nodes in a vector children, representing the position
 of the node vector.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/35086cdeb46b239f0d2e086db0813a408e9e4e02/src/main/clojure/clojure/tools/analyzer/passes/index_vector_nodes.clj#L11">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.source-info">clojure.tools.analyzer.passes.source-info</h2>
 <pre id="namespace-docstr"></pre>
@@ -1111,11 +1168,13 @@ of the node vector.</pre>
     <pre id="var-usage">Usage: (source-info ast)
 </pre>
     <pre id="var-docstr">Adds (when avaliable) :line, :column, :end-line, :end-column and :file info to the AST :env</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/88e3d8ca1e3b94cd8961d6993afa607d35097d34/src/main/clojure/clojure/tools/analyzer/passes/source_info.clj#L17">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.trim">clojure.tools.analyzer.passes.trim</h2>
 <pre id="namespace-docstr"></pre>
@@ -1135,11 +1194,13 @@ of the node vector.</pre>
     <pre id="var-usage">Usage: (trim ast)
 </pre>
     <pre id="var-docstr">Trims the AST of unnecessary nodes, e.g. (do (do 1)) -&gt; 1</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/8a95cd2cfc1abf7a48caf52c3871b61453427e76/src/main/clojure/clojure/tools/analyzer/passes/trim.clj#L46">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.uniquify">clojure.tools.analyzer.passes.uniquify</h2>
 <pre id="namespace-docstr"></pre>
@@ -1163,11 +1224,13 @@ of the node vector.</pre>
 
 Passes opts:
 * :uniquify/uniquify-env  If true, uniquifies the :env :locals map</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/uniquify.clj#L85">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.passes.warn-earmuff">clojure.tools.analyzer.passes.warn-earmuff</h2>
 <pre id="namespace-docstr"></pre>
@@ -1188,11 +1251,13 @@ Passes opts:
 </pre>
     <pre id="var-docstr">Prints a warning to *err* if the AST node is a :def node and the
 var name contains earmuffs but the var is not marked dynamic</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/5dc7857ee354d99b012e32dc4890161800200493/src/main/clojure/clojure/tools/analyzer/passes/warn_earmuff.clj#L12">Source</a>
   </div>
 </div>
+
 <br />
 <h2 id="clojure.tools.analyzer.utils">clojure.tools.analyzer.utils</h2>
 <pre id="namespace-docstr"></pre>
@@ -1212,6 +1277,7 @@ var name contains earmuffs but the var is not marked dynamic</pre>
     <pre id="var-usage">Usage: (-source-info x env)
 </pre>
     <pre id="var-docstr">Returns the source-info of x</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L220">Source</a>
@@ -1223,6 +1289,7 @@ var name contains earmuffs but the var is not marked dynamic</pre>
     <pre id="var-usage">Usage: (arglist-for-arity fn argc)
 </pre>
     <pre id="var-docstr">Takes a fn node and an argc and returns the matching arglist</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L174">Source</a>
@@ -1234,6 +1301,7 @@ var name contains earmuffs but the var is not marked dynamic</pre>
     <pre id="var-usage">Usage: (boolean? x)
 </pre>
     <pre id="var-docstr">Returns true if x is a boolean</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L96">Source</a>
@@ -1247,6 +1315,7 @@ var name contains earmuffs but the var is not marked dynamic</pre>
     <pre id="var-docstr">Returns same value as (juxt butlast last), but slightly more
 efficient since it only traverses the input sequence s once, not
 twice.</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L35">Source</a>
@@ -1258,6 +1327,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (classify form)
 </pre>
     <pre id="var-docstr">Returns a keyword describing the form type</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L101">Source</a>
@@ -1269,6 +1339,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (const-val {:keys [form val]})
 </pre>
     <pre id="var-docstr">Returns the value of a constant node (either :quote or :const)</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L229">Source</a>
@@ -1281,6 +1352,7 @@ twice.</pre>
        (constant? var m)
 </pre>
     <pre id="var-docstr">Returns true if the var is a const</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L135">Source</a>
@@ -1292,6 +1364,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (ctx env ctx)
 </pre>
     <pre id="var-docstr">Returns a copy of the passed environment with :context set to ctx</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L25">Source</a>
@@ -1303,6 +1376,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (dissoc-env ast)
 </pre>
     <pre id="var-docstr">Dissocs :env from the ast</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L30">Source</a>
@@ -1315,6 +1389,7 @@ twice.</pre>
        (dynamic? var m)
 </pre>
     <pre id="var-docstr">Returns true if the var is dynamic</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L141">Source</a>
@@ -1326,6 +1401,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (into! to from)
 </pre>
     <pre id="var-docstr">Like into, but for transients</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L15">Source</a>
@@ -1338,6 +1414,7 @@ twice.</pre>
        (macro? var m)
 </pre>
     <pre id="var-docstr">Returns true if the var maps to a macro</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L129">Source</a>
@@ -1349,6 +1426,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (mapv' f v)
 </pre>
     <pre id="var-docstr">Like mapv, but short-circuits on reduced</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L202">Source</a>
@@ -1360,6 +1438,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (merge' m &amp; mms)
 </pre>
     <pre id="var-docstr">Like merge, but uses transients</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L197">Source</a>
@@ -1370,6 +1449,7 @@ twice.</pre>
     <span id="var-type">var</span><br />
     <pre id="var-usage"></pre>
     <pre id="var-docstr">Same as (fn [m1 m2] (merge-with merge m2 m1))</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L234">Source</a>
@@ -1381,6 +1461,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (obj? x)
 </pre>
     <pre id="var-docstr">Returns true if x implements IObj</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L71">Source</a>
@@ -1393,6 +1474,7 @@ twice.</pre>
        (private? var m)
 </pre>
     <pre id="var-docstr">Returns true if the var is private</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L123">Source</a>
@@ -1405,6 +1487,7 @@ twice.</pre>
        (protocol-node? var m)
 </pre>
     <pre id="var-docstr">Returns true if the var maps to a protocol function</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L149">Source</a>
@@ -1416,6 +1499,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (record? x)
 </pre>
     <pre id="var-docstr">Returns true if x is a record</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L61">Source</a>
@@ -1427,6 +1511,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (reference? x)
 </pre>
     <pre id="var-docstr">Returns true if x implements IReference</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L76">Source</a>
@@ -1438,6 +1523,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (regex? x)
 </pre>
     <pre id="var-docstr">Returns true if x is a regex</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L88">Source</a>
@@ -1449,6 +1535,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (resolve-ns ns-sym {:keys [ns]})
 </pre>
     <pre id="var-docstr">Resolves the ns mapped by the given sym in the global env</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L155">Source</a>
@@ -1460,6 +1547,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (resolve-sym sym {:keys [ns], :as env})
 </pre>
     <pre id="var-docstr">Resolves the value mapped by the given sym in the global env</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L163">Source</a>
@@ -1471,6 +1559,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (rseqv v)
 </pre>
     <pre id="var-docstr">Same as (comp vec rseq)</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L20">Source</a>
@@ -1482,6 +1571,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (select-keys' map keyseq)
 </pre>
     <pre id="var-docstr">Like clojure.core/select-keys, but uses transients and doesn't preserve meta</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L185">Source</a>
@@ -1493,6 +1583,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (source-info m)
 </pre>
     <pre id="var-docstr">Returns the available source-info keys from a map</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L214">Source</a>
@@ -1504,6 +1595,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (type? x)
 </pre>
     <pre id="var-docstr">Returns true if x is a type</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L66">Source</a>
@@ -1515,6 +1607,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (update-keys m f)
 </pre>
     <pre id="var-docstr">Applies f to all the keys in the map</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L51">Source</a>
@@ -1526,6 +1619,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (update-kv m f)
 </pre>
     <pre id="var-docstr">Applies f to all the keys and vals in the map</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L56">Source</a>
@@ -1537,6 +1631,7 @@ twice.</pre>
     <pre id="var-usage">Usage: (update-vals m f)
 </pre>
     <pre id="var-docstr">Applies f to all the vals in the map</pre>
+    <pre id="var-specs"></pre>
     
     
     <a id="var-source" href="https://github.com/clojure/tools.analyzer/blob/ef985c4a193470b13edb8822e9b74a1dc1368626/src/main/clojure/clojure/tools/analyzer/utils.clj#L46">Source</a>
