@@ -5,5 +5,5 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths ["src/main/clojure"]
   :test-paths ["src/test/clojure"]
-  :dependencies [[org.clojure/clojure "1.8.0-master-SNAPSHOT"]
+  :dependencies [[org.clojure/clojure "1.9.0-master-SNAPSHOT"]
                  [com.datomic/datomic-free "0.9.5327" :scope "provided" :exclusions [joda-time]]])

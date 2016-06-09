@@ -7,7 +7,7 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.utils
-  (:refer-clojure :exclude [record?])
+  (:refer-clojure :exclude [record? boolean?])
   (:require [clojure.tools.analyzer.env :as env])
   (:import (clojure.lang IRecord IType IObj
                          IReference Var)))
