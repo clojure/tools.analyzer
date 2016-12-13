@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>tools.analyzer</artifactId>
   <version>0.6.10-SNAPSHOT</version>
-  <name>${artifactId}</name>
+  <name>tools.analyzer</name>
   <description>An analyzer for Clojure code, written in Clojure and producing AST in EDN</description>
 
   <properties>
@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.clojure</groupId>
     <artifactId>pom.contrib</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
   </parent>
 
   <developers>
