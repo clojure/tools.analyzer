@@ -1,5 +1,9 @@
 Changelog
 ========================================
+* Release 0.6.9 on 9 Jun 2015
+  * Exclude `boolean?` from clojure.core
+* Release 0.6.7 on 3 Nov 2015
+  * Don't elide significant 'quote
 * Release 0.6.6 on 23 Apr 2015
   * Fix emit-form for :host-field
 * Release 0.6.5 on 23 Feb 2015
