@@ -2,6 +2,8 @@
 
 An analyzer for host agnostic Clojure code, written in Clojure and producing AST in EDN.
 
+I gave a talk on tools.analyzer[.jvm] at ClojureX in December 2015. Video [here](https://skillsmatter.com/skillscasts/7239-immutable-code-analysis-with-tools-analyzer)
+
 Timothy Baldridge gave a talk on tools.analyzer[.jvm] at Clojure/West in
 March 2014. Video
 [here](https://www.youtube.com/watch?v=KhRQmT22SSg&list=PLZdCLR02grLp__wRg5OTavVj4wefg69hM&index=11).
