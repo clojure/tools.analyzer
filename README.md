@@ -244,6 +244,6 @@ Developer Information
 
 ## License
 
-Copyright © 2013-2017 Nicola Mometto, Rich Hickey & contributors.
+Copyright © 2013-2018 Nicola Mometto, Rich Hickey & contributors.
 
 Distributed under the Eclipse Public License, the same as Clojure.
