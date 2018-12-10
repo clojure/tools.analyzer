@@ -1,5 +1,7 @@
 Changelog
 ========================================
+* Release 0.7.0 on 10 Dec 2018
+  * Handle injected locals in add-binding-atom phase
 * Release 0.6.9 on 9 Jun 2015
   * Exclude `boolean?` from clojure.core
 * Release 0.6.7 on 3 Nov 2015
