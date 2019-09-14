@@ -4,7 +4,7 @@
             [clojure.tools.analyzer.utils :refer [update-vals]]))
 
 (defn ^:private has-deps?
-  "Returns true if the pass has some dependencies"
+  "Returns true if the pass has any dependencies"
   [pass]
   (seq (:dependencies pass)))
 
@@ -15,7 +15,7 @@
 
 (defn ^:private remove-pass
   "Takes a set of pass-infos and a pass, and removes the pass from the set of
-   pass-infos, updating :dependencies and :dependants aswell"
+   pass-infos, updating :dependencies and :dependants as well."
   [passes pass]
   (indicize (reduce (fn [m p] (conj m (-> p (update-in [:dependencies] disj pass)
                                         (update-in [:dependants] disj pass))))
@@ -45,7 +45,7 @@
 
 (defn calculate-deps
   "Takes a map of pass-name -> pass-info and adds to each pass-info :dependencies and
-   :dependants info, which also contain the transitive dependencies"
+   :dependants info, which also contains the transitive dependencies"
   [passes]
   (let [passes (desugar-deps passes)
         dependencies (reduce-kv (fn [deps pname {:keys [depends]}]
@@ -191,7 +191,7 @@
                  - :any  if the pass can be composed with other passes in both a prewalk
                          or a postwalk
    * :affects  a set of Vars, this pass must be the last in the same tree traversal that all
-               the specified passes must partecipate in
+               the specified passes must participate in
                This pass must take a function as argument and return the actual pass, the
                argument represents the reified tree traversal which the pass can use to
                control a recursive traversal, implies :depends

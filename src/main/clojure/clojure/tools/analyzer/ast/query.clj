@@ -12,7 +12,7 @@
             [clojure.tools.analyzer.utils :refer [compile-if]]))
 
 (defn query-map
-  "Transoforms a Datomic query from its vector representation to its map one.
+  "Transforms a Datomic query from its vector representation to its map one.
    If the given query is already in its map representation, the original query
    is returned."
   [query]
@@ -73,7 +73,7 @@
 
 (defn db
   "Given a list of ASTs, returns a representation of those
-   that can be used as a database in a Datomic Datalog query"
+   that can be used as a database in a Datomic Datalog query."
   [asts]
   (mapcat ast/ast->eav asts))
 
