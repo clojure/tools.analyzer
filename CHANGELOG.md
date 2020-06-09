@@ -1,5 +1,7 @@
 Changelog
 ========================================
+* Unreleased
+  * TANAL-134: Remove :init from :def's :children when absent
 * Release 1.0.0 on 18 Feb 2020
   * Fixed docstrings
 * Release 0.7.0 on 10 Dec 2018

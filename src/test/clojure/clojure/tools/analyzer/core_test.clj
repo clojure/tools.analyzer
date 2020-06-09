@@ -183,4 +183,20 @@
   (let [i-ast (ast (1 2))]
     (is (= :invoke (-> i-ast :op)))
     (is (= 1 (-> i-ast :fn :form)))
-    (is (= [2] (->> i-ast :args (mapv :form))))))
+    (is (= [2] (->> i-ast :args (mapv :form)))))
+
+  (let [def-ast (ast (def a))]
+    (is (= :def (-> def-ast :op)))
+    (is (empty? (-> def-ast :children)))
+    (is (nil? (:init def-ast))))
+
+  (let [def-ast (ast (def a nil))]
+    (is (= :def (-> def-ast :op)))
+    (is (= [:init] (:children def-ast)))
+    (is (= :const (-> def-ast :init :op))))
+
+  (let [def-ast (ast (def a "doc" nil))]
+    (is (= :def (-> def-ast :op)))
+    (is (= [:meta :init] (:children def-ast)))
+    (is (= "doc" (-> def-ast :doc)))
+    (is (= :const (-> def-ast :init :op)))))
