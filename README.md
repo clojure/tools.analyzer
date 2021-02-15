@@ -148,7 +148,7 @@ clojure.tools.analyzer.jvm> (ast/update-children (analyze '(do 1 (+ 1 2) :foo))
   ...},
  ...}
 ```
-If it's desiderable to walk all the AST applying a function to all the nodes and the children nodes, one of `walk`, `prewalk` or `postwalk` should be used, read the docstrings of the three functions to understand the differences.
+If it's desirable to walk all the AST applying a function to all the nodes and the children nodes, one of `walk`, `prewalk` or `postwalk` should be used, read the docstrings of the three functions to understand the differences.
 Here's the previous example using `prewalk` instead of `update-children`:
 ```clojure
 clojure.tools.analyzer.jvm> (ast/prewalk (analyze '(do 1 (+ 1 2) :foo))
