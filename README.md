@@ -19,7 +19,7 @@ Currently the following platform specific analyzers written on top of tools.anal
 * [Developer Information](#developer-information)
 * [License](#license)
 
-[Quickref](http://clojure.github.io/tools.analyzer/spec/quickref.html)
+[Quickref](https://clojure.github.io/tools.analyzer/spec/quickref.html)
 ========================================
 
 ## Example Usage
@@ -186,7 +186,7 @@ Since version `0.6.0`, passes can be scheduled automatically using `clojure.tool
 
 ## SPONSORSHIP
 
-* Cognitect (http://cognitect.com/) has sponsored tools.analyzer development (https://groups.google.com/d/msg/clojure/iaP16MHpX0E/EMtnGmOz-rgJ)
+* Cognitect (https://cognitect.com/) has sponsored tools.analyzer development (https://groups.google.com/d/msg/clojure/iaP16MHpX0E/EMtnGmOz-rgJ)
 * Ambrose BS (https://twitter.com/ambrosebs) has sponsored tools.analyzer development in his typed clojure campaign (http://www.indiegogo.com/projects/typed-clojure).
 
 ## YourKit
@@ -195,24 +195,23 @@ YourKit has given an open source license for their profiler, greatly simplifying
 
 YourKit is kindly supporting open source projects with its full-featured Java Profiler. YourKit, LLC is the creator of innovative and intelligent tools for profiling Java and .NET applications. Take a look at YourKit's leading software products:
 
-* <a href="http://www.yourkit.com/java/profiler/index.jsp">YourKit Java Profiler</a> and
-* <a href="http://www.yourkit.com/.net/profiler/index.jsp">YourKit .NET Profiler</a>.
+* <a href="https://www.yourkit.com/java/profiler/index.jsp">YourKit Java Profiler</a> and
+* <a href="https://www.yourkit.com/.net/profiler/index.jsp">YourKit .NET Profiler</a>.
 
 Releases and Dependency Information
 ========================================
 
 Latest stable release: 1.0.0
 
-* [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.clojure%22%20AND%20a%3A%22tools.analyzer%22)
-
-* [Development Snapshot Versions](https://oss.sonatype.org/index.html#nexus-search;gav%7Eorg.clojure%7Etools.analyzer%7E%7E%7E)
+* [All Released Versions](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.clojure%22%20AND%20a%3A%22tools.analyzer%22)
+* [Development Snapshot Versions](https://clojure.org/releases/downloads#_using_clojure_snapshot_releases)
 
 [Leiningen](https://github.com/technomancy/leiningen) dependency information:
 
 ```clojure
 [org.clojure/tools.analyzer "1.0.0"]
 ```
-[Maven](http://maven.apache.org/) dependency information:
+[Maven](https://maven.apache.org/) dependency information:
 
 ```xml
 <dependency>
@@ -228,19 +227,15 @@ Latest stable release: 1.0.0
 API Index
 ========================================
 
-* [CrossClj Documentation](http://crossclj.info/doc/org.clojure/tools.analyzer/lastest/index.html)
-* [API index](http://clojure.github.io/tools.analyzer)
+* [API index](https://clojure.github.io/tools.analyzer)
 
 Developer Information
 ========================================
 
 * [GitHub project](https://github.com/clojure/tools.analyzer)
-
-* [Bug Tracker](http://dev.clojure.org/jira/browse/TANAL)
-
-* [Continuous Integration](http://build.clojure.org/job/tools.analyzer/)
-
-* [Compatibility Test Matrix](http://build.clojure.org/job/tools.analyzer-test-matrix/)
+* [Bug Tracker](https://clojure.atlassian.net/browse/TANAL)
+* [Continuous Integration](https://build.clojure.org/job/tools.analyzer/)
+* [Compatibility Test Matrix](https://build.clojure.org/job/tools.analyzer-test-matrix/)
 
 ## License
 
