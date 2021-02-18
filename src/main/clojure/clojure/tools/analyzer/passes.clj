@@ -65,7 +65,7 @@
    * the remaining scheduler state
 
    E.g. given:
-   [{:walk :any .. } {:walk :pre ..} {:walk :post ..} {:walk :pre ..}]
+   [{:walk :any ..} {:walk :pre ..} {:walk :post ..} {:walk :pre ..}]
    it will return:
    [:pre [{:walk :any ..} {:walk :pre ..}] [{:walk :post ..} {:walk :pre ..}]]"
   [state]

@@ -15,7 +15,7 @@
        (= (first opname) \.) ; (.foo bar ..)
        (let [[target & args] expr
              args (list* (symbol (subs opname 1)) args)]
-         (with-meta (list '. target (if (= 1 (count args)) ;; we don't know if (.foo bar) ia
+         (with-meta (list '. target (if (= 1 (count args)) ;; we don't know if (.foo bar) is
                                       (first args) args)) ;; a method call or a field access
            (meta form)))
 
@@ -36,7 +36,7 @@
                    (:macro (meta v)))
             (apply v form env (rest form)) ; (m &form &env & args)
             (desugar-host-expr form)))))
-        form))
+    form))
 
 (defmacro foo [] 1)
 

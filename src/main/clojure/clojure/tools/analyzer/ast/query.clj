@@ -29,7 +29,7 @@
   "Given a Datomic query, walk the :where clauses searching for
    expression clauses with nested calls, unnesting those calls.
 
-   E.g {:where [[(inc (dec ?foo)) ?bar] ..] ..} will be transformed in
+   E.g {:where [[(inc (dec ?foo)) ?bar] ..] ..} will be transformed into
    {:where [[(dec ?foo) ?1234] [(inc ?1234) ?bar] ..] ..}"
   [query]
   (let [{:keys [where] :as query} (query-map query)]
