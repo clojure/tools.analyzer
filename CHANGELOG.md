@@ -1,6 +1,6 @@
 Changelog
 ========================================
-* Unreleased
+* Release 1.1.0 on 14 Sep 2021
   * TANAL-134: Remove :init from :def's :children when absent
   * Added :refer-clojure :exclude for `update-keys` and `update-vals` being added in Clojure 1.11
 * Release 1.0.0 on 18 Feb 2020
