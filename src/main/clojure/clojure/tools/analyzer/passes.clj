@@ -1,5 +1,6 @@
 (ns clojure.tools.analyzer.passes
   "Utilities for pass scheduling"
+  (:refer-clojure :exclude [update-vals])
   (:require [clojure.tools.analyzer.ast :refer [prewalk postwalk]]
             [clojure.tools.analyzer.utils :refer [update-vals]]))
 

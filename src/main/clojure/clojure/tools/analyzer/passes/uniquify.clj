@@ -7,6 +7,7 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns clojure.tools.analyzer.passes.uniquify
+  (:refer-clojure :exclude [update-vals])
   (:require [clojure.tools.analyzer.ast :refer [update-children children]]
             [clojure.tools.analyzer.utils :refer [update-vals]]
             [clojure.tools.analyzer.env :as env]))
