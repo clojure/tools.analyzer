@@ -1,6 +1,6 @@
 Changelog
 ========================================
-* next
+* Release 1.1.1 on 26 Nov 2022
   * Remove JVM-specific code to make this usable for ClojureCLR
 * Release 1.1.0 on 14 Sep 2021
   * TANAL-134: Remove :init from :def's :children when absent
