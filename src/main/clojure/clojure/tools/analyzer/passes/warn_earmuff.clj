@@ -17,8 +17,8 @@
   (let [name (str (:name ast))]
     (when (and (= :def (:op ast))
                (> (count name) 2)  ;; Allow * and ** as non-dynamic names
-               (.startsWith name "*")
-               (.endsWith name "*")
+               (= (nth name 0) \*)
+               (= (nth name (dec (count name))) \*)
                (not (dynamic? (:var ast) (:val (:meta ast)))))
       (binding [*out* *err*]
         (println "Warning:" name "not declared dynamic and thus is not dynamically rebindable,"
