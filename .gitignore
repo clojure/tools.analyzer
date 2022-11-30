@@ -8,3 +8,11 @@
 .lein-failures
 .lein-plugins
 .lein-repl-history
+
+#Visual Studio artifacts
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.nupkg
