@@ -234,11 +234,10 @@ Developer Information
 
 * [GitHub project](https://github.com/clojure/tools.analyzer)
 * [Bug Tracker](https://clojure.atlassian.net/browse/TANAL)
-* [Continuous Integration](https://build.clojure.org/job/tools.analyzer/)
-* [Compatibility Test Matrix](https://build.clojure.org/job/tools.analyzer-test-matrix/)
+* [Continuous Integration](https://github.com/clojure/tools.analyzer/actions/workflows/test.yml)
 
 ## License
 
-Copyright © 2013-2018 Nicola Mometto, Rich Hickey & contributors.
+Copyright © 2013-2023 Nicola Mometto, Rich Hickey & contributors.
 
 Distributed under the Eclipse Public License, the same as Clojure.
