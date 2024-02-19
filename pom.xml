@@ -7,13 +7,13 @@
   <description>An analyzer for Clojure code, written in Clojure and producing AST in EDN</description>
 
   <properties>
-    <clojure.version>1.5.1</clojure.version>
+    <clojure.version>1.9.0</clojure.version>
   </properties>
 
   <parent>
     <groupId>org.clojure</groupId>
     <artifactId>pom.contrib</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
   </parent>
 
   <developers>
@@ -26,7 +26,7 @@
   <scm>
     <connection>scm:git:git://github.com/clojure/tools.analyzer.git</connection>
     <developerConnection>scm:git:git://github.com/clojure/tools.analyzer.git</developerConnection>
-    <url>http://github.com/clojure/tools.analyzer</url>
+    <url>https://github.com/clojure/tools.analyzer</url>
     <tag>HEAD</tag>
   </scm>
 </project>
