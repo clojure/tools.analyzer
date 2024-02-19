@@ -1,5 +1,7 @@
 Changelog
 ========================================
+* Release 1.2.0 on 19 Feb 2024
+  * Update parent pom
 * Release 1.1.1 on 26 Nov 2022
   * Remove JVM-specific code to make this usable for ClojureCLR
 * Release 1.1.0 on 14 Sep 2021

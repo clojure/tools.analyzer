@@ -187,7 +187,7 @@ Since version `0.6.0`, passes can be scheduled automatically using `clojure.tool
 ## SPONSORSHIP
 
 * Cognitect (https://cognitect.com/) has sponsored tools.analyzer development (https://groups.google.com/d/msg/clojure/iaP16MHpX0E/EMtnGmOz-rgJ)
-* Ambrose BS (https://twitter.com/ambrosebs) has sponsored tools.analyzer development in his typed clojure campaign (http://www.indiegogo.com/projects/typed-clojure).
+* Ambrose BS (https://twitter.com/ambrosebs) has sponsored tools.analyzer development in his typed clojure campaign (https://www.indiegogo.com/projects/typed-clojure).
 
 ## YourKit
 
@@ -201,7 +201,7 @@ YourKit is kindly supporting open source projects with its full-featured Java Pr
 Releases and Dependency Information
 ========================================
 
-Latest stable release: 1.1.1
+Latest stable release: 1.2.0
 
 * [All Released Versions](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.clojure%22%20AND%20a%3A%22tools.analyzer%22)
 * [Development Snapshot Versions](https://clojure.org/releases/downloads#_using_clojure_snapshot_releases)
@@ -209,7 +209,7 @@ Latest stable release: 1.1.1
 [Leiningen](https://github.com/technomancy/leiningen) dependency information:
 
 ```clojure
-[org.clojure/tools.analyzer "1.1.1"]
+[org.clojure/tools.analyzer "1.2.0"]
 ```
 [Maven](https://maven.apache.org/) dependency information:
 
@@ -217,7 +217,7 @@ Latest stable release: 1.1.1
 <dependency>
   <groupId>org.clojure</groupId>
   <artifactId>tools.analyzer</artifactId>
-  <version>1.1.1</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
@@ -238,6 +238,6 @@ Developer Information
 
 ## License
 
-Copyright © 2013-2023 Nicola Mometto, Rich Hickey & contributors.
+Copyright © Nicola Mometto, Rich Hickey & contributors.
 
 Distributed under the Eclipse Public License, the same as Clojure.
