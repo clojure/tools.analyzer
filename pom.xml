@@ -7,13 +7,13 @@
   <description>An analyzer for Clojure code, written in Clojure and producing AST in EDN</description>
 
   <properties>
-    <clojure.version>1.9.0</clojure.version>
+    <clojure.version>1.11.4</clojure.version>
   </properties>
 
   <parent>
     <groupId>org.clojure</groupId>
     <artifactId>pom.contrib</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
   </parent>
 
   <developers>

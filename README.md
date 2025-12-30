@@ -186,7 +186,7 @@ Since version `0.6.0`, passes can be scheduled automatically using `clojure.tool
 
 ## SPONSORSHIP
 
-* Cognitect (https://cognitect.com/) has sponsored tools.analyzer development (https://groups.google.com/d/msg/clojure/iaP16MHpX0E/EMtnGmOz-rgJ)
+* Nubank (https://nubank.com.br) has sponsored tools.analyzer development
 * Ambrose BS (https://twitter.com/ambrosebs) has sponsored tools.analyzer development in his typed clojure campaign (https://www.indiegogo.com/projects/typed-clojure).
 
 ## YourKit
@@ -201,7 +201,7 @@ YourKit is kindly supporting open source projects with its full-featured Java Pr
 Releases and Dependency Information
 ========================================
 
-Latest stable release: 1.2.0
+Latest stable release: 1.2.1
 
 * [All Released Versions](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.clojure%22%20AND%20a%3A%22tools.analyzer%22)
 * [Development Snapshot Versions](https://clojure.org/releases/downloads#_using_clojure_snapshot_releases)
@@ -209,7 +209,7 @@ Latest stable release: 1.2.0
 [Leiningen](https://github.com/technomancy/leiningen) dependency information:
 
 ```clojure
-[org.clojure/tools.analyzer "1.2.0"]
+[org.clojure/tools.analyzer "1.2.1"]
 ```
 [Maven](https://maven.apache.org/) dependency information:
 
@@ -217,7 +217,7 @@ Latest stable release: 1.2.0
 <dependency>
   <groupId>org.clojure</groupId>
   <artifactId>tools.analyzer</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.1</version>
 </dependency>
 ```
 

@@ -1,5 +1,8 @@
 Changelog
 ========================================
+
+* Release 1.2.1 on 30 Dec 2025
+  * Update parent pom
 * Release 1.2.0 on 19 Feb 2024
   * Update parent pom
 * Release 1.1.1 on 26 Nov 2022

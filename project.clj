@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths ["src/main/clojure"]
   :test-paths ["src/test/clojure"]
-  :dependencies [[org.clojure/clojure "1.10.3"]
+  :dependencies [[org.clojure/clojure "1.11.4"]
                  [com.datomic/datomic-free "0.9.5327" :scope "provided" :exclusions [joda-time]]]
   :repositories [["sonatype" "https://oss.sonatype.org/content/repositories/releases"]
                  ["snapshots" "https://oss.sonatype.org/content/repositories/snapshots"]])
