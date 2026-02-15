@@ -741,7 +741,8 @@
                     (merge {:form form}
                            (-source-info form env)))))
   (let [[m-or-f field?] (if (and (symbol? m-or-f)
-                                 (= \- (first (name m-or-f))))
+                                 (= \- (first (name m-or-f)))
+                                 (empty? args))
                           [(-> m-or-f name (subs 1) symbol) true]
                           [(if args (cons m-or-f args) m-or-f) false])
         target-expr (analyze-form target (ctx env :ctx/expr))
