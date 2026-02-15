@@ -1,6 +1,8 @@
 Changelog
 ========================================
 
+* Release 1.2.2 on 15 Feb 2026
+  * Fix for field-access syntax with arguments
 * Release 1.2.1 on 30 Dec 2025
   * Update parent pom
 * Release 1.2.0 on 19 Feb 2024
